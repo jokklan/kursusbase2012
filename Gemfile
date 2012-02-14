@@ -19,9 +19,9 @@ end
 
 gem 'jquery-rails'
 
-group [:test, :development] do
-  gem 'sqlite3'
-end
+
+gem 'sqlite3', :group => [:test, :development] 
+
 
 group :test do
 end
