@@ -21,3 +21,10 @@ git add .
 git add -A
 git commit -m "COMMENT"
 git push
+
+læg op på heroku (hjemmeside: http://kursusbase2012.herokuapp.com/)
+git add .
+git add -A
+git commit -m "COMMENT"
+git push heroku
+heroku run rake db:migrate //kun hvis du har lavet nye migrations
