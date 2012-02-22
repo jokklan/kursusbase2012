@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  course: 
+  exam_schedule: MyString
+  exam_form: MyString
+  exam_duration: 2012-02-22 12:47:48
+  exam_aid: MyString
+  evaluation_form: MyString
+
+two:
+  course: 
+  exam_schedule: MyString
+  exam_form: MyString
+  exam_duration: 2012-02-22 12:47:48
+  exam_aid: MyString
+  evaluation_form: MyString

@@ -1,0 +1,85 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Course number:</b>
+  <%= @course.course_number %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%= @course.title %>
+</p>
+
+<p>
+  <b>Language:</b>
+  <%= @course.language %>
+</p>
+
+<p>
+  <b>Ects points:</b>
+  <%= @course.ects_points %>
+</p>
+
+<p>
+  <b>Open education:</b>
+  <%= @course.open_education %>
+</p>
+
+<p>
+  <b>Schedule:</b>
+  <%= @course.schedule %>
+</p>
+
+<p>
+  <b>Teaching form:</b>
+  <%= @course.teaching_form %>
+</p>
+
+<p>
+  <b>Duration:</b>
+  <%= @course.duration %>
+</p>
+
+<p>
+  <b>Participant limit:</b>
+  <%= @course.participant_limit %>
+</p>
+
+<p>
+  <b>Course objectives:</b>
+  <%= @course.course_objectives %>
+</p>
+
+<p>
+  <b>Learn objectives:</b>
+  <%= @course.learn_objectives %>
+</p>
+
+<p>
+  <b>Content:</b>
+  <%= @course.content %>
+</p>
+
+<p>
+  <b>Litteratur:</b>
+  <%= @course.litteratur %>
+</p>
+
+<p>
+  <b>Institute:</b>
+  <%= @course.institute %>
+</p>
+
+<p>
+  <b>Registration:</b>
+  <%= @course.registration %>
+</p>
+
+<p>
+  <b>Homepage:</b>
+  <%= @course.homepage %>
+</p>
+
+
+<%= link_to 'Edit', edit_course_path(@course) %> |
+<%= link_to 'Back', courses_path %>
