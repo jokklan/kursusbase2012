@@ -4,11 +4,9 @@ gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
 gem 'sqlite3'
 gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 gem 'mechanize'
-
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -23,6 +21,22 @@ group :assets do
 end
 
 gem 'jquery-rails'
+
+
+gem 'sqlite3', :group => [:test, :development] 
+
+
+group :test do
+end
+
+group :development do
+  gem 'heroku'
+end
+
+group :production do
+  gem 'thin'
+  gem 'pg'
+end
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
