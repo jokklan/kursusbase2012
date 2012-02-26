@@ -40,5 +40,5 @@ class Course < ActiveRecord::Base
                   :language, :ects_points, :open_education, 
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
-                  :litteratur, :institute, :registration, :homepage
+                  :litteratur, :remarks, :institute, :registration, :homepage
 end

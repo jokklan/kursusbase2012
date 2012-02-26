@@ -3,7 +3,7 @@ desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
   require 'mechanize'
   agent = Mechanize.new
-  debug = true
+  debug = false
   language = :da      
   
   url = "http://www.kurser.dtu.dk/"
@@ -11,16 +11,11 @@ task :scrape_courses => :environment do
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
   page = agent.get(url_software)
   
-  #course = page.search("div.CourseViewer")[2]
-  
-  #html#ctl00_Html1 body form#aspnetForm div table tbody tr.ContentMain td.ContentMain span#ctl00_PlaceHolderMain_PageHtml div.CourseViewer div div table tbody tr td table tbody tr td table
-  
   # Saving each link of the course in the array
   array = []
   agent.page.links_with(:href => %r{\d{5}\.aspx\?menulanguage=..}).each do |link|
     array << link.href unless array.include?(link.href)
-  end  
-  #puts array
+  end
   courses_info = {}
   
   # Taking each 
@@ -42,19 +37,15 @@ task :scrape_courses => :environment do
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1]
         current_course[:course_number] = %r{^\d{5}}.match(title)
         
-        puts "###################################\nTitle: #{current_course[:title]}" if debug
+        puts "###################################\nTitle: #{current_course[:title]}" #if debug
       
       # Top comment (only existing if comment written)
-      # Obersed: 
+      # Observed: 
       #   if the css selector below is used the course page will give
       #   exactly 2 results (array with length 2). else the length is
       #   3 or more. maybe not for all?
-      
-      comment_check = table.search("tr:nth-child(2) .normal")
-      
-      if comment_check.length == 2
-        top_comment = table_rows[2].search("p").text
-        #puts "Top comment:\n#{top_comment}" if debug
+      if table.search("tr:nth-child(2) .normal").length == 2
+        other_info[:top_comment] = table_rows[2].search("p").text
       end      
     
       # Content 
@@ -62,7 +53,6 @@ task :scrape_courses => :environment do
       
         # Content table rows    
         content_rows = content_table.search("tr")
-        index_corrector = 0
         
           # Title på et andet sprog (row 1)
           title_other_language = content_rows[0].search("td")[1].text.strip.chomp
@@ -87,7 +77,7 @@ task :scrape_courses => :environment do
           
           # DEBUG
           if debug
-            puts "English title: #{title_other_language}" if debug
+            puts "English title: #{title_other_language}"
             puts "Language: #{current_course[:language]}"
             puts "ECTS: #{current_course[:ects_points]}"
           end
@@ -137,44 +127,86 @@ task :scrape_courses => :environment do
                                       :point_block => "Pointspærring:",
                                       :prereq_obl => "Obligatoriske forudsætninger:",
                                       :prereq_qua => "Faglige forudsætninger:",
-                                      :prereq_opt => "Ønskelige forudsætninger:",
+                                      :prereq_opt => "Ønskelige forudsætninger:"
                                       }
-                              }      
-          
-          content_rows.each do |row|
+                              } 
+                              
+          last_attributes = { :da => {
+                                      :type1 => {
+                                                :course_objectives => "Overordnede kursusmål:",
+                                                :content => "Kursusindhold:",
+                                                :litteratur => "Litteratur:",
+                                                :remarks => "Bemærkninger:",
+                                                },
+                                      :type2 => {
+                                                :learn_objectives => "Læringsmål:"
+                                                },
+                                      :type3 => {
+                                                :responsible => "Kursusansvarlig:"
+                                                },
+                                      :type4 => {
+                                                :institute => "Institut:",
+                                                :homepage => "Kursushjemmeside:",
+                                                :registration => "Tilmelding:"
+                                                }
+                                     }
+                            }     
+
+          content_rows.each_with_index do |row, row_i|
             att_column = row.search("td")
             att_title = att_column[0].text.strip.chomp
             course_attributes[language].each do |key, att|
               if att_title == att
                 current_course[key] = att_column[1].text.strip.chomp
-                puts "#{course_attributes[language][key]} #{current_course[key]}"
+                puts "#{course_attributes[language][key]} #{current_course[key]}" if debug
               end
             end
             other_attributes[language].each do |key, att|
               if att_title == att
                 other_info[key] = att_column[1].text.strip.chomp
-                puts "#{other_attributes[language][key]} #{other_info[key]}"
+                puts "#{other_attributes[language][key]} #{other_info[key]}" if debug
               end
             end
-          end    
+            last_attributes[language][:type1].each do |key, att|
+              if att_title == att
+                current_course[key] = content_rows[row_i + 1].search("td").text.strip.chomp
+                puts "#{last_attributes[language][key]} #{current_course[key]}" if debug
+              end
+            end
+            last_attributes[language][:type2].each do |key, att|
+              
+              if att_title == att
+                #puts "#{att_title} == #{att}"
+                objective_list = content_rows[row_i + 2].search("td ul li")
+                objectives = []
+                objective_list.each do |o|
+                  objectives << o.text.strip.chomp
+                end
+              end
+            end
+            last_attributes[language][:type3].each do |key, att|
+              if att_title == att
+                content_rows[row_i + 1].search("td a.menulink").each do |link|
+                  #link.text if !%r(mailto:.*).match(link.href)
+                end
+              end
+            end
+            last_attributes[language][:type4].each do |key, att|
+              # Something
+            end
+          end 
+          
+          # The rest of the info (from course objectives and down)
+          #objective_table = content_table.search("table.SubTableLevel1")
+          #pp objective_table
+          
     
     # DEBUG
     puts "###################################" if debug
     
-    pp current_course
-    pp other_info
+    #pp current_course
+    #pp other_info
     
     courses_info[current_course[:course_number]] = current_course
-  end
-  
-  #attr_accessible :course_number,:title, 
-  #                :language, :ects_points, :open_education, 
-  #                :schedule, :teaching_form, :duration, :participant_limit,
-  #                :course_objectives, :learn_objectives, :content,
-  #                :litteratur, :institute, :registration, :homepage
-
-  
-  
-  
-  
+  end  
 end
