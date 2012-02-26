@@ -1,8 +1,10 @@
+# encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
   require 'mechanize'
   agent = Mechanize.new
   debug = true
+  language = :da      
   
   url = "http://www.kurser.dtu.dk/"
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
@@ -21,11 +23,10 @@ task :scrape_courses => :environment do
   #puts array
   courses_info = {}
   
-  
-
   # Taking each 
   array.each do |e|
     current_course = {}
+    other_info = {}
     page = agent.get("#{url}#{e}")
     top_comment = ''
     
@@ -40,6 +41,8 @@ task :scrape_courses => :environment do
         title = row1.search("h2").text
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1]
         current_course[:course_number] = %r{^\d{5}}.match(title)
+        
+        puts "###################################\nTitle: #{current_course[:title]}" if debug
       
       # Top comment (only existing if comment written)
       # Obersed: 
@@ -51,7 +54,7 @@ task :scrape_courses => :environment do
       
       if comment_check.length == 2
         top_comment = table_rows[2].search("p").text
-        puts "Top comment:\n#{top_comment}" if debug
+        #puts "Top comment:\n#{top_comment}" if debug
       end      
     
       # Content 
@@ -61,70 +64,105 @@ task :scrape_courses => :environment do
         content_rows = content_table.search("tr")
         index_corrector = 0
         
-          # Row 1 - Title on another language
+          # Title på et andet sprog (row 1)
           title_other_language = content_rows[0].search("td")[1].text.strip.chomp
           
-          # Row 2 - sprog
+          # Sprog (row 2)
           current_course[:language] = content_rows[1].search("td")[1].text.strip.chomp
           
-          # Row 3 - point
+          # ECTS points (row 3)
           current_course[:ects_points] = content_rows[2].search("td")[1].text.strip.chomp
           
           # Row 4 - blank
           
-          # Row 5 - kursustype
+          # Kursustype (row 5)
           # WHAT TO DO HERE?
           
-          # Introduces [*][+], where:
-          # * index if not tought under open university
-          # + index if tought under open university
-          
-          # Row [ ][5] - Under åben universitet
+          # Under åben universitet
           # If the course is 'Taught under open university' a row for that is made
           # it has the unique css selector: '.value td.value', so this is used for indicator.
-          # The index_corrector is increased if the course is has the above attribute
           if !(content_table.search(".value td.value").text[0..5] == "Kurset")
-            index_corrector = index_corrector + 1
+            current_course[:open_education] = true
           end
           
-          # Row [6][7] - Mere kursustype (eller tom)
+          # DEBUG
+          if debug
+            puts "English title: #{title_other_language}" if debug
+            puts "Language: #{current_course[:language]}"
+            puts "ECTS: #{current_course[:ects_points]}"
+          end
+          # DEBUG end
+          
+          # Mere kursustype (eller tom)
           # AND HERE?
           
-          # Row [7][8] - Linje - skip
+          # Linje - skip
           
-          # Row [8][9] - Skema
-          current_course[:schedule] = content_rows[9-index_corrector].search("td")[1].text.strip.chomp
+          # Attributes:
+          # Kursets varighed
+        	# - Eksamensplacering
+        	# Evalueringsform
+        	# - Eksamens varighed
+        	# Hjælpemidler
+        	# Bedømmelsesform
+        	# - Tidligere kursus
+        	# - Pointspærring
+        	# - Obligatoriske forudsætninger
+        	# - Faglige forudsætninger
+        	# - Ønskelige forudsætninger
+        	# - Deltagerbegrænsning
+        	
+        	#attr_accessible :course_number,:title, 
+          #                :language, :ects_points, :open_education, 
+          #                :schedule, :teaching_form, :duration, :participant_limit,
+          #                :course_objectives, :learn_objectives, :content,
+          #                :litteratur, :institute, :registration, :homepage
+        	
+          course_attributes = { :da => {
+                                        :schedule => "Skemaplacering:",
+                                        :teaching_form => "Undervisningsform:",
+                                        :duration => "Kursets varighed:",
+                                        :participant_limit => "Deltagerbegrænsning:"
+                                        }
+                                
+                               }
+                               
+          other_attributes = { :da => {
+                                      :exam_schedule => "Eksamensplacering:",
+                                      :exam_form => "Evalueringsform:",
+                                      :exam_duration => "Eksamens varighed:",
+                                      :aid => "Hjælpemidler:",
+                                      :evaluation_form => "Bedømmelsesform:",
+                                      :former_course => "Tidligere kursus:",
+                                      :point_block => "Pointspærring:",
+                                      :prereq_obl => "Obligatoriske forudsætninger:",
+                                      :prereq_qua => "Faglige forudsætninger:",
+                                      :prereq_opt => "Ønskelige forudsætninger:",
+                                      }
+                              }      
           
-          # Row [9][10] - Undervisningsform
-          current_course[:teaching_form] = content_rows[10-index_corrector].search("td")[1].text.strip.chomp
-          
-          # Row [10][11] - Varighed
-          current_course[:duration] = content_rows[11-index_corrector].search("td")[1].text.strip.chomp
-          
-          # Row [11][12] - Eksamensplacering - optional row
-          current_course[:schedule]
-          
-          # Row 11 - evalueringsform
-          # Row 12 - eksamensvarighed
-          # Row 13 - hjælpemidler
-          # Row 14 - bedømmelsesform
-          # Row 15 - tidligere kursus
+          content_rows.each do |row|
+            att_column = row.search("td")
+            att_title = att_column[0].text.strip.chomp
+            course_attributes[language].each do |key, att|
+              if att_title == att
+                current_course[key] = att_column[1].text.strip.chomp
+                puts "#{course_attributes[language][key]} #{current_course[key]}"
+              end
+            end
+            other_attributes[language].each do |key, att|
+              if att_title == att
+                other_info[key] = att_column[1].text.strip.chomp
+                puts "#{other_attributes[language][key]} #{other_info[key]}"
+              end
+            end
+          end    
     
     # DEBUG
-    if debug
-      puts "###################################"
-      puts "Title: #{current_course[:title]}"
-      puts "English title: #{title_other_language}" if debug
-      puts "Language: #{current_course[:language]}"
-      puts "ECTS: #{current_course[:ects_points]}"
-      puts "Schedule: #{current_course[:schedule]}"
-      puts "Teaching form: #{current_course[:teaching_form]}"
-      puts "Duration: #{current_course[:duration]}"
-      
-      
-      puts "###################################"
-    end
-    # DEBUG end
+    puts "###################################" if debug
+    
+    pp current_course
+    pp other_info
     
     courses_info[current_course[:course_number]] = current_course
   end
@@ -134,6 +172,7 @@ task :scrape_courses => :environment do
   #                :schedule, :teaching_form, :duration, :participant_limit,
   #                :course_objectives, :learn_objectives, :content,
   #                :litteratur, :institute, :registration, :homepage
+
   
   
   
