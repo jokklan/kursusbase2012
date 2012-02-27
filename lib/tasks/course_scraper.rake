@@ -74,7 +74,8 @@ task :scrape_courses => :environment do
           # Row 4 - blank
           
           # Course types (row 5)
-          # WHAT TO DO HERE?
+          # Her angives, om det er Civil, Diplom, Levnedsmiddel, Ph.d. etc.
+          # Hvordan skal det struktureres i databasen?
           
           # Under åben universitet
           # If the course is 'Taught under open university' a row for that is made
@@ -82,6 +83,10 @@ task :scrape_courses => :environment do
           if !(content_table.search(".value td.value").text[0..5] == "Kurset")
             current_course[:open_education] = true
           end
+          
+          # More course types
+          # Her angives, hvis det er linjefag, specialisering eller generel retningskompetence
+          # Der skal tilføjes noget mere struktur til databasen. Både for søgnings og sorteringsens skyld.
         	
         	# Hash's with recognizable titles (so the scraper can identify the different columns)
           course_attributes = { :da => {
