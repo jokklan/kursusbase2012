@@ -9,7 +9,9 @@ task :scrape_courses => :environment do
   url = "http://www.kurser.dtu.dk/"
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
-  page = agent.get(url_software)
+  url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
+  #page = agent.get(url_software)
+  page = agent.get(url_test2)
   
   # Saving each link of the course in the array
   array = []
@@ -23,6 +25,7 @@ task :scrape_courses => :environment do
     
     current_course = {}
     current_course_teachers = []
+    current_course_types_head = []
     current_course_types = []
     current_course_keywords = []
     current_course_evaluation = {}
@@ -71,11 +74,11 @@ task :scrape_courses => :environment do
           # ECTS points (row 3)
           current_course[:ects_points] = content_rows[2].search("td")[1].text.strip.chomp
           
-          # Row 4 - blank
-          
           # Course types (row 5)
           # Her angives, om det er Civil, Diplom, Levnedsmiddel, Ph.d. etc.
           # Hvordan skal det struktureres i databasen?
+          column_text = content_rows[3].search("table td")[0].to_s.chomp.strip
+          current_course_types_head = column_text[4,(column_text.length - 9)].chomp.strip.split("<br>")
           
           # Under åben universitet
           # If the course is 'Taught under open university' a row for that is made
@@ -87,6 +90,11 @@ task :scrape_courses => :environment do
           # More course types
           # Her angives, hvis det er linjefag, specialisering eller generel retningskompetence
           # Der skal tilføjes noget mere struktur til databasen. Både for søgnings og sorteringsens skyld.
+          column = content_table.search("#studiebox td")[0]
+          if !column.nil?
+            column_text = column.to_s.chomp.strip
+            current_course_types = column_text[4,(column_text.length - 9)].chomp.strip.split("<br>")
+          end
         	
         	# Hash's with recognizable titles (so the scraper can identify the different columns)
           course_attributes = { :da => {
@@ -223,6 +231,9 @@ task :scrape_courses => :environment do
               
           end 
           
+          puts "Course types"
+          pp current_course_types_head
+          pp current_course_types
           puts "Course attributes:"
           pp current_course
           puts "Evaluation attributes:"
@@ -233,6 +244,7 @@ task :scrape_courses => :environment do
           pp current_course_institute   
           puts "Keywords"
           pp current_course_keywords
+          
     
     # DEBUG
     puts "###################################"
