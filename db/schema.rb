@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229100346) do
+ActiveRecord::Schema.define(:version => 20120229101432) do
 
   create_table "course_prerequisites", :force => true do |t|
     t.integer  "course_id"
@@ -102,9 +102,9 @@ ActiveRecord::Schema.define(:version => 20120229100346) do
     t.string   "location"
     t.string   "phone"
     t.string   "email"
-    t.string   "website"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+    t.integer  "dtu_teacher_id"
   end
 
 end
