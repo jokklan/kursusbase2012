@@ -4,9 +4,7 @@ gem 'rails', '3.2.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem 'sqlite3'
-gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
-gem 'mechanize'
+
 
 gem 'thin'
 
@@ -33,6 +31,9 @@ end
 
 group :development do
   gem 'heroku'
+  gem 'sqlite3'
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
+  gem 'mechanize'
 end
 
 group :production do
