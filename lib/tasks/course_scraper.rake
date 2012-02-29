@@ -11,6 +11,7 @@ task :scrape_courses => :environment do
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
   url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   #page = agent.get(url_software)
+  #page = agent.get(url_test2)
   page = agent.get(url_test2)
   
   # Saving each link of the course in the array
@@ -21,6 +22,7 @@ task :scrape_courses => :environment do
   courses_info = {}
   
   # Taking each 
+  institutes = []
   array.each do |e|
     
     current_course = {}
@@ -179,6 +181,7 @@ task :scrape_courses => :environment do
             course_attributes[language][:institute].each do |key, att|
               if att_title == att
                 current_course_institute = att_column[1].text.chomp.strip
+                institutes << current_course_institute unless institudes.include?(current_course_institute)
               end
             end
             
@@ -231,24 +234,25 @@ task :scrape_courses => :environment do
               
           end 
           
-          puts "Course types"
-          pp current_course_types_head
-          pp current_course_types
-          puts "Course attributes:"
-          pp current_course
-          puts "Evaluation attributes:"
-          pp current_course_evaluation  
-          puts "Teachers:"
-          pp current_course_teachers
-          puts "Institute:"
-          pp current_course_institute   
-          puts "Keywords"
-          pp current_course_keywords
+          #puts "Course types"
+          #pp current_course_types_head
+          #pp current_course_types
+          #puts "Course attributes:"
+          #pp current_course
+          #puts "Evaluation attributes:"
+          #pp current_course_evaluation  
+          #puts "Teachers:"
+          #pp current_course_teachers
+          #puts "Institute:"
+          #pp current_course_institute          
+          #puts "Keywords"
+          #pp current_course_keywords
           
     
     # DEBUG
     puts "###################################"
     
     courses_info[current_course[:course_number]] = current_course
-  end  
+  end 
+  pp institutes
 end
