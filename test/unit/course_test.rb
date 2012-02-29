@@ -21,6 +21,8 @@
 #  homepage          :string(255)
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
+#  remarks           :string(255)
+#  institute_id      :integer
 #
 
 require 'test_helper'
