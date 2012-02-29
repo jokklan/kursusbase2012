@@ -8,6 +8,8 @@ gem 'sqlite3'
 gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 gem 'mechanize'
 
+gem 'thin'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -34,7 +36,6 @@ group :development do
 end
 
 group :production do
-  gem 'thin'
   gem 'pg'
 end
 
