@@ -1,6 +1,7 @@
 # encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
+  Rake::Task['db:reset'].invoke
   require 'mechanize'
   agent = Mechanize.new
   debug = false
@@ -10,9 +11,9 @@ task :scrape_courses => :environment do
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
   url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
-  #page = agent.get(url_software)
+  page = agent.get(url_software)
   #page = agent.get(url_test2)
-  page = agent.get(url_test2)
+  #page = agent.get(url_test2)
   
   # Saving each link of the course in the array
   array = []
@@ -22,7 +23,6 @@ task :scrape_courses => :environment do
   courses_info = {}
   
   # Taking each 
-  institutes = []
   array.each do |e|
     
     current_course = {}
@@ -31,7 +31,7 @@ task :scrape_courses => :environment do
     current_course_types = []
     current_course_keywords = []
     current_course_evaluation = {}
-    current_course_institute = ''
+    current_course_institute = {}
         
     other_info = {}
     page = agent.get("#{url}#{e}")
@@ -58,7 +58,7 @@ task :scrape_courses => :environment do
       #   exactly 2 results (array with length 2). else the length is
       #   3 or more. maybe not for all?
       if table.search("tr:nth-child(2) .normal").length == 2
-        other_info[:top_comment] = table_rows[2].search("p").text
+        current_course[:top_comment] = table_rows[2].search("p").text
       end      
     
       # Content 
@@ -166,7 +166,7 @@ task :scrape_courses => :environment do
             # Evaluation attributes
             course_attributes[language][:evaluation].each do |key, att|
               if att_title == att
-                current_course_evaluation[key] = att_column[1].text.chomp.strip
+                current_course[key] = att_column[1].text.chomp.strip
               end
             end
             
@@ -180,8 +180,9 @@ task :scrape_courses => :environment do
             # Institute
             course_attributes[language][:institute].each do |key, att|
               if att_title == att
-                current_course_institute = att_column[1].text.chomp.strip
-                institutes << current_course_institute unless institudes.include?(current_course_institute)
+                institute = att_column[1].text.chomp.strip
+                current_course_institute[:title] = institute[3,institute.length]
+                current_course_institute[:dtu_institute_id] = institute[0,2]
               end
             end
             
@@ -198,7 +199,7 @@ task :scrape_courses => :environment do
                 objective_list = content_rows[row_i + 2].search("td ul li")
                   objectives = []
                   objective_list.each do |o|
-                    objectives << o.text.strip.chomp
+                    objectives << o.text.chomp.strip
                   end
                   current_course[key] = objectives
               end
@@ -211,7 +212,7 @@ task :scrape_courses => :environment do
                   if !%r(mailto:.*).match(link[:href])
                     t_id = %r(http:\/\/www.dtu.dk\/Service\/Telefonbog\.aspx\?id=(.*)&type=person&lg=showcommon).match(link[:href].chomp.strip)[1]
                     t_name = link.text.chomp.strip
-                    current_course_teachers << { :name => t_name, :id => t_id }
+                    current_course_teachers << { :name => t_name, :dtu_teacher_id => t_id }
                   end
                 end
               end
@@ -234,25 +235,40 @@ task :scrape_courses => :environment do
               
           end 
           
-          #puts "Course types"
-          #pp current_course_types_head
-          #pp current_course_types
-          #puts "Course attributes:"
-          #pp current_course
-          #puts "Evaluation attributes:"
-          #pp current_course_evaluation  
-          #puts "Teachers:"
-          #pp current_course_teachers
-          #puts "Institute:"
-          #pp current_course_institute          
-          #puts "Keywords"
-          #pp current_course_keywords
-          
+    puts "Course types"
+    pp current_course_types_head
+    pp current_course_types
+    puts "Course attributes:"
+    pp current_course
+    puts "Teachers:"
+    pp current_course_teachers
+    puts "Institute:"
+    pp current_course_institute          
+    puts "Keywords"
+    pp current_course_keywords
+    
+    # Adding institute
+    current_course[:institute_id] = Institute.find_or_create_by_dtu_institute_id(current_course_institute)
+    created_course = Course.create(current_course)
+    
+    # Adding teachers
+    current_course_teachers.each do |t|
+      created_course.teachers << Teacher.find_or_create_by_dtu_teacher_id(t)
+    end
+    
+    # Adding keywords
+    current_course_keywords.each do |k|
+      created_course.keywords << Keyword.find_or_create_by_keyword(k)
+    end
+    
+    # Adding
+    
+    
+    created_course.save
     
     # DEBUG
     puts "###################################"
-    
     courses_info[current_course[:course_number]] = current_course
-  end 
-  pp institutes
+  end
+  
 end

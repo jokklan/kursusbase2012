@@ -53,9 +53,18 @@ class Course < ActiveRecord::Base
                   :language, :ects_points, :open_education, 
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
-                  :litteratur, :remarks, :institute, :registration, :homepage
+                  :litteratur, :remarks, :institute_id, :registration, :homepage,
+                  :top_comment, :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form, :former_course
                   
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
+  end
+
+  def course_no
+    if self.course_number < 9999
+      "0#{self.course_number}"
+    else
+      self.course_number
+    end
   end
 end

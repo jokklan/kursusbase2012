@@ -8,6 +8,6 @@
 #  updated_at :datetime        not null
 #
 
-class Keywords < ActiveRecord::Base
+class Keyword < ActiveRecord::Base
   has_and_belongs_to_many :courses
 end

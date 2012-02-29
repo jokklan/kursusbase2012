@@ -13,7 +13,8 @@ class CoursesController < ApplicationController
   # GET /courses/1
   # GET /courses/1.json
   def show
-    @course = Course.find(params[:id])
+    @course           = Course.find(params[:id])
+    @learn_objectives = @course.learn_objectives[6,@course.learn_objectives.length - 6].split("-")
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +26,7 @@ class CoursesController < ApplicationController
   # GET /courses/new.json
   def new
     @course = Course.new
+    
 
     respond_to do |format|
       format.html # new.html.erb
