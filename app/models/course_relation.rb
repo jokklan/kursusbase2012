@@ -12,7 +12,11 @@
 #  updated_at      :datetime        not null
 #
 
-class CoursePrerequisite < ActiveRecord::Base
+class CourseRelation < ActiveRecord::Base
   belongs_to :course
-  belongs_to :req_course, :class_name => "Course"
+  belongs_to :related_course, :class_name => "Course"
+  
+  def set_related_course_type(type)
+    self.related_course_type = type
+  end
 end

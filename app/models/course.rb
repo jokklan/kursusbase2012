@@ -31,13 +31,22 @@ class Course < ActiveRecord::Base
   has_and_belongs_to_many :keywords
   has_and_belongs_to_many :course_types
   
-  has_many :course_relations
-  has_many :blocked_courses, :through => :course_relations, :source => :req_course, :conditions => [ "req_course_type = ?", "PointBlock" ]
-  has_many :mandatory_courses, :through => :course_relations, :source => :req_course, :conditions => [ "req_course_type = ?", "Mandatory" ]
-  has_many :optional_courses, :through => :course_relations, :source => :req_course, :conditions => [ "req_course_type = ?", "Optional" ]
+  has_many :point_blocks, :class_name => "CourseRelation", :foreign_key => "course_id", 
+            :conditions => [ "related_course_type = ?", "Blocked" ], :after_add => lambda{|data, record| record.set_related_course_type("Blocked")}
+  has_many :blocked_courses, :through => :point_blocks, :source => :related_course
+  
+  has_many :mandatory_qualifications, :class_name => "CourseRelation", :foreign_key => "course_id", 
+            :conditions => [ "related_course_type = ?", "Mandatory" ], :after_add => lambda{|data, record| record.set_related_course_type("Mandatory")}
+  has_many :mandatory_courses, :through => :mandatory_qualifications, :source => :related_course
+  
+  has_many :optional_qualifications, :class_name => "CourseRelation", :foreign_key => "course_id", 
+            :conditions => [ "related_course_type = ?", "Optional" ], :after_add => lambda{|data, record| record.set_related_course_type("Optional")}
+  has_many :optional_courses, :through => :optional_qualifications, :source => :related_course
   
   belongs_to :institute
-  has_one :evaluation  
+  has_one :evaluation
+  
+  #before_create :set_related_course_type
 
   # Course attributes
   attr_accessible :course_number,:title, 
@@ -45,4 +54,8 @@ class Course < ActiveRecord::Base
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
                   :litteratur, :remarks, :institute, :registration, :homepage
+                  
+  def set_related_course_type(course_relation, type)
+    course_relation.related_course_type = type
+  end
 end
