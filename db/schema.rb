@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229103415) do
+ActiveRecord::Schema.define(:version => 20120229104705) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -55,6 +55,11 @@ ActiveRecord::Schema.define(:version => 20120229103415) do
     t.integer  "institute_id"
     t.string   "top_comment"
     t.string   "former_course"
+    t.string   "exam_schedule"
+    t.string   "exam_form"
+    t.time     "exam_duration"
+    t.string   "exam_aid"
+    t.string   "evaluation_form"
   end
 
   create_table "courses_course_types", :force => true do |t|
@@ -71,19 +76,6 @@ ActiveRecord::Schema.define(:version => 20120229103415) do
     t.integer "teacher_id"
     t.integer "course_id"
   end
-
-  create_table "evaluations", :force => true do |t|
-    t.integer  "course_id"
-    t.string   "exam_schedule"
-    t.string   "exam_form"
-    t.time     "exam_duration"
-    t.string   "exam_aid"
-    t.string   "evaluation_form"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
-  add_index "evaluations", ["course_id"], :name => "index_evaluations_on_course_id"
 
   create_table "institutes", :force => true do |t|
     t.string   "title"
