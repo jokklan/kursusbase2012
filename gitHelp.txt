@@ -1,8 +1,9 @@
-git add .	//Tilføj alt der er tilføjet til versionen
-git add -A	//Tilføj alt der er slettet til versionen
-git add # 	//Tilføj bestemt fil til versionen
+# Hele processen, når der er lavet ændringer
+git add .	    # Tilføj alt der er tilføjet til versionen
+git add -A	  # Tilføj alt der er slettet til versionen
+git add fil 	# Tilføj bestemt fil til versionen (hvor fil = filen skal tilføjes)
 
-git commit -m "#" 	//Commit versionen og skriv kommentar
+git commit -m "din kommentar" # commit ændringer med kommentar
 
 git push	//Push versionen til github.com
 
@@ -11,20 +12,26 @@ git fetch	//Hent nye versioner fra github.com
 git rebase origin/master 	//Restrukturer versioner så der ikke opstår modsætninger/fejl
 
 
-hent fra github:
+# Hente fra github:
 git fetch
 git rebase origin/master
 
 
-læg op på github:
+# Læg op på github
 git add .
 git add -A
 git commit -m "COMMENT"
 git push
 
-læg op på heroku (hjemmeside: http://kursusbase2012.herokuapp.com/)
+# Heroku
+## Læg op på heroku (hjemmeside: http://kursusbase2012.herokuapp.com/)
 git add .
 git add -A
 git commit -m "COMMENT"
 git push heroku
-heroku run rake db:migrate //kun hvis du har lavet nye migrations
+
+## Hvis du har lavet/ændret i migrations
+heroku run rake db:migrate
+
+## Hvis den ikke gider at migrate (SKAL HELST UNDGÅS!)
+heroku pg:reset SHARED_DATABASE
