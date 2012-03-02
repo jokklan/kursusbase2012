@@ -9,7 +9,7 @@ class CreateInstitutes < ActiveRecord::Migration
     end
   end
   def down
-    add_column :courses, :insitute, :string
+    add_column :courses, :insitute_id, :string
     remove_column :courses, :institute_id
     drop_table :institutes
   end
