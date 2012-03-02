@@ -33,11 +33,11 @@ group :development do
   gem 'heroku'
   gem 'sqlite3'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
-  gem 'mechanize'
   gem 'taps'
 end
 
 group :production do
+  gem 'mechanize'
   gem 'pg'
 end
 
