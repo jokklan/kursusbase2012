@@ -2,6 +2,29 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/* Table */
 table {
 	width: 800px;
 }
+table td {
+	padding-bottom: 10px;
+	vertical-align: top;
+}
+/* CSS3 start */
+td:nth-child(1) {
+	width: 150px;
+}
+td:nth-child(2) {
+	width: 650px;
+}
+/* CSS3 end */
+
+/* Course type list */
+ul.course-types {
+	padding: 0;
+	margin: 0;
+}
+ul.course-types li {
+	list-style-type: none;
+}
+

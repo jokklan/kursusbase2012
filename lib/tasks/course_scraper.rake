@@ -1,11 +1,15 @@
 # encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
-  Rake::Task['db:reset'].invoke
-  require 'mechanize'
-  agent = Mechanize.new
   debug = false
-  language = :da      
+  language = :da
+  
+  require 'mechanize'
+  agent = Mechanize.new   
+  
+  if !debug
+    Rake::Task['db:reset'].invoke
+  end 
   
   url = "http://www.kurser.dtu.dk/"
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
@@ -13,7 +17,7 @@ task :scrape_courses => :environment do
   url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   page = agent.get(url_software)
   #page = agent.get(url_test2)
-  #page = agent.get(url_test2)
+  #page = agent.get(url_civil)
   
   # Saving each link of the course in the array
   array = []
@@ -50,7 +54,7 @@ task :scrape_courses => :environment do
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
         
         
-        puts "###################################\nTitle: #{current_course[:title]}"
+        puts "Title: #{current_course[:title]}"
       
       # Top comment (only existing if comment written)
       # Observed: 
@@ -68,18 +72,18 @@ task :scrape_courses => :environment do
         content_rows = content_table.search("tr")
         
           # Title på et andet sprog (row 1)
-          other_info[:title_other_language] = content_rows[0].search("td")[1].text.strip.chomp
+          other_info[:title_other_language] = content_rows[1].search("td")[1].text.strip.chomp
           
           # Sprog (row 2)
-          current_course[:language] = content_rows[1].search("td")[1].text.strip.chomp
+          current_course[:language] = content_rows[2].search("td")[1].text.strip.chomp
           
           # ECTS points (row 3)
-          current_course[:ects_points] = content_rows[2].search("td")[1].text.strip.chomp
+          current_course[:ects_points] = content_rows[3].search("td")[1].text.strip.chomp
           
           # Course types (row 5)
           # Her angives, om det er Civil, Diplom, Levnedsmiddel, Ph.d. etc.
           # Hvordan skal det struktureres i databasen?
-          column_text = content_rows[3].search("table td")[0].to_s.chomp.strip
+          column_text = content_rows[4].search("table td")[0].to_s.chomp.strip
           current_course_types_head = column_text[4,(column_text.length - 9)].chomp.strip.split("<br>")
           
           # Under åben universitet
@@ -234,40 +238,50 @@ task :scrape_courses => :environment do
             end
               
           end 
-          
-    puts "Course types"
-    pp current_course_types_head
-    pp current_course_types
-    puts "Course attributes:"
-    pp current_course
-    puts "Teachers:"
-    pp current_course_teachers
-    puts "Institute:"
-    pp current_course_institute          
-    puts "Keywords"
-    pp current_course_keywords
     
-    # Adding institute
-    current_course[:institute_id] = Institute.find_or_create_by_dtu_institute_id(current_course_institute)
-    created_course = Course.create(current_course)
-    
-    # Adding teachers
-    current_course_teachers.each do |t|
-      created_course.teachers << Teacher.find_or_create_by_dtu_teacher_id(t)
+    if debug      
+      puts "Course types"
+      pp current_course_types_head
+      pp current_course_types
+      puts "Course attributes:"
+      pp current_course
+      puts "Teachers:"
+      pp current_course_teachers
+      puts "Institute:"
+      pp current_course_institute          
+      puts "Keywords"
+      pp current_course_keywords
     end
     
-    # Adding keywords
-    current_course_keywords.each do |k|
-      created_course.keywords << Keyword.find_or_create_by_keyword(k)
+    if !debug
+      # Adding institute
+      current_course[:institute_id] = Institute.find_or_create_by_dtu_institute_id(current_course_institute)
+      created_course = Course.create(current_course)
+      
+      # Adding teachers
+      current_course_teachers.each do |t|
+        created_course.teachers << Teacher.find_or_create_by_dtu_teacher_id(t)
+      end
+      
+      # Adding keywords
+      current_course_keywords.each do |k|
+        created_course.keywords << Keyword.find_or_create_by_keyword(k)
+      end
+      
+      current_course_types_head.each do |cth|
+        created_course.course_types << CourseType.find_or_create_by_title(cth, :course_type_type => 1)
+      end
+      
+      current_course_types.each do |ct|
+        created_course.course_types << CourseType.find_or_create_by_title(ct, :course_type_type => 2)
+      end
+      
+      # Saving course
+      created_course.save
     end
-    
-    # Adding
-    
-    
-    created_course.save
     
     # DEBUG
-    puts "###################################"
+    #puts "###################################"
     courses_info[current_course[:course_number]] = current_course
   end
   
