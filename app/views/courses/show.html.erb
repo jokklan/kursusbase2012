@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-
+<%= link_to "<< All courses", courses_path %>
 <h1><%= @course.course_no %> <%= @course.title %></h1>
 <h3><%= link_to "#{@course.title} på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
 <hr />
@@ -90,10 +90,12 @@
 		<td><strong>Registration:</strong></td>
 		<td><%= @course.registration %></td>
 	</tr>
-	<tr>
-		<td><strong>Homepage:</strong></td>
-		<td><%= link_to @course.homepage, @course.homepage %></td>
-	</tr>
+	<% if @course.homepage %>
+		<tr>
+			<td><strong>Homepage:</strong></td>
+			<td><%= link_to @course.homepage, @course.homepage %></td>
+		</tr>
+	<% end %>
 	<% if !@course.keywords.empty? %>
 		<tr>
 			<td><strong>Keywords:</strong></td>
@@ -104,12 +106,5 @@
 			</td>
 		</tr>
 	<% end %>
-	<tr>
-		<td><strong>Admin:</strong></td>
-		<td>
-			<%= link_to 'Edit', edit_course_path(@course) %> |
-			<%= link_to 'Back', courses_path %>
-		</td>
-	</tr>
 	
 </table>

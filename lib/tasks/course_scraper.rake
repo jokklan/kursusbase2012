@@ -15,9 +15,9 @@ task :scrape_courses => :environment do
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
   url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
-  page = agent.get(url_software)
+  #page = agent.get(url_software)
   #page = agent.get(url_test2)
-  #page = agent.get(url_civil)
+  page = agent.get(url_civil)
   
   # Saving each link of the course in the array
   array = []
