@@ -1,6 +1,6 @@
 class CreateInstitutes < ActiveRecord::Migration
   def up
-    remove_column :courses, :insitute
+    remove_column :courses, :institute
     add_column :courses, :institute_id, :integer
     create_table :institutes do |t|
       t.string :title
@@ -9,7 +9,7 @@ class CreateInstitutes < ActiveRecord::Migration
     end
   end
   def down
-    add_column :courses, :insitute_id, :string
+    add_column :courses, :institute, :string
     remove_column :courses, :institute_id
     drop_table :institutes
   end
