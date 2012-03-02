@@ -1,8 +1,9 @@
 # encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
-  debug = false
-  language = :da
+  debug     = false   # debug = true for print in console
+  language  = :en     # :da or :en (for danish or english)
+  db_seed   = true    # db_seed = true for seeding database with scraping content (debug needs to be false)
   
   require 'mechanize'
   agent = Mechanize.new   
@@ -21,12 +22,13 @@ task :scrape_courses => :environment do
   
   # Saving each link of the course in the array
   array = []
-  agent.page.links_with(:href => %r{\d{5}\.aspx\?menulanguage=..}).each do |link|
-    array << link.href unless array.include?(link.href)
+  agent.page.links_with(:href => %r{\d{5}\.aspx\?menulanguage=.*}).each do |link|
+    link_url = link.href.to_s
+    link_url = link_url.gsub("da","en") if language == :en
+    array << link_url unless array.include?(link_url)
   end
-  courses_info = {}
   
-  # Taking each 
+  # Taking each link and scraping
   array.each do |e|
     
     current_course = {}
@@ -52,9 +54,6 @@ task :scrape_courses => :environment do
         title = row1.search("h2").text
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1].to_s
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
-        
-        
-        puts "Title: #{current_course[:title]}"
       
       # Top comment (only existing if comment written)
       # Observed: 
@@ -148,6 +147,52 @@ task :scrape_courses => :environment do
                                                       }
                                                       
                                         
+                                },
+                                :en => {
+                                        :mandatory => {
+                                                      :schedule => "Schedule:",
+                                                      :teaching_form => "Scope and form:",
+                                                      :duration => "Duration of Course:",
+                                                      :former_course => "Previous Course:",
+                                                      :participant_limit => "Participants restrictions:",
+                                                      :registration => "Registration Sign up:"
+                                                      },
+                                        :evaluation => {
+                                                      :exam_schedule => "Date of examination:",
+                                                      :exam_form => "Type of assessment:",
+                                                      :exam_duration => "Exam duration:",
+                                                      :exam_aid => "Aid:",
+                                                      :evaluation_form => "Evaluation:"
+                                                      },
+                                        :prerequisites => {
+                                                      :point_block => "Not applicable together with:",
+                                                      :prereq_obl => "Mandatory Prerequisites:",
+                                                      :prereq_qua => "Qualified Prerequisites:",
+                                                      :prereq_opt => "Optional Prerequisites:"
+                                                      },
+                                        :institute => {
+                                                      :institute => "Department:",
+                                                      },
+                                        :text_att => {
+                                                      :course_objectives => "General course objectives:",
+                                                      :content => "Content:",
+                                                      :litteratur => "Litteratur:",
+                                                      :remarks => "Remarks:"
+                                                      },
+                                        :learn_objectives => {
+                                                      :learn_objectives => "Learning objectives:"
+                                                      },
+                                        :responsible => {
+                                                      :teachers => "Responsible:"
+                                                      },
+                                        :homepage => {
+                                                      :homepage => "Home page:"
+                                                      },
+                                        :keywords => {
+                                                      :keywords => "Nøgleord:"
+                                                      }
+                                        
+                                        
                                         }
                                 
                                }
@@ -203,7 +248,7 @@ task :scrape_courses => :environment do
                 objective_list = content_rows[row_i + 2].search("td ul li")
                   objectives = []
                   objective_list.each do |o|
-                    objectives << o.text.chomp.strip
+                    objectives << o.text.chomp.strip unless objectives.include?(o.text.chomp.strip)
                   end
                   current_course[key] = objectives
               end
@@ -240,6 +285,7 @@ task :scrape_courses => :environment do
           end 
     
     if debug      
+      puts "Title: #{current_course[:title]}"
       puts "Course types"
       pp current_course_types_head
       pp current_course_types
@@ -251,9 +297,10 @@ task :scrape_courses => :environment do
       pp current_course_institute          
       puts "Keywords"
       pp current_course_keywords
+      puts "####################################"
     end
     
-    if !debug
+    if !debug && db_seed
       # Adding institute
       current_course[:institute_id] = Institute.find_or_create_by_dtu_institute_id(current_course_institute)
       created_course = Course.create(current_course)
@@ -268,21 +315,24 @@ task :scrape_courses => :environment do
         created_course.keywords << Keyword.find_or_create_by_keyword(k)
       end
       
+      # Adding head course-types (civil, diplom osv.)
       current_course_types_head.each do |cth|
         created_course.course_types << CourseType.find_or_create_by_title(cth, :course_type_type => 1)
       end
       
+      # Adding special course-types (teknologisk specialisering osv.)
       current_course_types.each do |ct|
         created_course.course_types << CourseType.find_or_create_by_title(ct, :course_type_type => 2)
       end
       
       # Saving course
       created_course.save
+      
+      # Some display for the console
+      cn_display = current_course[:course_number]
+      cn_display = "0#{cn_display}" if current_course[:course_number] < 10000   
+      puts "Added to the database: #{cn_display} #{current_course[:title]} "
     end
-    
-    # DEBUG
-    #puts "###################################"
-    courses_info[current_course[:course_number]] = current_course
   end
   
 end

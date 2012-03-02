@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 <%= link_to "<< All courses", courses_path %>
 <h1><%= @course.course_no %> <%= @course.title %></h1>
-<h3><%= link_to "#{@course.title} på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
+<h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
 <hr />
 <% if @course.top_comment %>
 	<%= @course.top_comment  %>
@@ -14,7 +14,13 @@
 	</tr>
 	<tr>
 		<td><strong>Ects point:</strong></td>
-		<td><%= @course.ects_points %></td>
+		<td>
+			<% if @course.ects_points % 5 > 0 %>
+				<%= @course.ects_points %>
+			<% else %>
+				<%= @course.ects_points.to_i %>
+			<% end %>
+		</td>
 	</tr>
 	<tr>
 		<td><strong>Kursustype:</strong></td>
@@ -57,11 +63,15 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
+			<% if @learn_objectives.count > 1 %>
 			<ul>
 	  		<% @learn_objectives.each do |lo| %>
 					<li><%= lo %></li>
 				<% end %>
 			</ul>
+			<% else %>
+				<%= @learn_objectives.first %>
+			<% end %>
 		</td>
 	</tr>
 	<tr>
