@@ -1,10 +1,10 @@
 class ChangeDataTypesToTextInCourses < ActiveRecord::Migration
   def up
     change_table :courses do |t|
-      t.change :remarks, :text
-      t.change :top_comment, :text
-      t.change :teaching_form, :text
-      t.change :exam_form, :text
+      t.change :remarks, :text, :limit => :nil
+      t.change :top_comment, :text, :limit => :nil
+      t.change :teaching_form, :text, :limit => :nil
+      t.change :exam_form, :text, :limit => :nil
       t.change :exam_duration, :string
     end
   end

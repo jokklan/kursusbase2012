@@ -14,7 +14,7 @@ task :scrape_courses, [:seed] => :environment do |t,args|
   agent = Mechanize.new   
   
   # Reset database if seeding
-  if !debug & db_seed
+  if !debug && db_seed && !Rails.env.production?   
     Rake::Task['db:reset'].invoke
   end 
   
