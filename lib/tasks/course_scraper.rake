@@ -1,11 +1,15 @@
 # encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
-task :scrape_courses => :environment do
-  debug     = false       # debug = true for print in console
-  language  = :en         # :da or :en (for danish or english)
-  db_seed   = false        # db_seed = true for seeding database with scraping content (debug needs to be false)
-  check_db_types = true  # true if the scraper should check data-types
+task :scrape_courses, [:seed] => :environment do |t,args|
+  args.with_defaults(:seed => 'false')
+  if args.seed == 'true' || args.seed == 1
+    db_seed = 1 # db_seed = true for seeding database with scraping content (debug needs to be false)
+  end
   
+  language  = :en        # :da or :en (for danish or english)
+  debug     = !db_seed   # debug = true for print in console
+  check_db_types = true  # true if the scraper should check data-types
+
   require 'mechanize'
   agent = Mechanize.new   
   
@@ -362,7 +366,7 @@ task :scrape_courses => :environment do
       print "|" if i == 0
       if i == course_amount - 1
         puts "|"
-      elsif i % (course_amount / 100) == 0
+      elsif Integer(Float(i) % (Float(course_amount) / 100)) == 0
         print "="
         procent_ind = procent_ind + 1
         print "#{procent_ind}%" if procent_ind % 10 == 0
