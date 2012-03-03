@@ -1,24 +1,32 @@
 # encoding: utf-8
 desc "Import courses from kurser.dtu.dk"
 task :scrape_courses => :environment do
-  debug     = false   # debug = true for print in console
-  language  = :en     # :da or :en (for danish or english)
-  db_seed   = true    # db_seed = true for seeding database with scraping content (debug needs to be false)
+  debug     = false     # debug = true for print in console
+  language  = :en       # :da or :en (for danish or english)
+  db_seed   = false     # db_seed = true for seeding database with scraping content (debug needs to be false)
+  check_db_types = true # true if the scraper should check data-types
   
   require 'mechanize'
   agent = Mechanize.new   
   
-  if !debug
+  # Reset database if seeding
+  if !debug & db_seed
     Rake::Task['db:reset'].invoke
   end 
   
+  # URL's for different searches on kurser.dtu.dk
   url = "http://www.kurser.dtu.dk/"
   url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
   url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
   url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
+  
+  # Fetching the URL
   #page = agent.get(url_software)
   #page = agent.get(url_test2)
   page = agent.get(url_civil)
+  
+  # Amount of courses in different searches
+  course_amount = 893
   
   # Saving each link of the course in the array
   array = []
@@ -28,9 +36,11 @@ task :scrape_courses => :environment do
     array << link_url unless array.include?(link_url)
   end
   
+  # Error hash used for checking data-types
+  error = {}
+  
   # Taking each link and scraping
-  array.each do |e|
-    
+  array.each_with_index do |e, i|    
     current_course = {}
     current_course_teachers = []
     current_course_types_head = []
@@ -283,7 +293,19 @@ task :scrape_courses => :environment do
             end
               
           end 
+          
+    # Testing data types
+    not_string_att = [:course_number, :exam_duration, :ects_points, :open_education, :course_objectives, 
+                      :learn_objectives, :content,:institute_id, :remarks, :top_comment, :teaching_form, :exam_form ]
+    if check_db_types
+      current_course.each do |key, att|
+        if !not_string_att.include?(key)
+          error[key] = att if att.length > 255 && !error[key]
+        end
+      end
+    end
     
+    # Printing debug data
     if debug      
       puts "Title: #{current_course[:title]}"
       puts "Course types"
@@ -329,10 +351,26 @@ task :scrape_courses => :environment do
       created_course.save
       
       # Some display for the console
-      cn_display = current_course[:course_number]
-      cn_display = "0#{cn_display}" if current_course[:course_number] < 10000   
-      puts "Added to the database: #{cn_display} #{current_course[:title]} "
+      
+      #cn_display = current_course[:course_number]
+      #cn_display = "0#{cn_display}" if current_course[:course_number] < 10000   
+      #puts "Added to the database: #{cn_display} #{current_course[:title]} "
     end
+    
+    if db_seed || check_db_types
+      print "|" if i == 0
+      if i == course_amount - 1
+        puts "|"
+      elsif i % (course_amount / 100) == 0
+        print "="
+      end
+    end
+    
+    # Process view
   end
-  
+  if check_db_types
+    error.each do |key, e|
+      puts "DATA-TYPE for attribute #{key} is too long to be a string\nExample: #{e}"
+    end 
+  end 
 end

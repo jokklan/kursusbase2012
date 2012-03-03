@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302000508) do
+ActiveRecord::Schema.define(:version => 20120303131536) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20120302000508) do
     t.float    "ects_points"
     t.boolean  "open_education"
     t.string   "schedule"
-    t.string   "teaching_form"
+    t.text     "teaching_form",     :limit => 255
     t.string   "duration"
     t.string   "participant_limit"
     t.text     "course_objectives"
@@ -55,15 +55,15 @@ ActiveRecord::Schema.define(:version => 20120302000508) do
     t.string   "institute"
     t.string   "registration"
     t.string   "homepage"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.string   "remarks"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
+    t.text     "remarks",           :limit => 255
     t.integer  "institute_id"
-    t.string   "top_comment"
+    t.text     "top_comment",       :limit => 255
     t.string   "former_course"
     t.string   "exam_schedule"
-    t.string   "exam_form"
-    t.time     "exam_duration"
+    t.text     "exam_form",         :limit => 255
+    t.string   "exam_duration"
     t.string   "exam_aid"
     t.string   "evaluation_form"
   end
