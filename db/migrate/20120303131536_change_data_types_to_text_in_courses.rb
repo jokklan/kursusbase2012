@@ -5,6 +5,9 @@ class ChangeDataTypesToTextInCourses < ActiveRecord::Migration
       t.change :top_comment, :text, :limit => nil
       t.change :teaching_form, :text, :limit => nil
       t.change :exam_form, :text, :limit => nil
+      t.change :exam_schedule, :text, :limit => nil
+      t.change :schedule, :text, :limit => nil
+      t.change :litteratur, :text, :limit => nil
       t.change :exam_duration, :string
     end
   end
@@ -15,6 +18,9 @@ class ChangeDataTypesToTextInCourses < ActiveRecord::Migration
       t.change :top_comment, :string
       t.change :teaching_form, :string
       t.change :exam_form, :string
+      t.change :exam_schedule, :string
+      t.change :schedule, :string
+      t.change :litteratur, :string
       t.change :exam_duration, :time
     end
   end

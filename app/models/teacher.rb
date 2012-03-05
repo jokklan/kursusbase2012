@@ -18,4 +18,8 @@ class Teacher < ActiveRecord::Base
   def link
     "http://www.dtu.dk/Service/Telefonbog.aspx?id=#{self.dtu_teacher_id}&type=person&lg=showcommon"
   end
+  
+  def image(width)
+    "https://www.dtubasen.dtu.dk/showimage.aspx?id=#{self.dtu_teacher_id}&x=#{width}"
+  end
 end
