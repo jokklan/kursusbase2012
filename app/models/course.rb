@@ -83,6 +83,7 @@ class Course < ActiveRecord::Base
   def spec_course_types
     self.course_types.where(:course_type_type => 2)
   end
+
   def course_no
     if self.course_number < 9999
       "0#{self.course_number}"
