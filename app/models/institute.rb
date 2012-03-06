@@ -2,14 +2,16 @@
 #
 # Table name: institutes
 #
-#  id         :integer         not null, primary key
-#  title      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  id               :integer         not null, primary key
+#  title            :string(255)
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
+#  dtu_institute_id :integer
 #
 
 class Institute < ActiveRecord::Base
   has_many :courses
+  translates :title
   
   def display
     if dtu_institute_id < 10

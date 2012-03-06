@@ -395,22 +395,12 @@ namespace :scrape do
     Teacher.all.each do |t|
       info_url = "http://www.dtu.dk/Service/Telefonbog.aspx?id=#{t.dtu_teacher_id}&type=person&lg=showcommon"
       page = agent.get("#{info_url}")
-      #print "#{t.name} - #{t.dtu_teacher_id}"
-      if !(page.search("td.visitkort") && page.search("td.visitkort").text == "Personen er ikke tilknyttet DTU")
-
-        #location_search = page.search("div:nth-child(5)")
-        #if !location_search.nil?
-        #  puts "#{t.name} - #{t.dtu_teacher_id}"
-        #  location_text = location_search.text
-        #  building = %r{^Bygning (.\d{2,3}.*), rum (\D*\d{2,3})}.match(location_text)[1]
-        #  room     = %r{^Bygning (.\d{2,3}.*), rum (\D*\d{2,3})}.match(location_text)[2]
-        #end
-        
-        # Phone
-        phone_text = page.search("div:nth-child(9) div:nth-child(2)").text
-        if !%r{\d{8}}.match(phone_text)
-          puts "Phone-error on #{t.name} - #{t.dtu_teacher_id}:    #{phone_text}"
-        end
+      print "#{t.name} - #{t.dtu_teacher_id}"
+      phone_text = page.search("div:nth-child(9) div:nth-child(2)").text
+      if !%r{\d{8}}.match(phone_text)
+        puts "Phone-error on #{t.name} - #{t.dtu_teacher_id}:    #{phone_text}"
+      else
+        puts "#{t.name} - #{t.dtu_teacher_id} - #{phone_text}"
       end
       #puts "- #{building} - #{room} - #{phone_text}"
     end    

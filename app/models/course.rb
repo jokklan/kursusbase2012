@@ -8,21 +8,28 @@
 #  language          :string(255)
 #  ects_points       :float
 #  open_education    :boolean
-#  schedule          :string(255)
-#  teaching_form     :string(255)
+#  schedule          :text
+#  teaching_form     :text
 #  duration          :string(255)
 #  participant_limit :string(255)
 #  course_objectives :text
 #  learn_objectives  :text
 #  content           :text
-#  litteratur        :string(255)
+#  litteratur        :text
 #  institute         :string(255)
 #  registration      :string(255)
 #  homepage          :string(255)
 #  created_at        :datetime        not null
 #  updated_at        :datetime        not null
-#  remarks           :string(255)
+#  remarks           :text
 #  institute_id      :integer
+#  top_comment       :text
+#  former_course     :string(255)
+#  exam_schedule     :text
+#  exam_form         :text
+#  exam_duration     :string(255)
+#  exam_aid          :string(255)
+#  evaluation_form   :string(255)
 #
 
 class Course < ActiveRecord::Base
@@ -46,7 +53,6 @@ class Course < ActiveRecord::Base
   belongs_to :institute
   has_one :evaluation
   
-  #before_create :set_related_course_type
 
   # Course attributes
   attr_accessible :course_number,:title, 
@@ -55,7 +61,13 @@ class Course < ActiveRecord::Base
                   :course_objectives, :learn_objectives, :content,
                   :litteratur, :remarks, :institute_id, :registration, :homepage,
                   :top_comment, :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form, :former_course
-                  
+
+  # Translations
+   translates  :title, :teaching_form, :duration, :participant_limit, :registration, 
+               :course_objectives, :learn_objectives, :content,
+               :litteratur, :remarks, :homepage, :top_comment
+  
+   # Model methods                        
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
   end
@@ -71,7 +83,6 @@ class Course < ActiveRecord::Base
   def spec_course_types
     self.course_types.where(:course_type_type => 2)
   end
-
   def course_no
     if self.course_number < 9999
       "0#{self.course_number}"
