@@ -267,17 +267,20 @@ namespace :scrape do
           if att_title == att
             objective_list = content_rows[row_i + 2].search("td ul li")
               objectives = []
+              objective_string = ''
               objective_list.each do |o|
                 objectives << o.text.chomp.strip unless objectives.include?(o.text.chomp.strip)
               end
-              current_course[key] = objectives
+              objectives.each do |oa|
+                objective_string << ">#{oa}"
+              end
+              current_course[key] = objective_string
           end
         end
         
         # The responsible teachers
         course_attributes[language][:responsible].each do |key, att|
           if att_title == att
-            pp content_rows[row_i + 1].text
             content_rows[row_i + 1].search("td a.menulink").each do |link|
               if !%r(mailto:.*).match(link[:href])
                 t_id = %r(http:\/\/www.dtu.dk\/Service\/Telefonbog\.aspx\?id=(.*)&type=person&lg=showcommon).match(link[:href].chomp.strip)[1]

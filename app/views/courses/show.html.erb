@@ -63,14 +63,14 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
-			<% if @learn_objectives.count > 1 %>
+			<% if @course.learn_objectives_array.count > 1 %>
 			<ul>
-	  		<% @learn_objectives.each do |lo| %>
+	  		<% @course.learn_objectives_array.each do |lo| %>
 					<li><%= lo %></li>
 				<% end %>
 			</ul>
 			<% else %>
-				<%= @learn_objectives.first %>
+				<%= @course.learn_objectives_array.first %>
 			<% end %>
 		</td>
 	</tr>
