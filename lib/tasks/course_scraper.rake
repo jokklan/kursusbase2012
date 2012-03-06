@@ -4,7 +4,7 @@ namespace :scrape do
   task :courses, [:seed] => :environment do |t,args|
     args.with_defaults(:seed => 'true')
     require 'mechanize'
-    
+    I18n.locale = :en
     if args.seed == 'true' || args.seed == 1
       db_seed = 1 # db_seed = true for seeding database with scraping content (debug needs to be false)
     end
@@ -271,8 +271,12 @@ namespace :scrape do
               objective_list.each do |o|
                 objectives << o.text.chomp.strip unless objectives.include?(o.text.chomp.strip)
               end
-              objectives.each do |oa|
-                objective_string << ">#{oa}"
+              objectives.each_with_index do |oa,i|
+                if i > 0
+                  objective_string << ">#{oa}"
+                else
+                  objective_string << oa
+                end
               end
               current_course[key] = objective_string
           end

@@ -26,13 +26,13 @@
 		<td><strong>Kursustype:</strong></td>
 		<td>
 			<ul class="course-types">
-				<% @main_course_types.each do |mct| %>
+				<% @course.main_course_types.each do |mct| %>
 					<li><%= mct.title %></li>
 				<% end %>
 				<% if @course.open_education %>
 					<li>Kurset udbydes under åben uddannelse</li>
 				<% end %>
-				<% @spec_course_types.each do |sct| %>
+				<% @course.spec_course_types.each do |sct| %>
 					<li><%= sct.title %></li>
 				<% end %>
 			</ul>
@@ -63,7 +63,10 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
+			<%= @course.learn_objectives %>
+			<% if false %>
 			<% if @course.learn_objectives_array.count > 1 %>
+			
 			<ul>
 	  		<% @course.learn_objectives_array.each do |lo| %>
 					<li><%= lo %></li>
@@ -71,6 +74,7 @@
 			</ul>
 			<% else %>
 				<%= @course.learn_objectives_array.first %>
+			<% end %>
 			<% end %>
 		</td>
 	</tr>

@@ -14,9 +14,6 @@ class CoursesController < ApplicationController
   # GET /courses/1.json
   def show
     @course             = Course.find(params[:id])
-    @learn_objectives   = @course.learn_objectives[6,@course.learn_objectives.length - 6].split("-")
-    @main_course_types  = @course.course_types.where(:course_type_type => 1)
-    @spec_course_types  = @course.course_types.where(:course_type_type => 2)
 
     respond_to do |format|
       format.html # show.html.erb
