@@ -1,12 +1,12 @@
 <h1><%= @keyword.title %></h1>
 <p>
 	Dansk:
-	<% I18n.locale = :da %><%= @keyword.title %>
+	<%= @keyword.title(:da) %>
 </p>
 	
 <p>
 	English:
-	<% I18n.locale = :en %><%= @keyword.title %>
+	<%= @keyword.title(:en) %>
 </p>
 
 <%= link_to 'Edit', edit_keyword_path(@keyword) %>

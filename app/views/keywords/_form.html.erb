@@ -3,6 +3,8 @@
   <h1 class="field">
     <%= @keyword.title %>
   </h1>
+	Dansk <%= @keyword.title(:da) %>
+	English <%= @keyword.title(:en) %>
   <div class="field">
     <%= f.label :title %><br />
     <%= f.text_field :title %>

@@ -64,14 +64,6 @@ class Course < ActiveRecord::Base
   def learn_objectives_array
     self.learn_objectives.split(">")
   end
-  
-  # def main_course_types
-  #   self.course_types.where(:course_type_type => 1)
-  # end
-  # 
-  # def spec_course_types
-  #   self.course_types.where(:course_type_type => 2)
-  # end
 
   def course_no
     if self.course_number < 9999

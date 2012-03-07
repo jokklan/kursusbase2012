@@ -1,6 +1,6 @@
 Kursusbase2012::Application.routes.draw do
   
-  scope "/:locale" do
+  scope "(:locale)", :locale => /en|da/ do
     resources :users
     resources :courses
     resources :keywords

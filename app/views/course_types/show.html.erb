@@ -1,12 +1,12 @@
 <h1><%= @course_type.title %></h1>
 <p>
 	Dansk:
-	<% I18n.locale = :da %><%= @course_type.title %>
+	<%= @course_type.title(:da) %>
 </p>
 	
 <p>
 	English:
-	<% I18n.locale = :en %><%= @course_type.title %>
+	<%= @course_type.title(:en) %>
 </p>
 
 <%= link_to 'Edit', edit_course_type_path(@course_type) %>

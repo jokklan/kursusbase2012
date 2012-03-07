@@ -11,8 +11,8 @@
 <% @keywords.each do |keyword| %>
   <tr>
     <td><%= keyword.title %></td>
-		<td><% I18n.locale = :da %><%= keyword.title %></td>
-		<td><% I18n.locale = :en %><%= keyword.title %></td>
+		<td><%= keyword.title(:da) %></td>
+		<td><%= keyword.title(:en) %></td>
     <td><%= link_to 'Show', keyword %></td>
     <td><%= link_to 'Edit', edit_keyword_path(keyword) %></td>
     <td><%= link_to 'Destroy', keyword, confirm: 'Are you sure?', method: :delete %></td>
