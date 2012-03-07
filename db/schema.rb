@@ -11,15 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20120307141436) do
-=======
-ActiveRecord::Schema.define(:version => 20120307134427) do
->>>>>>> updated scraper to scarpe both danish and english translations
-=======
 ActiveRecord::Schema.define(:version => 20120307145136) do
->>>>>>> course type and keyword interface
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -68,16 +60,9 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
   add_index "course_type_translations", ["locale"], :name => "index_course_type_translations_on_locale"
 
   create_table "course_types", :force => true do |t|
-<<<<<<< HEAD
-    t.string   "title"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "course_type_type"
-=======
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.string   "course_type_type"
->>>>>>> updated scraper to scarpe both danish and english translations
   end
 
   create_table "course_types_courses", :force => true do |t|
@@ -95,10 +80,6 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
 
   create_table "courses", :force => true do |t|
     t.integer  "course_number"
-<<<<<<< HEAD
-    t.string   "title"
-=======
->>>>>>> updated scraper to scarpe both danish and english translations
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
@@ -106,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
     t.string   "schedule"
 =======
     t.text     "schedule"
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> updated scraper to scarpe both danish and english translations
     t.text     "teaching_form"
@@ -123,10 +105,11 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
     t.integer  "institute_id"
     t.text     "top_comment"
 =======
+=======
+>>>>>>> schema fuckup
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "institute_id"
->>>>>>> updated scraper to scarpe both danish and english translations
     t.string   "former_course"
     t.string   "exam_schedule"
     t.text     "exam_form"
@@ -163,10 +146,6 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
   add_index "institute_translations", ["locale"], :name => "index_institute_translations_on_locale"
 
   create_table "institutes", :force => true do |t|
-<<<<<<< HEAD
-    t.string   "title"
-=======
->>>>>>> updated scraper to scarpe both danish and english translations
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "dtu_institute_id"
@@ -184,10 +163,6 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
   add_index "keyword_translations", ["locale"], :name => "index_keyword_translations_on_locale"
 
   create_table "keywords", :force => true do |t|
-<<<<<<< HEAD
-    t.string   "keyword"
-=======
->>>>>>> updated scraper to scarpe both danish and english translations
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
