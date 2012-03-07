@@ -83,35 +83,12 @@ ActiveRecord::Schema.define(:version => 20120307145136) do
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
-<<<<<<< HEAD
-    t.string   "schedule"
-=======
     t.text     "schedule"
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> updated scraper to scarpe both danish and english translations
-    t.text     "teaching_form"
-    t.string   "duration"
-    t.string   "participant_limit"
-    t.text     "course_objectives"
-    t.text     "learn_objectives"
-    t.text     "content"
-    t.string   "litteratur"
-    t.string   "registration"
-    t.string   "homepage"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-    t.text     "remarks"
-    t.integer  "institute_id"
-    t.text     "top_comment"
-=======
-=======
->>>>>>> schema fuckup
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "institute_id"
     t.string   "former_course"
-    t.string   "exam_schedule"
+    t.text     "exam_schedule"
     t.text     "exam_form"
     t.string   "exam_duration"
     t.string   "exam_aid"
