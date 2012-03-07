@@ -1,4 +1,6 @@
 Kursusbase2012::Application.routes.draw do
+  resources :users
+
   resources :courses
   
   root :to => 'Courses#index'
