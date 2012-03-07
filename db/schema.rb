@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(:version => 20120306162048) do
   create_table "course_translations", :force => true do |t|
     t.integer  "course_id"
     t.string   "locale"
-<<<<<<< HEAD
     t.string   "title"
     t.text     "teaching_form"
     t.string   "duration"
@@ -44,73 +43,6 @@ ActiveRecord::Schema.define(:version => 20120306162048) do
     t.text     "top_comment"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
-  end
-
-  add_index "course_translations", ["course_id"], :name => "index_course_translations_on_course_id"
-  add_index "course_translations", ["locale"], :name => "index_course_translations_on_locale"
-
-  create_table "course_type_translations", :force => true do |t|
-    t.integer  "course_type_id"
-    t.string   "locale"
-    t.string   "title"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
-  add_index "course_type_translations", ["course_type_id"], :name => "index_course_type_translations_on_course_type_id"
-  add_index "course_type_translations", ["locale"], :name => "index_course_type_translations_on_locale"
-
-  create_table "course_types", :force => true do |t|
-    t.string   "title"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-    t.integer  "course_type_type"
-  end
-
-  create_table "course_types_courses", :force => true do |t|
-    t.integer "course_id"
-    t.integer "course_type_id"
-  end
-
-  create_table "courses", :force => true do |t|
-    t.integer  "course_number"
-    t.string   "title"
-    t.string   "language"
-    t.float    "ects_points"
-    t.boolean  "open_education"
-    t.string   "schedule"
-=======
-    t.string   "title"
->>>>>>> added translations
-    t.text     "teaching_form"
-    t.string   "duration"
-    t.string   "participant_limit"
-    t.string   "registration"
-    t.text     "course_objectives"
-    t.text     "learn_objectives"
-    t.text     "content"
-<<<<<<< HEAD
-    t.string   "litteratur"
-    t.string   "registration"
-=======
-    t.text     "litteratur"
-    t.text     "remarks"
->>>>>>> added translations
-    t.string   "homepage"
-    t.text     "top_comment"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-<<<<<<< HEAD
-    t.text     "remarks"
-    t.integer  "institute_id"
-    t.text     "top_comment"
-    t.string   "former_course"
-    t.string   "exam_schedule"
-    t.text     "exam_form"
-    t.string   "exam_duration"
-    t.string   "exam_aid"
-    t.string   "evaluation_form"
-=======
   end
 
   add_index "course_translations", ["course_id"], :name => "index_course_translations_on_course_id"
@@ -166,7 +98,6 @@ ActiveRecord::Schema.define(:version => 20120306162048) do
     t.string    "exam_duration"
     t.string    "exam_aid"
     t.string    "evaluation_form"
->>>>>>> added translations
   end
 
   create_table "courses_keywords", :force => true do |t|
@@ -182,37 +113,11 @@ ActiveRecord::Schema.define(:version => 20120306162048) do
   create_table "institute_translations", :force => true do |t|
     t.integer  "institute_id"
     t.string   "locale"
-<<<<<<< HEAD
     t.string   "title"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
 
-  add_index "institute_translations", ["institute_id"], :name => "index_institute_translations_on_institute_id"
-  add_index "institute_translations", ["locale"], :name => "index_institute_translations_on_locale"
-
-  create_table "institutes", :force => true do |t|
-=======
->>>>>>> added translations
-    t.string   "title"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
-  end
-
-<<<<<<< HEAD
-  create_table "keyword_translations", :force => true do |t|
-    t.integer  "keyword_id"
-    t.string   "locale"
-    t.string   "keyword"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "keyword_translations", ["keyword_id"], :name => "index_keyword_translations_on_keyword_id"
-  add_index "keyword_translations", ["locale"], :name => "index_keyword_translations_on_locale"
-
-  create_table "keywords", :force => true do |t|
-=======
   add_index "institute_translations", ["institute_id"], :name => "index_institute_translations_on_institute_id"
   add_index "institute_translations", ["locale"], :name => "index_institute_translations_on_locale"
 
@@ -226,7 +131,6 @@ ActiveRecord::Schema.define(:version => 20120306162048) do
   create_table "keyword_translations", :force => true do |t|
     t.integer  "keyword_id"
     t.string   "locale"
->>>>>>> added translations
     t.string   "keyword"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
