@@ -1,0 +1,13 @@
+<%= form_for(@course_type) do |f| %>
+
+  <h1 class="field">
+    <%= @course_type.title %>
+  </h1>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </div>
+	<div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

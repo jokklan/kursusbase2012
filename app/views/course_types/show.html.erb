@@ -1,123 +1,13 @@
-<%= link_to "<< All courses", courses_path %>
-<h1><%= @course.course_no %> <%= @course.title %></h1>
-<h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
-<hr />
-<% if @course.top_comment %>
-	<%= @course.top_comment  %>
-	<hr />
-<% end %>
-<table id="course-table">
-	<tr>
-		<td><strong>Language:</strong></td>
-		<td><%= @course.language %></td>
-	</tr>
-	<tr>
-		<td><strong>Ects point:</strong></td>
-		<td>
-			<% if @course.ects_points % 5 > 0 %>
-				<%= @course.ects_points %>
-			<% else %>
-				<%= @course.ects_points.to_i %>
-			<% end %>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Kursustype:</strong></td>
-		<td>
-			<ul class="course-types">
-				<% @course.main_course_types.each do |mct| %>
-					<li><%= mct.title %></li>
-				<% end %>
-				<% if @course.open_education %>
-					<li>Kurset udbydes under åben uddannelse</li>
-				<% end %>
-				<% @course.spec_course_types.each do |sct| %>
-					<li><%= sct.title %></li>
-				<% end %>
-			</ul>
-		</td>
-	</tr>
-	<tr style="border-bottom: 2px solid black">
-		<td><strong>Schedule:</strong></td>
-		<td><%= @course.schedule %></td>
-	</tr>
-	<tr>
-		<td><strong>Teaching form:</strong></td>
-		<td><%= @course.teaching_form %></td>
-	</tr>
-	<tr>
-		<td><strong>Duration:</strong></td>
-		<td><%= @course.duration %></td>
-	</tr>
-	<% if @course.participant_limit %>
-		<tr>
-			<td><strong>Participant limit:</strong></td>
-			<td><%= @course.participant_limit %></td>
-		</tr>
-	<% end %>
-	<tr>
-		<td><strong>Course objectives:</strong></td>
-		<td><%= @course.course_objectives %></td>
-	</tr>
-	<tr>
-		<td><strong>Learn objectives:</strong></td>
-		<td>
-			<%= @course.learn_objectives %>
-			<% if false %>
-			<% if @course.learn_objectives_array.count > 1 %>
-			
-			<ul>
-	  		<% @course.learn_objectives_array.each do |lo| %>
-					<li><%= lo %></li>
-				<% end %>
-			</ul>
-			<% else %>
-				<%= @course.learn_objectives_array.first %>
-			<% end %>
-			<% end %>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Content:</strong></td>
-		<td><%= @course.content %></td>
-	</tr>
-	<% if @course.litteratur %>
-		<tr>
-			<td><strong>Litteratur:</strong></td>
-			<td><%= @course.litteratur %></td>
-		</tr>
-	<% end %>
-	<tr>
-		<td><strong>Kursusansvarlig:</strong></td>
-		<td>
-			<% @course.teachers.each do |t| %>
-				<%= link_to (image_tag(t.image(70), :border => 0)), t.link, :target => '_blank' %><%= ', ' if t != @course.teachers.last %>
-			<% end %>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Institute:</strong></td>
-		<td><%= @course.institute.display %></td>
-	</tr>
-	<tr>
-		<td><strong>Registration:</strong></td>
-		<td><%= @course.registration %></td>
-	</tr>
-	<% if @course.homepage %>
-		<tr>
-			<td><strong>Homepage:</strong></td>
-			<td><%= link_to @course.homepage, @course.homepage %></td>
-		</tr>
-	<% end %>
-	<% if !@course.keywords.empty? %>
-		<tr>
-			<td><strong>Keywords:</strong></td>
-			<td>
-					<% @course.keywords.each do |k| %>
-						<%= k.keyword %><%= ', ' if k != @course.keywords.last%>
-					<% end %>
-			</td>
-		</tr>
-	<% end %>
+<h1><%= @course_type.title %></h1>
+<p>
+	Dansk:
+	<% I18n.locale = :da %><%= @course_type.title %>
+</p>
 	
-</table>
+<p>
+	English:
+	<% I18n.locale = :en %><%= @course_type.title %>
+</p>
+
+<%= link_to 'Edit', edit_course_type_path(@course_type) %>
+<%= link_to 'Destroy', @course_type, confirm: 'Are you sure?', method: :delete %>

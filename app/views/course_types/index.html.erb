@@ -13,7 +13,7 @@
     <td><%= course_type.title %></td>
 		<td><% I18n.locale = :da %><%= course_type.title %></td>
 		<td><% I18n.locale = :en %><%= course_type.title %></td>
-    <td><%= link_to 'Show', course_type %></td>
+    <td><%#= link_to 'Show', course_type %></td>
     <td><%= link_to 'Edit', edit_course_type_path(course_type) %></td>
     <td><%= link_to 'Destroy', course_type, confirm: 'Are you sure?', method: :delete %></td>
   </tr>
@@ -22,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New Course', new_course_type_path %>
+<%= link_to 'New Course Type', new_course_type_path %>

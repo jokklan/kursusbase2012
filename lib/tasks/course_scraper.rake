@@ -377,7 +377,7 @@ namespace :scrape do
               puts "Keyword!!! :"
               puts k.to_yaml
               keyword = Keyword.find_by_keyword(k)
-              keyword = Keyword.create(:keyword => k) if keyword.nil?
+              keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword
             end
         
@@ -397,7 +397,7 @@ namespace :scrape do
           else
             created_course.keywords.with_translations(:en).each_index do |i|
               keyword = created_course.keywords[i]
-              keyword.update_attributes(:keyword => current_course_keywords[i], :locale => language)
+              keyword.update_attributes(:title => current_course_keywords[i], :locale => language)
               keyword.save
             end
           

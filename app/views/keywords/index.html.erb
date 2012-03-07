@@ -10,9 +10,9 @@
 
 <% @keywords.each do |keyword| %>
   <tr>
-    <td><%= keyword.keyword %></td>
-		<td><% I18n.locale = :da %><%= keyword.keyword %></td>
-		<td><% I18n.locale = :en %><%= keyword.keyword %></td>
+    <td><%= keyword.title %></td>
+		<td><% I18n.locale = :da %><%= keyword.title %></td>
+		<td><% I18n.locale = :en %><%= keyword.title %></td>
     <td><%= link_to 'Show', keyword %></td>
     <td><%= link_to 'Edit', edit_keyword_path(keyword) %></td>
     <td><%= link_to 'Destroy', keyword, confirm: 'Are you sure?', method: :delete %></td>
@@ -22,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New Course', new_keyword_path %>
+<%= link_to 'New Keyword', new_keyword_path %>

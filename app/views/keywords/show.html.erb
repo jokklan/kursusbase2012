@@ -1,0 +1,13 @@
+<h1><%= @keyword.title %></h1>
+<p>
+	Dansk:
+	<% I18n.locale = :da %><%= @keyword.title %>
+</p>
+	
+<p>
+	English:
+	<% I18n.locale = :en %><%= @keyword.title %>
+</p>
+
+<%= link_to 'Edit', edit_keyword_path(@keyword) %>
+<%= link_to 'Destroy', @keyword, confirm: 'Are you sure?', method: :delete %>

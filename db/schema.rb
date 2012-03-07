@@ -12,10 +12,14 @@
 # It's strongly recommended to check this file into your version control system.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20120307141436) do
 =======
 ActiveRecord::Schema.define(:version => 20120307134427) do
 >>>>>>> updated scraper to scarpe both danish and english translations
+=======
+ActiveRecord::Schema.define(:version => 20120307145136) do
+>>>>>>> course type and keyword interface
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -171,7 +175,7 @@ ActiveRecord::Schema.define(:version => 20120307134427) do
   create_table "keyword_translations", :force => true do |t|
     t.integer  "keyword_id"
     t.string   "locale"
-    t.string   "keyword"
+    t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
