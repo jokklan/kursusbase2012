@@ -1,14 +1,11 @@
 Kursusbase2012::Application.routes.draw do
-
+  
   scope "/:locale" do
     resources :users
     resources :courses
     resources :keywords
     resources :course_types
-    
   end
-  
-
   
   root :to => 'Courses#index'
 

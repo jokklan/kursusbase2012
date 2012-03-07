@@ -38,8 +38,10 @@ class Course < ActiveRecord::Base
             :conditions => [ "related_course_type = ?", "Optional" ], :after_add => lambda{|data, record| record.set_related_course_type("Optional")}
   has_many :optional_courses, :through => :optional_qualifications, :source => :related_course
   
+  has_many :course_users
+  has_many :users, :through => :course_users
+  
   belongs_to :institute
-  has_one :evaluation
   
   # Course attributes
   attr_accessible :course_number,:title, 
