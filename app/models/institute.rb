@@ -3,7 +3,6 @@
 # Table name: institutes
 #
 #  id               :integer         not null, primary key
-#  title            :string(255)
 #  created_at       :datetime        not null
 #  updated_at       :datetime        not null
 #  dtu_institute_id :integer

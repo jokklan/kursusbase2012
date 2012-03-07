@@ -1,4 +1,5 @@
-# Hele processen, når der er lavet ændringer
+# Git
+## Hele processen, når der er lavet ændringer
 git add .	    # Tilføj alt der er tilføjet til versionen
 git add -A	  # Tilføj alt der er slettet til versionen
 git add fil 	# Tilføj bestemt fil til versionen (hvor fil = filen skal tilføjes)
@@ -12,18 +13,18 @@ git fetch	//Hent nye versioner fra github.com
 git rebase origin/master 	//Restrukturer versioner så der ikke opstår modsætninger/fejl
 
 
-# Hente fra github:
+## Hente fra github:
 git fetch
 git rebase origin/master
 
 
-# Læg op på github
+## Læg op på github
 git add .
 git add -A
 git commit -m "COMMENT"
 git push
 
-# Heroku
+# Heroku (production)
 ## Læg op på heroku (hjemmeside: http://kursusbase2012.herokuapp.com/)
 git add .
 git add -A

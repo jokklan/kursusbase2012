@@ -2,11 +2,10 @@
 #
 # Table name: course_types
 #
-#  id               :integer         not null, primary key
-#  title            :string(255)
-#  created_at       :datetime        not null
-#  updated_at       :datetime        not null
-#  course_type_type :integer
+#  id         :integer         not null, primary key
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#  type       :string(255)
 #
 
 require 'test_helper'
