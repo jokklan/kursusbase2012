@@ -83,12 +83,12 @@ ActiveRecord::Schema.define(:version => 20120307150420) do
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
-    t.text     "schedule"
+    t.string   "schedule"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.integer  "institute_id"
     t.string   "former_course"
-    t.text     "exam_schedule"
+    t.string   "exam_schedule"
     t.text     "exam_form"
     t.string   "exam_duration"
     t.string   "exam_aid"
