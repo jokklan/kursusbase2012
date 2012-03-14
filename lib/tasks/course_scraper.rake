@@ -17,7 +17,7 @@ namespace :scrape do
     languages = [:en, :da]
     languages.each do |language|
       
-      puts "Current #{language}"
+      #puts "Current #{language}"
       I18n.locale = language
     
       debug          = !db_seed   # debug = true for print in console
@@ -312,8 +312,8 @@ namespace :scrape do
           end
           
           
-          puts "Keywords: " if !current_course_keywords.empty?
-          puts current_course_keywords.to_yaml if !current_course_keywords.empty?
+          #puts "Keywords: " if !current_course_keywords.empty?
+          #puts current_course_keywords.to_yaml if !current_course_keywords.empty?
         end 
       
         # Testing data types
@@ -371,12 +371,12 @@ namespace :scrape do
         
           # Adding keywords
           if language == :en
-            puts "Keywords!!!!: " if !current_course_keywords.empty?
-            puts current_course_keywords.to_yaml if !current_course_keywords.empty?
+            #puts "Keywords!!!!: " if !current_course_keywords.empty?
+            #puts current_course_keywords.to_yaml if !current_course_keywords.empty?
             current_course_keywords.each do |k|
-              puts "Keyword!!! :"
-              puts k.to_yaml
-              keyword = Keyword.find_by_keyword(k)
+              #puts "Keyword!!! :"
+              #puts k.to_yaml
+              keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword
             end

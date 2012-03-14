@@ -115,7 +115,7 @@
 			<td><strong>Keywords:</strong></td>
 			<td>
 					<% @course.keywords.each do |k| %>
-						<%= k.keyword %><%= ', ' if k != @course.keywords.last%>
+						<%= k.title %><%= ', ' if k != @course.keywords.last%>
 					<% end %>
 			</td>
 		</tr>
