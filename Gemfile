@@ -22,11 +22,36 @@ end
 
 gem 'jquery-rails'
 
-
-gem 'sqlite3', :group => [:test, :development] 
-
+group :test, :development do
+  gem 'sqlite3'
+  
+  
+  gem 'guard-cucumber'
+  gem 'guard-rspec'
+  gem 'growl'
+  
+end
 
 group :test do
+  gem "cucumber-rails"
+  gem 'rspec-rails'
+  #gem 'cucumber_factory'
+  
+  gem 'database_cleaner'
+  gem 'simplecov'
+
+	gem 'factory_girl_rails'
+
+	gem 'capybara'
+	gem 'cucumber-websteps'
+	gem "capybara-webkit"
+	gem 'launchy'
+  
+	#gem 'spork', '~> 1.0rc'
+
+	if RUBY_PLATFORM.downcase.include?("darwin") # I'm on Mac
+		gem 'rb-fsevent'
+	end
 end
 
 group :development do
@@ -34,11 +59,13 @@ group :development do
   gem 'sqlite3'
   gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'taps'
+
 end
 
 group :production do
   gem 'mechanize'
   gem 'pg'
+  # gem 'thin'
 end
 
 # To use ActiveModel has_secure_password

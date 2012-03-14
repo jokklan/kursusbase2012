@@ -1,0 +1,14 @@
+# Guard kører automatisk i baggrunden og udfører testkørsler. Resultatet vises i terminalen og via growl (hvis installeret).
+# Test i mappen features. Først laves et use case med endelsen feature. 
+# Derefter laves en specific test for hver step i din use case og ligges inde i step_definitions.
+# I mappen factories, kan der oprettes templates til forskellige models som du kan oprette og bruge i dine tests.
+
+# For at starte guard op (som automatisk tester i baggrunden):
+  guard
+
+# For at den automatisk ryder skærmen ved hver testkørsel:
+  guard --clear
+  
+# Litteratur links:
+  http://collectiveidea.com/blog/archives/2010/09/08/practical-cucumber-scenario-specific-steps/
+  https://www.relishapp.com/kucaahbe/cucumber-websteps/docs/defined-steps
