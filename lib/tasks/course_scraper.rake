@@ -367,15 +367,7 @@ namespace :scrape do
         
           # Adding keywords
           if language == :en
-<<<<<<< HEAD
-            #puts "Keywords!!!!: " if !current_course_keywords.empty?
-            #puts current_course_keywords.to_yaml if !current_course_keywords.empty?
             current_course_keywords.each do |k|
-              #puts "Keyword!!! :"
-              #puts k.to_yaml
-=======
-            current_course_keywords.each do |k|
->>>>>>> updated scraper
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword

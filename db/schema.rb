@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307150420) do
+ActiveRecord::Schema.define(:version => 20120314105658) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -39,10 +39,13 @@ ActiveRecord::Schema.define(:version => 20120307150420) do
     t.text     "content"
     t.text     "litteratur"
     t.text     "remarks"
-    t.string   "homepage"
     t.text     "top_comment"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.string   "former_course"
+    t.text     "exam_form"
+    t.string   "exam_aid"
+    t.string   "evaluation_form"
   end
 
   add_index "course_translations", ["course_id"], :name => "index_course_translations_on_course_id"
