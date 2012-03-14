@@ -31,7 +31,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_software
+      url = url_civil
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -200,7 +200,7 @@ namespace :scrape do
                                       :text_att => {
                                                     :course_objectives => "General course objectives:",
                                                     :content => "Content:",
-                                                    :litteratur => "Litteratur:",
+                                                    :litteratur => "Course literature:",
                                                     :remarks => "Remarks:"
                                                     },
                                       :learn_objectives => {
@@ -310,10 +310,6 @@ namespace :scrape do
               current_course_keywords << att_column[1].text.chomp.strip
             end
           end
-          
-          
-          #puts "Keywords: " if !current_course_keywords.empty?
-          #puts current_course_keywords.to_yaml if !current_course_keywords.empty?
         end 
       
         # Testing data types
@@ -371,11 +367,15 @@ namespace :scrape do
         
           # Adding keywords
           if language == :en
+<<<<<<< HEAD
             #puts "Keywords!!!!: " if !current_course_keywords.empty?
             #puts current_course_keywords.to_yaml if !current_course_keywords.empty?
             current_course_keywords.each do |k|
               #puts "Keyword!!! :"
               #puts k.to_yaml
+=======
+            current_course_keywords.each do |k|
+>>>>>>> updated scraper
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword

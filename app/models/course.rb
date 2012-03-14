@@ -48,13 +48,21 @@ class Course < ActiveRecord::Base
                   :language, :ects_points, :open_education, 
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
-                  :litteratur, :remarks, :institute_id, :registration, :homepage,
-                  :top_comment, :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form, :former_course
+                  :litteratur, :remarks, :institute_id, :registration, :homepage, :top_comment, :former_course
+                  :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form, 
 
   # Translations
-   translates  :title, :teaching_form, :duration, :participant_limit, :registration, 
-               :course_objectives, :learn_objectives, :content,
-               :litteratur, :remarks, :homepage, :top_comment
+   translates   :title, 
+                :teaching_form, :duration, :participant_limit,  
+                :course_objectives, :learn_objectives, :content,
+                :litteratur, :remarks, :registration, :homepage, 
+                :top_comment
+                
+  # translates   :title, 
+  #              :teaching_form, :duration, :participant_limit,  
+  #              :course_objectives, :learn_objectives, :content,
+  #              :litteratur, :remarks, :registration, :top_comment, :former_course
+  #              :exam_form, :exam_aid, :evaluation_form
   
    # Model methods                        
   def set_related_course_type(course_relation, type)
