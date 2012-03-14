@@ -7,16 +7,17 @@
 #  language        :string(255)
 #  ects_points     :float
 #  open_education  :boolean
-#  schedule        :text
+#  schedule        :string(255)
 #  created_at      :datetime        not null
 #  updated_at      :datetime        not null
 #  institute_id    :integer
 #  former_course   :string(255)
-#  exam_schedule   :text
+#  exam_schedule   :string(255)
 #  exam_form       :text
 #  exam_duration   :string(255)
 #  exam_aid        :string(255)
 #  evaluation_form :string(255)
+#  homepage        :string(255)
 #
 
 class Course < ActiveRecord::Base
@@ -61,7 +62,7 @@ class Course < ActiveRecord::Base
   translates   :title, 
                :teaching_form, :duration, :participant_limit,  
                :course_objectives, :learn_objectives, :content,
-               :litteratur, :remarks, :registration, :top_comment, :former_course
+               :litteratur, :remarks, :registration, :top_comment, :former_course,
                :exam_form, :exam_aid, :evaluation_form
   
    # Model methods                        

@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20120314105658) do
     t.string   "exam_duration"
     t.string   "exam_aid"
     t.string   "evaluation_form"
+    t.string   "homepage"
   end
 
   create_table "courses_keywords", :force => true do |t|

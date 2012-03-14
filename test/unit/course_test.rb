@@ -7,16 +7,17 @@
 #  language        :string(255)
 #  ects_points     :float
 #  open_education  :boolean
-#  schedule        :text
+#  schedule        :string(255)
 #  created_at      :datetime        not null
 #  updated_at      :datetime        not null
 #  institute_id    :integer
 #  former_course   :string(255)
-#  exam_schedule   :text
+#  exam_schedule   :string(255)
 #  exam_form       :text
 #  exam_duration   :string(255)
 #  exam_aid        :string(255)
 #  evaluation_form :string(255)
+#  homepage        :string(255)
 #
 
 require 'test_helper'

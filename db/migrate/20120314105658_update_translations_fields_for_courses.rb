@@ -5,6 +5,7 @@ class UpdateTranslationsFieldsForCourses < ActiveRecord::Migration
     add_column :course_translations, :exam_aid, :string
     add_column :course_translations, :evaluation_form, :string
     remove_column :course_translations, :homepage
+    add_column :courses, :homepage, :string
     
   end
 
@@ -14,5 +15,6 @@ class UpdateTranslationsFieldsForCourses < ActiveRecord::Migration
     remove_column :course_translations, :exam_aid
     remove_column :course_translations, :evaluation_form
     add_column :course_translations, :homepage, :string
+    remove_column :courses, :homepage
   end
 end
