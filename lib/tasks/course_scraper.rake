@@ -362,7 +362,8 @@ namespace :scrape do
         
           # Adding teachers
           current_course_teachers.each do |t|
-            created_course.teachers << Teacher.find_or_create_by_dtu_teacher_id(t)
+            teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
+            created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
         
           # Adding keywords
