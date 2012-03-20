@@ -16,11 +16,10 @@ ActiveRecord::Schema.define(:version => 20120328090620) do
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
     t.integer  "related_course_id"
-    t.integer  "req_course_no"
-    t.string   "prerequisite"
     t.string   "related_course_type"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.integer  "group_no"
   end
 
   add_index "course_relations", ["course_id"], :name => "index_course_prerequisites_on_course_id"

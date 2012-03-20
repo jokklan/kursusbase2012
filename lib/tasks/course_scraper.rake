@@ -55,7 +55,8 @@ namespace :scrape do
       procent_ind = 0
     
       # Taking each link and scraping
-      array.each_with_index do |e, i|    
+      array.each_with_index do |e, i|   
+				
         current_course = {}
         current_course_teachers = []
         current_course_types_head = []
@@ -78,7 +79,7 @@ namespace :scrape do
         title = row1.search("h2").text
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1].to_s
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
-        
+        puts "Title: #{current_course[:title]}" 
         # Top comment (only existing if comment written)
         # Observed: 
         #   if the css selector below is used the course page will give
@@ -240,12 +241,40 @@ namespace :scrape do
             end
           end
         
-          # # Prerequisites
-          # course_attributes[language][:prerequisites].each do |key, att|
-          #   if att_title == att
-          #     # Do something about the prerequisites
-          #   end
-          # end
+          # Prerequisites
+					if language == :en
+          	course_attributes[language][:prerequisites].each do |key, att|
+							
+          	  if att_title == att
+								puts "### #{key} ###"
+          	    column = att_column[1].text
+          	    #pp key
+          	    if !column.empty?
+									puts column
+									and_split_courses = []
+          	      and_split = column.split('.')
+									puts and_split
+          	      and_split.each do |req_and|
+          	        if !req_and.empty?
+											or_split = req_and.split('/')
+											or_split_courses = []
+	        	          or_split.each do |req_or|
+												if !req_or.empty?
+													course = %r{(\d{5}).*}.match(req_or.chomp.strip)[1]
+													if !course.nil?
+														or_split_courses << course if !course.nil?
+													end
+												end
+											end
+											and_split_courses << or_split_courses
+											pp and_split_courses if !and_split_courses.empty?
+          	        end
+          	      end
+          	      puts ""
+          	    end
+          	  end
+          	end
+					end
         
           # Institute
           course_attributes[language][:institute].each do |key, att|
