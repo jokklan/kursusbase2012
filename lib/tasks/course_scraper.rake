@@ -190,10 +190,10 @@ namespace :scrape do
                                                     :evaluation_form => "Evaluation:"
                                                     },
                                       :prerequisites => {
-                                                    :point_block => "Not applicable together with:",
-                                                    :prereq_obl => "Mandatory Prerequisites:",
-                                                    :prereq_qua => "Qualified Prerequisites:",
-                                                    :prereq_opt => "Optional Prerequisites:"
+                                                    :blocked_courses => "Not applicable together with:",
+                                                    :mandatory_courses => "Mandatory Prerequisites:",
+                                                    :optional_courses => "Qualified Prerequisites:",
+                                                    :qualified_courses => "Optional Prerequisites:"
                                                     },
                                       :institute => {
                                                     :institute => "Department:",
@@ -266,6 +266,19 @@ namespace :scrape do
 										end
 										and_split_courses << or_split_courses if !or_split_courses.empty?
           	      end
+									# Adding to the database
+									if !and_split_courses.empty?
+										group_no = 1
+										and_split_courses.each do |a|
+											print "Group #{group_no}: "
+											a.each do |o|
+												print o
+												print ", " if o != a.last
+												group_no += 1
+											end
+											puts ""
+										end
+									end
           	    end
 								
           	  end
