@@ -1,5 +1,5 @@
 Feature: Show a course
-  In order get learn about a course
+  In order to learn about a course
   As a student
   I want to have information about that course
 
@@ -10,3 +10,4 @@ Feature: Show a course
 		When I go to the home page
 		And I follow "Test Course"
 		Then I should see "Test Course"
+		And I should see "12345"
