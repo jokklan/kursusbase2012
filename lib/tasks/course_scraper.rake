@@ -244,34 +244,30 @@ namespace :scrape do
           # Prerequisites
 					if language == :en
           	course_attributes[language][:prerequisites].each do |key, att|
-							
+							prereq_debug = false;
           	  if att_title == att
-								puts "### #{key} ###"
+								# Checking if column exists
           	    column = att_column[1].text
-          	    #pp key
           	    if !column.empty?
-									puts column
-									and_split_courses = []
+	
+									and_split_courses = [] # Array to hold each course-group seperated by .
+									
+									# Splits the column by .
           	      and_split = column.split('.')
-									puts and_split
           	      and_split.each do |req_and|
-          	        if !req_and.empty?
-											or_split = req_and.split('/')
-											or_split_courses = []
-	        	          or_split.each do |req_or|
-												if !req_or.empty?
-													course = %r{(\d{5}).*}.match(req_or.chomp.strip)[1]
-													if !course.nil?
-														or_split_courses << course if !course.nil?
-													end
-												end
-											end
-											and_split_courses << or_split_courses
-											pp and_split_courses if !and_split_courses.empty?
-          	        end
+										
+										# Splits each part seperated by /
+										or_split = req_and.split('/')
+										or_split_courses = [] # Array to hold each course-group seperated by /
+	        	      	or_split.each do |req_or|
+											# A regex to match digits of length 5 (course number!)
+											course_digits = %r{(\d{5}).*}.match(req_or.chomp.strip)
+											or_split_courses << course_digits[1].to_s.chomp.strip if !course_digits.nil?
+										end
+										and_split_courses << or_split_courses if !or_split_courses.empty?
           	      end
-          	      puts ""
           	    end
+								
           	  end
           	end
 					end
