@@ -5,7 +5,6 @@ class UsersController < ApplicationController
   def logged_in
     require "net/http"
     require "uri"
-    require "rails"
 
     uri = URI.parse("https://auth.dtu.dk/dtu/mobilapp.jsp")
 
@@ -24,7 +23,18 @@ class UsersController < ApplicationController
   end
   
   def get_courses
-    
+    @user = User.find(session[:user_id])
+    uri = URI.parse("https://www.campusnet.dtu.dk/data/CurrentUser/Elements")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Get.new(uri.request_uri)
+    request.basic_auth(@user.username, @user.api_key)
+    response = http.request(request)
+    @courses = response.body
   end
   
   # GET /users

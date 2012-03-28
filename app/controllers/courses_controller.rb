@@ -10,15 +10,10 @@ class CoursesController < ApplicationController
     end
   end
 
-  # GET /courses/1
-  # GET /courses/1.json
   def show
-    @course             = Course.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @course }
-    end
+    @course = Course.find(params[:id])
+    @blocked_courses = CourseRelation.where(:related_course_id => @course.id, :related_course_type => "Blocked")
+    @recommended_courses = CourseRelation.where(:related_course_id => @course.id)
   end
 
   # GET /courses/new
