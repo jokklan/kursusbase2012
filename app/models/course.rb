@@ -77,7 +77,9 @@ class Course < ActiveRecord::Base
   end
 
 	def serialize_objectives
-		self.learn_objectives = self.learn_objectives.split(">")
+		if !self.learn_objectives.nil? && !self.learn_objectives.empty?
+			self.learn_objectives = self.learn_objectives.split(">")
+		end
 	end
 
   def course_no
