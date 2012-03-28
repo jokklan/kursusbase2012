@@ -154,4 +154,10 @@
 		</tr>
 	<% end %>
 	
+	<ul>
+	<%= @recommended_courses.each do |rec_course| %>
+		<li><%= link_to rec_course.course_number, rec_course %></li>
+	<% end %>
+	</ul>
+	
 </table>
