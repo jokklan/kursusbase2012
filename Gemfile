@@ -49,11 +49,15 @@ group :test do
   
 	#gem 'spork', '~> 1.0rc'
 
-	if RUBY_PLATFORM.downcase.include?("darwin") # I'm on Mac
-		gem 'rb-fsevent'
-	end
+	#if RUBY_PLATFORM.downcase.include?("darwin") # I'm on Mac
+	#	
+	#end
 end
 
+
+group :darwin do
+	gem 'rb-fsevent'
+end
 group :development do
   gem 'heroku'
   gem 'sqlite3'
