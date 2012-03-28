@@ -1,7 +1,10 @@
 Kursusbase2012::Application.routes.draw do
   
   scope "(:locale)", :locale => /en|da/ do
+    match "/users/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
+    match "/users/login" => "users#login"
     resources :users
+    
     resources :courses
     resources :keywords
     resources :course_types
