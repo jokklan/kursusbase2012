@@ -1,4 +1,4 @@
-<%= form_tag "https://auth.dtu.dk/dtu/mobilapp.jsp" do |f| %>
+<%= form_tag logged_in_user_path do |f| %>
 	<p><%= label_tag "username" %>
 	<%= text_field_tag "username" %></p>
 	<p><%= label_tag "password" %>

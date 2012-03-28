@@ -17,6 +17,14 @@ class UsersController < ApplicationController
     request = Net::HTTP::Post.new(uri.request_uri)
     request.set_form_data({"username" => params[:username], "password" => params[:password]})
     response = http.request(request)
+    api_key = response.body.split('"')[1]
+    user = User.find_or_create_by_username(:username => params[:username], :api_key => api_key)
+    session[:user_id] = user.id
+    redirect_to root_path
+  end
+  
+  def get_courses
+    
   end
   
   # GET /users
