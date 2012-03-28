@@ -86,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20120328090620) do
     t.float    "ects_points"
     t.boolean  "open_education"
     t.string   "schedule"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "institute_id"
     t.string   "former_course"
     t.string   "exam_schedule"
@@ -96,6 +96,11 @@ ActiveRecord::Schema.define(:version => 20120328090620) do
     t.string   "exam_aid"
     t.string   "evaluation_form"
     t.string   "homepage"
+    t.string   "point_block"
+    t.string   "qualified_prereq"
+    t.string   "optional_prereq"
+    t.string   "mandatory_prereq"
+    t.boolean  "active"
   end
 
   create_table "courses_keywords", :force => true do |t|

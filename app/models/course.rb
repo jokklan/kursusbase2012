@@ -21,7 +21,7 @@
 #
 
 class Course < ActiveRecord::Base
-  serialize :learn_objectives
+  serialize :learn_objectives, Array
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
@@ -51,11 +51,12 @@ class Course < ActiveRecord::Base
   
   # Course attributes
   attr_accessible :course_number,:title, 
-                  :language, :ects_points, :open_education, 
+                  :language, :ects_points, :open_education, :active,
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
                   :litteratur, :remarks, :institute_id, :registration, :homepage, :top_comment, :former_course,
-                  :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form
+                  :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form,
+									:point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
 
   # Translations
   #  translates   :title, 
@@ -73,10 +74,6 @@ class Course < ActiveRecord::Base
    # Model methods                        
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
-  end
-  
-  def learn_objectives_array
-    self.learn_objectives.split(">")
   end
 
   def course_no

@@ -50,6 +50,46 @@
 		<td><strong>Duration:</strong></td>
 		<td><%= @course.duration %></td>
 	</tr>
+	<% if @course.blocked_courses.count > 0 %>
+	<tr>
+		<td><strong>Point blocks</strong></td>
+		<td><%= @course.point_block%>
+		<%# @course.blocked_courses.each do |bc| %>
+			<%#= bc.course_no %><%# if bc != @course.blocked_courses.last%><%# end %> 
+		<%# end %>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.qualification_courses.count > 0 %>
+	<tr>
+		<td><strong>Qualificatied prerequisites</strong></td>
+		<td>
+		<% @course.qualification_courses.each do |bc| %>
+			<%= bc.course_no %>, 
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.optional_courses.count > 0 %>
+	<tr>
+		<td><strong>Point blocks</strong></td>
+		<td>
+		<% @course.optional_courses.each do |bc| %>
+			<%= bc.course_no %>
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.mandatory_courses.count > 0 %>
+	<tr>
+		<td><strong>Point blocks</strong></td>
+		<td>
+		<% @course.mandatory_courses.each do |bc| %>
+			<%= bc.course_no %>, 
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
 	<% if @course.participant_limit %>
 		<tr>
 			<td><strong>Participant limit:</strong></td>
@@ -63,19 +103,15 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
-			<%= @course.learn_objectives %>
-			<% if false %>
-			<% if @course.learn_objectives_array.count > 1 %>
-			
+			<% #if @course.learn_objectives.count > 1 %>
 			<ul>
-	  		<% @course.learn_objectives_array.each do |lo| %>
-					<li><%= lo %></li>
-				<% end %>
+	  		<%# @course.learn_objectives.each do |lo| %>
+					<li><%#= lo %></li>
+				<%# end %>
 			</ul>
-			<% else %>
-				<%= @course.learn_objectives_array.first %>
-			<% end %>
-			<% end %>
+			<% #else %>
+				<%= @course.learn_objectives.first %>
+			<% #end %>
 		</td>
 	</tr>
 	<tr>
