@@ -2,6 +2,23 @@ class UsersController < ApplicationController
   def login
   end
   
+  def logged_in
+    require "net/http"
+    require "uri"
+    require "rails"
+
+    uri = URI.parse("https://auth.dtu.dk/dtu/mobilapp.jsp")
+
+    http = Net::HTTP.new(uri.host, uri.port)
+
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.set_form_data({"username" => params[:username], "password" => params[:password]})
+    response = http.request(request)
+  end
+  
   # GET /users
   # GET /users.json
   def index
