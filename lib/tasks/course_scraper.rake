@@ -1,5 +1,6 @@
 # encoding: utf-8
 namespace :scrape do
+	require 'rails'
   desc "Import courses from kurser.dtu.dk"
   task :courses, [:seed] => :environment do |t,args|
     args.with_defaults(:seed => 'true')
@@ -38,7 +39,7 @@ namespace :scrape do
       # Fetching the URL
       agent = Mechanize.new
       url = url_civil
-      page = agent.get(url)
+      page = agent.get(url_software)
     
       # Saving each link of the course in the array
       array = []
@@ -157,7 +158,7 @@ namespace :scrape do
                                                     :point_block => "Pointspærring:",
                                                     :mandatory_prereq => "Obligatoriske forudsætninger:",
                                                     :qualified_prereq => "Faglige forudsætninger:",
-                                                    :qualified_prereq => "Ønskelige forudsætninger:"
+                                                    :optional_prereq => "Ønskelige forudsætninger:"
                                                     },
                                       :institute => {
                                                     :institute => "Institut:",
@@ -203,7 +204,7 @@ namespace :scrape do
                                                     :point_block => "Not applicable together with:",
                                                     :mandatory_prereq => "Mandatory Prerequisites:",
                                                     :qualified_prereq => "Qualified Prerequisites:",
-                                                    :qualified_prereq => "Optional Prerequisites:"
+                                                    :optional_prereq => "Optional Prerequisites:"
 
                                                     },
                                       :institute => {
@@ -334,7 +335,7 @@ namespace :scrape do
                     objective_string << oa
                   end
                 end
-                current_course[key] = objectives
+                current_course[key] = objective_string
             end
           end
         
@@ -410,7 +411,7 @@ namespace :scrape do
 										when :point_block
 											#puts "adding blocked courses"
 											created_course.point_blocks 				 << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Blocked')
-										when :qualified_prereq
+										when :optional_prereq
 											#puts "adding optional courses"
 											created_course.advisable_qualifications  << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Optional')
 										when :mandatory_prereq
@@ -458,12 +459,9 @@ namespace :scrape do
           end
 
 					# Adding objectives
-					#created_course.learn_objectives = 
-					#current_course_objectives.each do |obj|
-					#	created_course.learn_objectives << obj
-					#end
+					created_course.learn_objectives = current_course[:learn_objectives]
+					created_course.serialize_objectives
 					
-        
           # Adding teachers
           current_course_teachers.each do |t|
             teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 

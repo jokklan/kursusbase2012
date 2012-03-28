@@ -1,4 +1,5 @@
 <p id="notice"><%= notice %></p>
+<% @course.serialize_objectives %>
 <%= link_to "<< All courses", courses_path %>
 <h1><%= @course.course_no %> <%= @course.title %></h1>
 <h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
@@ -53,10 +54,10 @@
 	<% if @course.blocked_courses.count > 0 %>
 	<tr>
 		<td><strong>Point blocks</strong></td>
-		<td><%= @course.point_block%>
-		<%# @course.blocked_courses.each do |bc| %>
-			<%#= bc.course_no %><%# if bc != @course.blocked_courses.last%><%# end %> 
-		<%# end %>
+		<td>
+		<% @course.blocked_courses.each do |bc| %>
+			<%= bc.course_no %><% if bc != @course.blocked_courses.last %>,<% end %>
+		<% end%>
 		</td>
 	</tr>
 	<% end %>
@@ -65,27 +66,27 @@
 		<td><strong>Qualificatied prerequisites</strong></td>
 		<td>
 		<% @course.qualification_courses.each do |bc| %>
-			<%= bc.course_no %>, 
+			<%= bc.course_no %><% if bc != @course.qualification_courses.last %>, <% end %>
 		<% end %>
 		</td>
 	</tr>
 	<% end %>
 	<% if @course.optional_courses.count > 0 %>
 	<tr>
-		<td><strong>Point blocks</strong></td>
+		<td><strong>Optional prerequisites</strong></td>
 		<td>
 		<% @course.optional_courses.each do |bc| %>
-			<%= bc.course_no %>
+			<%= bc.course_no %><% if bc != @course.optional_courses.last %>,<% end %>
 		<% end %>
 		</td>
 	</tr>
 	<% end %>
 	<% if @course.mandatory_courses.count > 0 %>
 	<tr>
-		<td><strong>Point blocks</strong></td>
+		<td><strong>Mandatory prerequisites</strong></td>
 		<td>
-		<% @course.mandatory_courses.each do |bc| %>
-			<%= bc.course_no %>, 
+		<% @course.mandatory_course.each do |bc| %>
+			<%= bc.course_no %>
 		<% end %>
 		</td>
 	</tr>
@@ -103,15 +104,11 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
-			<% #if @course.learn_objectives.count > 1 %>
 			<ul>
-	  		<%# @course.learn_objectives.each do |lo| %>
-					<li><%#= lo %></li>
-				<%# end %>
+	  		<% @course.learn_objectives.each do |lo| %>
+					<li><%= lo %></li>
+				<% end %>
 			</ul>
-			<% #else %>
-				<%= @course.learn_objectives.first %>
-			<% #end %>
 		</td>
 	</tr>
 	<tr>

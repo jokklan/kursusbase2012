@@ -76,6 +76,10 @@ class Course < ActiveRecord::Base
     course_relation.related_course_type = type
   end
 
+	def serialize_objectives
+		self.learn_objectives = self.learn_objectives.split(">")
+	end
+
   def course_no
     if self.course_number < 9999
       "0#{self.course_number}"
