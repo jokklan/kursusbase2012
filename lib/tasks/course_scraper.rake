@@ -39,7 +39,7 @@ namespace :scrape do
       # Fetching the URL
       agent = Mechanize.new
       url = url_civil
-      page = agent.get(url_software)
+      page = agent.get(url_civil)
     
       # Saving each link of the course in the array
       array = []
