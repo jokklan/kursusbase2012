@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120328090620) do
+ActiveRecord::Schema.define(:version => 20120411072926) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -103,6 +103,11 @@ ActiveRecord::Schema.define(:version => 20120328090620) do
     t.boolean  "active"
   end
 
+  create_table "courses_Schedules", :force => true do |t|
+    t.integer "schedule_id"
+    t.integer "course_id"
+  end
+
   create_table "courses_keywords", :force => true do |t|
     t.integer "keyword_id"
     t.integer "course_id"
@@ -148,6 +153,12 @@ ActiveRecord::Schema.define(:version => 20120328090620) do
   add_index "keyword_translations", ["locale"], :name => "index_keyword_translations_on_locale"
 
   create_table "keywords", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "schedules", :force => true do |t|
+    t.string   "block"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

@@ -48,6 +48,8 @@ class Course < ActiveRecord::Base
   has_many :users, :through => :course_users
   
   belongs_to :institute
+
+	has_and_belongs_to_many :schedules
   
   # Course attributes
   attr_accessible :course_number,:title, 
