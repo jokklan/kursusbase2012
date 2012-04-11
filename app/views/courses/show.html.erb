@@ -85,7 +85,7 @@
 	<tr>
 		<td><strong>Mandatory prerequisites</strong></td>
 		<td>
-		<% @course.mandatory_course.each do |bc| %>
+		<% @course.mandatory_courses.each do |bc| %>
 			<%= bc.course_no %>
 		<% end %>
 		</td>
@@ -155,9 +155,15 @@
 	<% end %>
 	
 	<ul>
-	<%= @recommended_courses.each do |rec_course| %>
-		<li><%= link_to rec_course.course_number, rec_course %></li>
-	<% end %>
+	<% @course.recommended_courses.each do |rec_course| %>
+		<li>
+		<% if rec_course.active %>
+			<%= link_to rec_course.course_no, rec_course %>
+		<% else %>
+			<%= rec_course.course_no %>
+		<% end %>
+		</li>
+		<% end %>
 	</ul>
 	
 </table>

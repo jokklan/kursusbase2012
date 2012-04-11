@@ -91,4 +91,22 @@ class Course < ActiveRecord::Base
       self.course_number
     end
   end
+
+	def recommended_courses
+		rec_courses = []
+		#CourseRelation.where(['related_course_id = ? AND related_course_type <> ?', self.id, "Blocked"]).sort do |cr|
+		#	if cr.related_course_type == 'Mandatory' 1
+		#	elsif cr.related_course_type == 'Qualification'
+		#		
+		#	end
+		#		
+		#end
+		#CourseRelation.where(['related_course_id = ? AND related_course_type <> ?', self.id, "Blocked"]).sort.each do |cr|
+		#	rec_courses << Course.find(cr.course_id)
+		#end
+		CourseRelation.where(['related_course_id = ? AND related_course_type <> ?', self.id, "Blocked"]).each do |cr|
+			rec_courses << Course.find(cr.course_id)
+		end
+		return rec_courses
+	end
 end
