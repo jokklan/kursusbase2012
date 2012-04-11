@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Kursusbase2012</title>
+  <title>Kursusbase 2012</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-	<div id="page-wrapper">
-		<div id="page">
-			<div id="main-wrapper">
-				<div id="main">
-					<%= yield %>
-				</div>
+	<div id="wrapper">
+		<div id="container">
+			<div id="head"><div>
+				<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
+				<ul>
+					<li><a href="/courses">Kurser</a></li>
+					<li><a href="/plan">Studieplanen</a></li>
+					<li><a href="/schedule">Skema</a></li>
+				</ul>
+				<form action="/search" method="get">
+					<input type="text" name="q" value="">
+				</form>
+			</div></div>
+			<div id="content">
+				<%= yield %>
 			</div>
 		</div>
 	</div>
