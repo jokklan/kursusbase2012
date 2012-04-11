@@ -1,24 +1,11 @@
 class CoursesController < ApplicationController
-  # GET /courses
-  # GET /courses.json
   def index
     @courses = Course.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @courses }
-    end
   end
 
-  # GET /courses/1
-  # GET /courses/1.json
   def show
-    @course             = Course.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @course }
-    end
+    @course = Course.find(params[:id])
+    @blocked_courses = CourseRelation.where(:related_course_id => @course.id, :related_course_type => "Blocked")
   end
 
   # GET /courses/new

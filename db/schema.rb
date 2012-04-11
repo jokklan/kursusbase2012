@@ -11,16 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120314105658) do
+ActiveRecord::Schema.define(:version => 20120411072926) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
     t.integer  "related_course_id"
-    t.integer  "req_course_no"
-    t.string   "prerequisite"
     t.string   "related_course_type"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+    t.integer  "group_no"
   end
 
   add_index "course_relations", ["course_id"], :name => "index_course_prerequisites_on_course_id"
@@ -87,8 +86,8 @@ ActiveRecord::Schema.define(:version => 20120314105658) do
     t.float    "ects_points"
     t.boolean  "open_education"
     t.string   "schedule"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "institute_id"
     t.string   "former_course"
     t.string   "exam_schedule"
@@ -97,6 +96,16 @@ ActiveRecord::Schema.define(:version => 20120314105658) do
     t.string   "exam_aid"
     t.string   "evaluation_form"
     t.string   "homepage"
+    t.string   "point_block"
+    t.string   "qualified_prereq"
+    t.string   "optional_prereq"
+    t.string   "mandatory_prereq"
+    t.boolean  "active"
+  end
+
+  create_table "courses_Schedules", :force => true do |t|
+    t.integer "schedule_id"
+    t.integer "course_id"
   end
 
   create_table "courses_keywords", :force => true do |t|
@@ -148,6 +157,12 @@ ActiveRecord::Schema.define(:version => 20120314105658) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "schedules", :force => true do |t|
+    t.string   "block"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "teachers", :force => true do |t|
     t.string   "name"
     t.string   "location"
@@ -164,6 +179,8 @@ ActiveRecord::Schema.define(:version => 20120314105658) do
     t.integer  "start_year"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.string   "api_key"
+    t.string   "username"
   end
 
   add_index "users", ["direction_id"], :name => "index_users_on_direction_id"

@@ -21,6 +21,7 @@
 #
 
 class Course < ActiveRecord::Base
+  serialize :learn_objectives, Array
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
@@ -36,21 +37,28 @@ class Course < ActiveRecord::Base
   has_many :mandatory_courses, :through => :mandatory_qualifications, :source => :related_course
   
   has_many :optional_qualifications, :class_name => "CourseRelation", :foreign_key => "course_id", 
+            :conditions => [ "related_course_type = ?", "Qualification" ], :after_add => lambda{|data, record| record.set_related_course_type("Qualification")}
+  has_many :qualification_courses, :through => :optional_qualifications, :source => :related_course
+  
+  has_many :advisable_qualifications, :class_name => "CourseRelation", :foreign_key => "course_id", 
             :conditions => [ "related_course_type = ?", "Optional" ], :after_add => lambda{|data, record| record.set_related_course_type("Optional")}
-  has_many :optional_courses, :through => :optional_qualifications, :source => :related_course
+  has_many :optional_courses, :through => :advisable_qualifications, :source => :related_course
   
   has_many :course_users
   has_many :users, :through => :course_users
   
   belongs_to :institute
+
+	has_and_belongs_to_many :schedules
   
   # Course attributes
   attr_accessible :course_number,:title, 
-                  :language, :ects_points, :open_education, 
+                  :language, :ects_points, :open_education, :active,
                   :schedule, :teaching_form, :duration, :participant_limit,
                   :course_objectives, :learn_objectives, :content,
                   :litteratur, :remarks, :institute_id, :registration, :homepage, :top_comment, :former_course,
-                  :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form
+                  :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form,
+									:point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
 
   # Translations
   #  translates   :title, 
@@ -69,10 +77,12 @@ class Course < ActiveRecord::Base
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
   end
-  
-  def learn_objectives_array
-    self.learn_objectives.split(">")
-  end
+
+	def serialize_objectives
+		if !self.learn_objectives.nil? && !self.learn_objectives.empty?
+			self.learn_objectives = self.learn_objectives.split(">")
+		end
+	end
 
   def course_no
     if self.course_number < 9999
@@ -81,4 +91,20 @@ class Course < ActiveRecord::Base
       self.course_number
     end
   end
+
+	def recommended_courses
+		rec_courses = []
+		CourseRelation.where(['related_course_id = ? AND related_course_type = ?', self.id, "Mandatory"]).sort.each do |cr|
+			rec_courses << Course.find(cr.course_id)
+		end
+		CourseRelation.where(['related_course_id = ? AND related_course_type = ?', self.id, "Qualification"]).sort.each do |cr|
+			course = Course.find(cr.course_id)
+			rec_courses << course unless rec_courses.include? course
+		end
+		CourseRelation.where(['related_course_id = ? AND related_course_type = ?', self.id, "Optional"]).sort.each do |cr|
+			course = Course.find(cr.course_id)
+			rec_courses << course unless rec_courses.include? course
+		end
+		return rec_courses
+	end
 end

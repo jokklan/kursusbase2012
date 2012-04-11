@@ -1,5 +1,6 @@
 # encoding: utf-8
 namespace :scrape do
+	require 'rails'
   desc "Import courses from kurser.dtu.dk"
   task :courses, [:seed] => :environment do |t,args|
     args.with_defaults(:seed => 'true')
@@ -13,25 +14,36 @@ namespace :scrape do
       puts "Restarting database"
       Rake::Task['db:reset'].invoke
     end
+
+		if ENV['prereq']
+			puts "Scraping prerequisites"
+			scrape_prereq = true
+			db_seed = false
+		end
     
     languages = [:en, :da]
     languages.each do |language|
       
       #puts "Current #{language}"
-      I18n.locale = language
-    
-      debug          = !db_seed   # debug = true for print in console
-      check_db_types = false      # true if the scraper should check data-types      
+      I18n.locale = language			
+			
+      debug          				= false   # debug = true for print in console
+      check_db_types 				= false      # true if the scraper should check data-types      
     
       # URL's for different searches on kurser.dtu.dk
       url_dtu = "http://www.kurser.dtu.dk/"
       url_civil = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
       url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
       url_test2 = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
+			url_math = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=matematik&YearGroup=2011-2012&btnSearch=Search"
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_civil
+      url = url_math
+
+			if ENV['url']
+				url = ENV['url']
+			end
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -55,13 +67,17 @@ namespace :scrape do
       procent_ind = 0
     
       # Taking each link and scraping
-      array.each_with_index do |e, i|    
+      array.each_with_index do |e, i|   
+				
         current_course = {}
         current_course_teachers = []
         current_course_types_head = []
         current_course_types = []
         current_course_keywords = []
         current_course_institute = {}
+				current_course_prereq = {}
+				current_course_objectives = []
+				current_course_schedules = []
           
         other_info = {}
         page = agent.get("#{url_dtu}#{e}")
@@ -77,8 +93,10 @@ namespace :scrape do
         # Title
         title = row1.search("h2").text
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1].to_s
+				puts "##### #{current_course[:title]} #####"
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
-        
+				current_course[:active] = true
+        #puts "Title: #{current_course[:title]}" 
         # Top comment (only existing if comment written)
         # Observed: 
         #   if the css selector below is used the course page will give
@@ -126,6 +144,7 @@ namespace :scrape do
         end
       
         # Hash's with recognizable titles (so the scraper can identify the different columns)
+				# :point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
         course_attributes = { :da => {
                                       :mandatory => {
                                                     :schedule => "Skemaplacering:",
@@ -144,9 +163,9 @@ namespace :scrape do
                                                     },
                                       :prerequisites => {
                                                     :point_block => "Pointspærring:",
-                                                    :prereq_obl => "Obligatoriske forudsætninger:",
-                                                    :prereq_qua => "Faglige forudsætninger:",
-                                                    :prereq_opt => "Ønskelige forudsætninger:"
+                                                    :mandatory_prereq => "Obligatoriske forudsætninger:",
+                                                    :qualified_prereq => "Faglige forudsætninger:",
+                                                    :optional_prereq => "Ønskelige forudsætninger:"
                                                     },
                                       :institute => {
                                                     :institute => "Institut:",
@@ -190,9 +209,10 @@ namespace :scrape do
                                                     },
                                       :prerequisites => {
                                                     :point_block => "Not applicable together with:",
-                                                    :prereq_obl => "Mandatory Prerequisites:",
-                                                    :prereq_qua => "Qualified Prerequisites:",
-                                                    :prereq_opt => "Optional Prerequisites:"
+                                                    :mandatory_prereq => "Mandatory Prerequisites:",
+                                                    :qualified_prereq => "Qualified Prerequisites:",
+                                                    :optional_prereq => "Optional Prerequisites:"
+
                                                     },
                                       :institute => {
                                                     :institute => "Department:",
@@ -232,6 +252,17 @@ namespace :scrape do
               current_course[key] = att_column[1].text.strip.chomp
             end
           end
+
+					# Schedule
+          if course_attributes[language][:mandatory][:schedule] == att_title
+						string = att_column[1].text.strip.chomp
+						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a
+						schedules.each do |s|
+							current_course_schedules << s
+						end
+						
+						
+					end
         
           # Evaluation attributes
           course_attributes[language][:evaluation].each do |key, att|
@@ -240,12 +271,54 @@ namespace :scrape do
             end
           end
         
-          # # Prerequisites
-          # course_attributes[language][:prerequisites].each do |key, att|
-          #   if att_title == att
-          #     # Do something about the prerequisites
-          #   end
-          # end
+          # Prerequisites
+					if language == :en
+          	course_attributes[language][:prerequisites].each do |key, att|
+							has_letters = false
+          	  if att_title == att
+								# Checking if column exists
+          	    column = att_column[1].text
+          	    if !column.empty?
+									#current_course[key] = 
+									
+									#find_letters = %r{([a-zA-Z])}.match(column)
+									has_letters = true if !%r{([a-zA-Z])}.match(column).nil?
+									and_split_courses = [] # Array to hold each course-group seperated by .
+									
+									# Splits the column by .
+          	      and_split = column.split('.')
+          	      and_split.each do |req_and|
+										
+										# Splits each part seperated by /
+										or_split = req_and.split('/')
+										or_split_courses = [] # Array to hold each course-group seperated by /
+	        	      	or_split.each do |req_or|
+											# A regex to match digits of length 5 (course number!)
+											course_digits = %r{(\d{5}).*}.match(req_or.chomp.strip)
+											or_split_courses << course_digits[1].to_s.chomp.strip if !course_digits.nil?
+										end
+										and_split_courses << or_split_courses if !or_split_courses.empty?
+          	      end
+									# Adding to the database
+									current_course_prereq[key] = and_split_courses if !and_split_courses.empty?
+									if !has_letters
+										prereq_string = ''
+										and_split_courses.each do |and_split|
+											and_split.each do |or_split|
+												prereq_string << or_split
+												prereq_string << "/" if or_split != and_split.last
+											end
+											prereq_string << "." if and_split != and_split_courses.last
+										end
+										current_course[key] = prereq_string
+										#puts prereq_string
+									end
+									#puts column.chomp.strip if has_letters
+          	    end
+								
+          	  end
+          	end
+					end
         
           # Institute
           course_attributes[language][:institute].each do |key, att|
@@ -272,6 +345,7 @@ namespace :scrape do
                 objective_list.each do |o|
                   objectives << o.text.chomp.strip unless objectives.include?(o.text.chomp.strip)
                 end
+								
                 objectives.each_with_index do |oa,i|
                   if i > 0
                     objective_string << ">#{oa}"
@@ -310,7 +384,7 @@ namespace :scrape do
               current_course_keywords << att_column[1].text.chomp.strip
             end
           end
-        end 
+        end # End of column.each
       
         # Testing data types
         string_att = [:title, :language, :registration, :homepage, :duration, :participant_limit, :exam_duration, 
@@ -339,8 +413,50 @@ namespace :scrape do
           pp current_course_keywords
           puts "####################################"
         end
+
+				# Adding course-relations
+				if language == :en && scrape_prereq
+					created_course = Course.find_by_course_number(current_course[:course_number])
+					current_course_prereq.each do |key, att|
+						group_no = 1
+						att.each do |a|
+							a.each do |o|
+								if !Course.find_by_course_number(o)
+									Course.create(:course_number => o, :active => false)
+								end
+								if Course.find_by_course_number(o)
+									case key
+										when :point_block
+											#puts "adding blocked courses"
+											created_course.point_blocks 				 << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Blocked')
+										when :optional_prereq
+											#puts "adding optional courses"
+											created_course.advisable_qualifications  << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Optional')
+										when :mandatory_prereq
+											#puts "adding mandatory courses"
+											created_course.mandatory_qualifications				 << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Mandatory')
+										when :qualified_prereq
+											#puts "adding qualified courses"
+											created_course.optional_qualifications	   << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Qualification')
+										else
+											puts "### ERROR when trying to scrape prerequisites ###"
+									end
+									group_no += 1
+								end
+							end
+						end
+						created_course.save
+					end
+					print "|" if i == 0 || i == course_amount - 1
+          if Integer(Float(i) % (Float(course_amount) / 100)) == 0
+            print "="
+            procent_ind = procent_ind + 1
+            print "#{procent_ind}%" if procent_ind % 10 == 0
+          end
+				end
       
         if !debug && db_seed
+	
           # Adding institute
           created_institute = Institute.find_by_dtu_institute_id(current_course_institute[:dtu_institute_id])
           if created_institute.nil?
@@ -359,15 +475,30 @@ namespace :scrape do
             created_course.update_attributes(current_course)
             created_course.save
           end
-        
+
+					# Adding objectives
+					created_course.learn_objectives = current_course[:learn_objectives]
+					#if !created_course.nil?
+					#	created_course.serialize_objectives
+					#end
+					
           # Adding teachers
           current_course_teachers.each do |t|
             teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
+
+					
         
           # Adding keywords
           if language == :en
+						# Adding schedules
+						current_course_schedules.each do |s|
+							schedule = Schedule.find_by_block(s)
+							created_course.schedules << schedule if not schedule.nil? and not created_course.schedules.include? (schedule)
+						end
+						
+						# Adding keywords
             current_course_keywords.each do |k|
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?

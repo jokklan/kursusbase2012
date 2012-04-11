@@ -1,4 +1,5 @@
 <p id="notice"><%= notice %></p>
+<% @course.serialize_objectives %>
 <%= link_to "<< All courses", courses_path %>
 <h1><%= @course.course_no %> <%= @course.title %></h1>
 <h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
@@ -50,6 +51,46 @@
 		<td><strong>Duration:</strong></td>
 		<td><%= @course.duration %></td>
 	</tr>
+	<% if @course.blocked_courses.count > 0 %>
+	<tr>
+		<td><strong>Point blocks</strong></td>
+		<td>
+		<% @course.blocked_courses.each do |bc| %>
+			<%= bc.course_no %><% if bc != @course.blocked_courses.last %>,<% end %>
+		<% end%>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.qualification_courses.count > 0 %>
+	<tr>
+		<td><strong>Qualificatied prerequisites</strong></td>
+		<td>
+		<% @course.qualification_courses.each do |bc| %>
+			<%= bc.course_no %><% if bc != @course.qualification_courses.last %>, <% end %>
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.optional_courses.count > 0 %>
+	<tr>
+		<td><strong>Optional prerequisites</strong></td>
+		<td>
+		<% @course.optional_courses.each do |bc| %>
+			<%= bc.course_no %><% if bc != @course.optional_courses.last %>,<% end %>
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
+	<% if @course.mandatory_courses.count > 0 %>
+	<tr>
+		<td><strong>Mandatory prerequisites</strong></td>
+		<td>
+		<% @course.mandatory_courses.each do |bc| %>
+			<%= bc.course_no %>
+		<% end %>
+		</td>
+	</tr>
+	<% end %>
 	<% if @course.participant_limit %>
 		<tr>
 			<td><strong>Participant limit:</strong></td>
@@ -63,19 +104,11 @@
 	<tr>
 		<td><strong>Learn objectives:</strong></td>
 		<td>
-			<%= @course.learn_objectives %>
-			<% if false %>
-			<% if @course.learn_objectives_array.count > 1 %>
-			
 			<ul>
-	  		<% @course.learn_objectives_array.each do |lo| %>
+	  		<% @course.learn_objectives.each do |lo| %>
 					<li><%= lo %></li>
 				<% end %>
 			</ul>
-			<% else %>
-				<%= @course.learn_objectives_array.first %>
-			<% end %>
-			<% end %>
 		</td>
 	</tr>
 	<tr>
@@ -120,5 +153,20 @@
 			</td>
 		</tr>
 	<% end %>
+	
+	<div id="qualifications" style="border: 1px solid black; padding: 15px">
+		<h3>This course is a prerequisite for these courses:</h3>
+		<ul style="list-style: none;">
+		<% @course.recommended_courses.each do |rec_course| %>
+			<li>
+			<% if rec_course.active %>
+				<%= link_to rec_course.course_no, rec_course %>
+			<% else %>
+				<%= rec_course.course_no %>
+			<% end %>
+			</li>
+			<% end %>
+		</ul>
+	</div>
 	
 </table>
