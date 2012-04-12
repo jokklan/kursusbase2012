@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  student_id: MyString
+  field_of_study: 
+  start_date: 2012-04-12
+
+two:
+  student_id: MyString
+  field_of_study: 
+  start_date: 2012-04-12

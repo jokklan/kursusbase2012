@@ -50,6 +50,7 @@ class Course < ActiveRecord::Base
   belongs_to :institute
 
 	has_and_belongs_to_many :schedules
+	has_and_belongs_to_many :student_datas
   
   # Course attributes
   attr_accessible :course_number,:title, 
