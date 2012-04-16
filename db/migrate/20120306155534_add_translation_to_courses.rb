@@ -12,7 +12,6 @@ class AddTranslationToCourses < ActiveRecord::Migration
       :content => :text,
       :litteratur => :text,
       :remarks => :text,
-      :homepage => :string,
       :top_comment => :text
     }, {
       :migrate_data => true
