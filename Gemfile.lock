@@ -188,6 +188,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip
     sequel (3.20.0)
+    simple-navigation (3.7.0)
+      activesupport (>= 2.3.2)
     simplecov (0.6.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.5.3)
@@ -251,6 +253,7 @@ DEPENDENCIES
   rb-fsevent
   rspec-rails
   sass-rails (~> 3.2.3)
+  simple-navigation
   simplecov
   sqlite3
   taps
