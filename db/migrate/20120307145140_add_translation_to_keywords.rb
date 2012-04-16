@@ -1,7 +1,7 @@
 class AddTranslationToKeywords < ActiveRecord::Migration
   def self.up
     Keyword.create_translation_table!({
-      :keyword => :string
+      :title => :string
     }, {
       :migrate_data => true
     })
