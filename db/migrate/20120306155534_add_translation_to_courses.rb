@@ -14,7 +14,7 @@ class AddTranslationToCourses < ActiveRecord::Migration
       :remarks => :text,
       :top_comment => :text,
       :former_course => :string,
-      :exam_form, => :text,
+      :exam_form => :text,
       :exam_aid => :string,
       :evaluation_form => :string
     }, {
