@@ -124,11 +124,6 @@ ActiveRecord::Schema.define(:version => 20120415194641) do
     t.integer "course_id"
   end
 
-  create_table "courses_student_datas", :force => true do |t|
-    t.integer "course_id"
-    t.integer "student_data_id"
-  end
-
   create_table "courses_teachers", :force => true do |t|
     t.integer "teacher_id"
     t.integer "course_id"

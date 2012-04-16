@@ -62,7 +62,7 @@ end
 group :development do
   gem 'heroku'
   gem 'sqlite3'
-  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
+  # gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'taps'
 
 end
@@ -70,7 +70,7 @@ end
 group :production do
   gem 'mechanize'
   gem 'pg'
-  # gem 'thin'
+  gem 'thin'
 end
 
 # To use ActiveModel has_secure_password
