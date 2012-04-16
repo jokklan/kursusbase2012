@@ -46,6 +46,8 @@ class Course < ActiveRecord::Base
   
   has_many :course_users
   has_many :users, :through => :course_users
+	has_many :course_student_datas
+	has_many :student_datas, :through => :course_student_datas
   
   belongs_to :institute
 
@@ -74,10 +76,12 @@ class Course < ActiveRecord::Base
                :litteratur, :remarks, :registration, :top_comment, :former_course,
                :exam_form, :exam_aid, :evaluation_form
   
-   # Model methods                        
+   # Model methods  
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
   end
+
+
 
 	def serialize_objectives
 		if !self.learn_objectives.nil? && !self.learn_objectives.empty?
@@ -107,5 +111,32 @@ class Course < ActiveRecord::Base
 			rec_courses << course unless rec_courses.include? course
 		end
 		return rec_courses
+	end
+	
+	def similar_courses
+		n = 10 # how many results?
+		rec_array = {}
+		CourseStudentData.where('course_id = ?',self.id).each do |student|
+			CourseStudentData.where('student_data_id = ?',student.id).each do |course_taken|
+				c_id = course_taken.course_id
+				if rec_array[c_id].nil?
+					rec_array[c_id] = 1 
+				else
+					rec_array[c_id] = rec_array[c_id] + 1
+				end
+			end
+		end
+		sorted_array = rec_array.sort_by {|k,v| v }.reverse
+		#puts sorted_array
+		index = 0
+		result = {}
+		sorted_array.each do |key,value|
+			break if index > n
+			if not key == self.id
+				result[value] = Course.find(key)
+				index = index + 1
+			end
+		end
+		return result
 	end
 end

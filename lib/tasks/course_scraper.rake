@@ -39,7 +39,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_math
+      url = url_civil
 
 			if ENV['url']
 				url = ENV['url']
@@ -93,7 +93,6 @@ namespace :scrape do
         # Title
         title = row1.search("h2").text
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1].to_s
-				puts "##### #{current_course[:title]} #####"
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
 				current_course[:active] = true
         #puts "Title: #{current_course[:title]}" 

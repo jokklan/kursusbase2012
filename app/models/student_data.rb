@@ -1,4 +1,7 @@
 class StudentData < ActiveRecord::Base
   belongs_to :field_of_study
-	has_and_belongs_to_many :courses
+	has_many :course_student_datas
+	has_many :courses, :through => :course_student_datas
+	
+	validates :student_id, :uniqueness => true
 end
