@@ -57,5 +57,6 @@ module Kursusbase2012
     config.assets.version = '1.0'
     
     config.i18n.default_locale = :da
+    
   end
 end

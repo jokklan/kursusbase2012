@@ -19,6 +19,8 @@ Kursusbase2012::Application.configure do
 
   # Generate digests for assets URLs
   config.assets.digest = true
+  
+  config.assets.initialize_on_precompile = false
 
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
@@ -64,4 +66,7 @@ Kursusbase2012::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  
+  # Mailer host
+  config.action_mailer.default_url_options = { :host => 'kursusbase2012.herokuapp.com' }
 end

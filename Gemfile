@@ -5,9 +5,9 @@ gem 'rails', '3.2.1'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-#gem 'thin'
 gem 'globalize3'
 gem 'simple-navigation'
+gem 'devise'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -49,10 +49,6 @@ group :test do
 	gem 'launchy'
   
 	#gem 'spork', '~> 1.0rc'
-
-	#if RUBY_PLATFORM.downcase.include?("darwin") # I'm on Mac
-	#	
-	#end
 end
 
 

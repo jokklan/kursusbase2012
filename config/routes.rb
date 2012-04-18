@@ -1,11 +1,13 @@
 Kursusbase2012::Application.routes.draw do
   
+  devise_for :users
+
   scope "(:locale)", :locale => /en|da/ do
-    match "/users/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
-    match "/users/login" => "users#login"
-    match "/users/logged_in" => "users#logged_in", :as => "logged_in_user"
-    match "/users/get_courses" => "users#get_courses", :as => "get_courses_user"
-    resources :users
+    # match "/users/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
+    # match "/users/login" => "users#login"
+    # match "/users/logged_in" => "users#logged_in", :as => "logged_in_user"
+    # match "/users/get_courses" => "users#get_courses", :as => "get_courses_user"
+    # resources :users
     
     resources :courses
     resources :keywords

@@ -13,8 +13,11 @@ class RemoveTranslatedColumnsForOriginalTables < ActiveRecord::Migration
     remove_column :courses, :content
     remove_column :courses, :litteratur
     remove_column :courses, :remarks
-    remove_column :courses, :homepage
     remove_column :courses, :top_comment
+    remove_column :courses, :former_course
+    remove_column :courses, :exam_form
+    remove_column :courses, :exam_aid
+    remove_column :courses, :evaluation_form
   end
 
   def down
@@ -31,7 +34,10 @@ class RemoveTranslatedColumnsForOriginalTables < ActiveRecord::Migration
     add_column :courses, :content, :text
     add_column :courses, :litteratur, :text
     add_column :courses, :remarks, :text
-    add_column :courses, :homepage, :string
     add_column :courses, :top_comment, :text
+    add_column :courses, :former_course, :string
+    add_column :courses, :exam_form, :text
+    add_column :courses, :exam_aid, :string
+    add_column :courses, :evaluation_form, :string
   end
 end
