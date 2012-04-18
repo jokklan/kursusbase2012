@@ -114,7 +114,8 @@ class Course < ActiveRecord::Base
 	end
 	
 	def similar_courses
-		n = 10 # how many results?
+		counter = 0
+		n_values = 10 # how many results?
 		rec_array = {}
 		CourseStudentData.where('course_id = ?',self.id).each do |student|
 			CourseStudentData.where('student_data_id = ?',student.id).each do |course_taken|
@@ -126,12 +127,12 @@ class Course < ActiveRecord::Base
 				end
 			end
 		end
+		
 		sorted_array = rec_array.sort_by {|k,v| v }.reverse
-		#puts sorted_array
 		index = 0
 		result = {}
 		sorted_array.each do |key,value|
-			break if index > n
+			break if index > n_values
 			if not key == self.id
 				result[value] = Course.find(key)
 				index = index + 1
