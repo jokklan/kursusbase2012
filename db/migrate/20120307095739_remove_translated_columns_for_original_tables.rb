@@ -2,7 +2,7 @@ class RemoveTranslatedColumnsForOriginalTables < ActiveRecord::Migration
   def up
     remove_column :course_types, :title
     remove_column :institutes, :title
-    remove_column :keywords, :keyword
+    remove_column :keywords, :title
     remove_column :courses, :title
     remove_column :courses, :teaching_form
     remove_column :courses, :duration
@@ -23,7 +23,7 @@ class RemoveTranslatedColumnsForOriginalTables < ActiveRecord::Migration
   def down
     add_column  :course_types, :title, :string
     add_column :institutes, :title, :string
-    add_column :keywords, :keyword, :string
+    add_column :keywords, :title, :string
     add_column :courses, :title, :string
     add_column :courses, :teaching_form, :text
     add_column :courses, :duration, :string
