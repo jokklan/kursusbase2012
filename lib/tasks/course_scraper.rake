@@ -506,6 +506,11 @@ namespace :scrape do
         
             # Adding head course-types (civil, diplom osv.)
             current_course_types_head.each do |cth|
+							if cth == 'Civil- Grundlæggende kursus'
+								cth = 'Grundlæggende civil kursus'
+							elsif cth = 'Civil- Videregående Kursus'
+								cth = 'Videregående civil kursus'
+							end
               course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
               course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
               created_course.main_course_types << course_type
