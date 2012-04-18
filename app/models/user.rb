@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
     request = Net::HTTP::Post.new(uri.request_uri)
     request.set_form_data({"username" => self.student_number, "password" => password})
     response = http.request(request)
-    api_key = response.body.split('"')[1]
+    cn_access_key = response.body.split('"')[1]
   end
     
 end
