@@ -2,9 +2,15 @@
 # DANISH
 
 da:
+  languages:
+    dansk: dansk
+    da: dansk
+    engelsk: engelsk
+    en: engelsk
   courses:
     spring: forår
     autumn: efterår
     show:
       points: point
       weeks: uger
+      openedu: Udbydes under åben uddannelse

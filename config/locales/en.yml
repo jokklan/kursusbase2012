@@ -2,9 +2,15 @@
 # ENGLISH
 
 en:
+  languages:
+    dansk: Danish
+    da: Danish
+    engelsk: English
+    en: English
   courses:
     spring: spring
     autumn: autumn
     show:
       points: points
       weeks: weeks
+      openedu: Taught under open university

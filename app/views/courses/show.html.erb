@@ -5,32 +5,55 @@
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang">Alt lang<%#= @course.title alt_language %></h2>
-	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, season</strong> (X <%= t('.weeks') %>)</h2>
-<!-- <h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
-<hr />
-<% if @course.top_comment %>
-	<%= @course.top_comment  %>
-	<hr />
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season %></strong> (X <%= t('.weeks') %>)</h2>
+	<h3><% @course.main_course_types.each do |mct| %>
+		<%= mct.title %><%= ', ' if mct != @course.main_course_types.last %>, 
+	<% end %>
+	<%= t('languages.' + @course.language.downcase) %></h3>
+<% if @course.open_education %>
+	<p><%= t('.openedu') %></p>
 <% end %>
--->
+	<div id="courseschedule">
+		<table>
+			<thead>
+				<tr>
+					<th scope="col" title="mandag">M</th>
+					<th scope="col" title="tirsdag">T</th>
+					<th scope="col" title="onsdag">O</th>
+					<th scope="col" title="torsdag">T</th>
+					<th scope="col" title="fredag">F</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1A</td>
+					<td>3A</td>
+					<td>5A</td>
+					<td>2B</td>
+					<td>4B</td>
+				</tr>
+				<tr>
+					<td>2A</td>
+					<td>4A</td>
+					<td>5B</td>
+					<td>1B</td>
+					<td>3B</td>
+				</tr>
+			</tbody>
+		</table>
+		<p>Eksamensplacering <strong>F1B og E1B</strong></p>
+	</div>
 </div>
+
+<dl class="section">
+<% if @course.top_comment %>
+	<dt>Kommentar</dt>
+		<dd><%= @course.top_comment  %></dd>
+<% end %>
+</dl>
 
 
 <table id="course-table">
-	<tr>
-		<td><strong>Language:</strong></td>
-		<td><%= @course.language %></td>
-	</tr>
-	<tr>
-		<td><strong>Ects point:</strong></td>
-		<td>
-			<% if @course.ects_points % 5 > 0 %>
-				<%= @course.ects_points %>
-			<% else %>
-				<%= @course.ects_points.to_i %>
-			<% end %>
-		</td>
-	</tr>
 	<tr>
 		<td><strong>Kursustype:</strong></td>
 		<td>
@@ -193,3 +216,5 @@
 	<% end %>
 	</ul>
 </div>
+
+<h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
