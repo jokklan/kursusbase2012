@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     I18n.locale = params[:locale] || I18n.default_locale
   end
   
+  
   private
 
   def current_user
@@ -22,4 +23,13 @@ class ApplicationController < ActionController::Base
   def authorize
     redirect_to login_url, alert: "Not authorized" if current_user.nil?
   end
+  
+  def alt_language
+    if I18n.locale == :da
+      :en
+    elsif I18n.locale == :en
+      :da
+    end
+  end
+  helper_method :alt_language
 end

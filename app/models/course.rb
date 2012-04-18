@@ -76,7 +76,7 @@ class Course < ActiveRecord::Base
                :litteratur, :remarks, :registration, :top_comment, :former_course,
                :exam_form, :exam_aid, :evaluation_form
   
-   # Model methods  
+   # Instance methods  
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
   end
@@ -94,6 +94,14 @@ class Course < ActiveRecord::Base
       "0#{self.course_number}"
     else
       self.course_number
+    end
+  end
+  
+  def season()
+    if schedule[0] = "F"
+      I18n.translate('courses.spring')
+    elsif schedule[0] = "E"
+      I18n.translate('courses.autumn')
     end
   end
 
