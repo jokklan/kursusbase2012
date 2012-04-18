@@ -5,9 +5,14 @@ class CreateTeachers < ActiveRecord::Migration
       t.string :location
       t.string :phone
       t.string :email
-      t.string :website
+      t.integer :dtu_teacher_id
 
       t.timestamps
+    end
+    
+    create_table :courses_teachers do |t|
+      t.integer :teacher_id
+      t.integer :course_id
     end
   end
 end

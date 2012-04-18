@@ -11,26 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120418101603) do
+ActiveRecord::Schema.define(:version => 20120412074742) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
     t.integer  "related_course_id"
+    t.integer  "group_no"
     t.string   "related_course_type"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
-    t.integer  "group_no"
   end
 
-  add_index "course_relations", ["course_id"], :name => "index_course_prerequisites_on_course_id"
-  add_index "course_relations", ["related_course_id"], :name => "index_course_prerequisites_on_req_course_id"
+  add_index "course_relations", ["course_id"], :name => "index_course_relations_on_course_id"
+  add_index "course_relations", ["related_course_id"], :name => "index_course_relations_on_related_course_id"
 
   create_table "course_student_data", :force => true do |t|
-    t.integer  "course_id"
-    t.integer  "student_data_id"
-    t.string   "semester"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.integer "course_id"
+    t.integer "student_data_id"
+    t.string  "semester"
   end
 
   add_index "course_student_data", ["course_id"], :name => "index_course_student_data_on_course_id"
@@ -50,12 +48,12 @@ ActiveRecord::Schema.define(:version => 20120418101603) do
     t.text     "litteratur"
     t.text     "remarks"
     t.text     "top_comment"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
     t.string   "former_course"
     t.text     "exam_form"
     t.string   "exam_aid"
     t.string   "evaluation_form"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
   end
 
   add_index "course_translations", ["course_id"], :name => "index_course_translations_on_course_id"
@@ -73,56 +71,61 @@ ActiveRecord::Schema.define(:version => 20120418101603) do
   add_index "course_type_translations", ["locale"], :name => "index_course_type_translations_on_locale"
 
   create_table "course_types", :force => true do |t|
+    t.string   "course_type_type"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "course_type_type"
   end
 
   create_table "course_types_courses", :force => true do |t|
-    t.integer "course_id"
     t.integer "course_type_id"
+    t.integer "course_id"
   end
 
+  add_index "course_types_courses", ["course_id"], :name => "index_course_types_courses_on_course_id"
+  add_index "course_types_courses", ["course_type_id"], :name => "index_course_types_courses_on_course_type_id"
+
   create_table "course_users", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "course_id"
-    t.string   "semester"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer "user_id"
+    t.integer "course_id"
+    t.string  "semester"
   end
+
+  add_index "course_users", ["course_id"], :name => "index_course_users_on_course_id"
+  add_index "course_users", ["user_id"], :name => "index_course_users_on_user_id"
 
   create_table "courses", :force => true do |t|
     t.integer  "course_number"
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
-    t.string   "schedule"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.text     "schedule"
     t.integer  "institute_id"
-    t.string   "former_course"
-    t.string   "exam_schedule"
-    t.text     "exam_form"
-    t.string   "exam_duration"
-    t.string   "exam_aid"
-    t.string   "evaluation_form"
     t.string   "homepage"
+    t.text     "exam_schedule"
+    t.string   "exam_duration"
     t.string   "point_block"
     t.string   "qualified_prereq"
     t.string   "optional_prereq"
     t.string   "mandatory_prereq"
     t.boolean  "active"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
-  create_table "courses_Schedules", :force => true do |t|
-    t.integer "schedule_id"
-    t.integer "course_id"
-  end
+  add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
 
   create_table "courses_keywords", :force => true do |t|
     t.integer "keyword_id"
     t.integer "course_id"
   end
+
+  create_table "courses_schedules", :force => true do |t|
+    t.integer "schedule_id"
+    t.integer "course_id"
+  end
+
+  add_index "courses_schedules", ["course_id"], :name => "index_courses_schedules_on_course_id"
+  add_index "courses_schedules", ["schedule_id"], :name => "index_courses_schedules_on_schedule_id"
 
   create_table "courses_teachers", :force => true do |t|
     t.integer "teacher_id"
@@ -130,10 +133,12 @@ ActiveRecord::Schema.define(:version => 20120418101603) do
   end
 
   create_table "field_of_studies", :force => true do |t|
-    t.string   "name"
+    t.string   "title"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "field_of_studies", ["title"], :name => "index_field_of_studies_on_title"
 
   create_table "institute_translations", :force => true do |t|
     t.integer  "institute_id"
@@ -147,9 +152,9 @@ ActiveRecord::Schema.define(:version => 20120418101603) do
   add_index "institute_translations", ["locale"], :name => "index_institute_translations_on_locale"
 
   create_table "institutes", :force => true do |t|
+    t.integer  "dtu_institute_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.integer  "dtu_institute_id"
   end
 
   create_table "keyword_translations", :force => true do |t|
@@ -189,22 +194,20 @@ ActiveRecord::Schema.define(:version => 20120418101603) do
     t.string   "location"
     t.string   "phone"
     t.string   "email"
+    t.integer  "dtu_teacher_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-    t.integer  "dtu_teacher_id"
   end
 
   create_table "users", :force => true do |t|
     t.integer  "student_number"
     t.integer  "direction_id"
     t.integer  "start_year"
+    t.string   "cn_access_key"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-    t.string   "api_key"
-    t.string   "username"
-    t.string   "cn_access_key"
   end
 
-  add_index "users", ["direction_id"], :name => "index_users_on_direction_id"
+  add_index "users", ["student_number"], :name => "index_users_on_student_number"
 
 end
