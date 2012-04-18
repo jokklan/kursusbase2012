@@ -123,10 +123,13 @@ class Course < ActiveRecord::Base
 	
 	def similar_courses
 		counter = 0
+		algo1_counter = 0
 		n_values = 10 # how many results?
 		rec_array = {}
 		CourseStudentData.where('course_id = ?',self.id).each do |student|
+			counter += 1
 			CourseStudentData.where('student_data_id = ?',student.id).each do |course_taken|
+				algo1_counter += 1 if c_id == 37
 				c_id = course_taken.course_id
 				if rec_array[c_id].nil?
 					rec_array[c_id] = 1 
@@ -135,6 +138,8 @@ class Course < ActiveRecord::Base
 				end
 			end
 		end
+		puts "algo2: #{counter}"
+		puts "algo1: #{algo1_counter}"
 		
 		sorted_array = rec_array.sort_by {|k,v| v }.reverse
 		index = 0
@@ -146,6 +151,6 @@ class Course < ActiveRecord::Base
 				index = index + 1
 			end
 		end
-		return result
+		#return result
 	end
 end
