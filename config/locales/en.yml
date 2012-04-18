@@ -7,6 +7,16 @@ en:
     da: Danish
     engelsk: English
     en: English
+  days:
+    mon: Monday
+    tue: Tuesday
+    wed: Wednesday
+    thu: Thursday
+    fri: Friday
+    sat: Saturday
+    sun: Sunday
+    o: W
+    l: S
   courses:
     spring: spring
     autumn: autumn
@@ -14,3 +24,4 @@ en:
       points: points
       weeks: weeks
       openedu: Taught under open university
+      examdate: Date of examination

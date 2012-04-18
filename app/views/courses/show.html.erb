@@ -4,8 +4,8 @@
 <p id="notice"><%= notice %></p>
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
-	<h2 class="altlang">Alt lang<%#= @course.title alt_language %></h2>
-	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season %></strong> (X <%= t('.weeks') %>)</h2>
+	<h2 class="altlang"><%= @course.title alt_language %></h2>
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
 	<h3><% @course.main_course_types.each do |mct| %>
 		<%= mct.title %><%= ', ' if mct != @course.main_course_types.last %>, 
 	<% end %>
@@ -17,11 +17,11 @@
 		<table>
 			<thead>
 				<tr>
-					<th scope="col" title="mandag">M</th>
-					<th scope="col" title="tirsdag">T</th>
-					<th scope="col" title="onsdag">O</th>
-					<th scope="col" title="torsdag">T</th>
-					<th scope="col" title="fredag">F</th>
+					<th scope="col" title="<%= t('days.mon') %>">M</th>
+					<th scope="col" title="<%= t('days.tue') %>">T</th>
+					<th scope="col" title="<%= t('days.wed') %>"><%= t('days.o') %></th>
+					<th scope="col" title="<%= t('days.thu') %>">T</th>
+					<th scope="col" title="<%= t('days.fri') %>">F</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -41,7 +41,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<p>Eksamensplacering <strong>F1B og E1B</strong></p>
+		<p><%= t('.examdate') %> <strong>F1B og E1B</strong></p>
 	</div>
 </div>
 
@@ -54,22 +54,6 @@
 
 
 <table id="course-table">
-	<tr>
-		<td><strong>Kursustype:</strong></td>
-		<td>
-			<ul class="course-types">
-				<% @course.main_course_types.each do |mct| %>
-					<li><%= mct.title %></li>
-				<% end %>
-				<% if @course.open_education %>
-					<li>Kurset udbydes under åben uddannelse</li>
-				<% end %>
-				<% @course.spec_course_types.each do |sct| %>
-					<li><%= sct.title %></li>
-				<% end %>
-			</ul>
-		</td>
-	</tr>
 	<tr style="border-bottom: 2px solid black">
 		<td><strong>Schedule:</strong></td>
 		<td><%= @course.schedule %></td>

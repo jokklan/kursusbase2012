@@ -7,6 +7,16 @@ da:
     da: dansk
     engelsk: engelsk
     en: engelsk
+  days:
+    mon: mandag
+    tue: tirsdag
+    wed: onsdag
+    thu: torsdag
+    fri: fredag
+    sat: lørdag
+    sun: søndag
+    o: O
+    l: L
   courses:
     spring: forår
     autumn: efterår
@@ -14,3 +24,4 @@ da:
       points: point
       weeks: uger
       openedu: Udbydes under åben uddannelse
+      examdate: Eksamensplacering
