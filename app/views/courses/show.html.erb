@@ -1,15 +1,12 @@
 # encoding: utf-8
 
 <% @course.serialize_objectives %>
-<p id="notice"><%= notice %></p>
+<% if notice %><p id="notice"><%= notice %></p><% end %>
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang"><%= @course.title alt_language %></h2>
 	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
-	<h3><% @course.main_course_types.each do |mct| %>
-		<%= mct.title %><%= ', ' if mct != @course.main_course_types.last %>, 
-	<% end %>
-	<%= t('languages.' + @course.language.downcase) %></h3>
+	<h3><% @course.main_course_types.each do |mct| %><%= mct.title %>, <% end %><%= t('languages.' + @course.language.downcase) %></h3>
 <% if @course.open_education %>
 	<p><%= t('.openedu') %></p>
 <% end %>
@@ -41,22 +38,23 @@
 				</tr>
 			</tbody>
 		</table>
-		<p><%= t('.examdate') %> <strong>F1B og E1B</strong></p>
+		<p><%= t('.examdate') %> <strong><%= @course.exam_schedule %></strong></p>
 	</div>
 </div>
 
 <dl class="section">
 <% if @course.top_comment %>
 	<dt>Kommentar</dt>
-		<dd><%= @course.top_comment  %></dd>
+		<dd><%= @course.top_comment %></dd>
 <% end %>
+	<dt>Schedule</dt>
+		<dd><%= @course.schedule %></dd>
 </dl>
 
 
 <table id="course-table">
 	<tr style="border-bottom: 2px solid black">
-		<td><strong>Schedule:</strong></td>
-		<td><%= @course.schedule %></td>
+		
 	</tr>
 	<tr>
 		<td><strong>Teaching form:</strong></td>
