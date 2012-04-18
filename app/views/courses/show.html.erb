@@ -49,126 +49,108 @@
 <% end %>
 	<dt>Schedule</dt>
 		<dd><%= @course.schedule %></dd>
-</dl>
-
-
-<table id="course-table">
-	<tr style="border-bottom: 2px solid black">
-		
-	</tr>
-	<tr>
-		<td><strong>Teaching form:</strong></td>
-		<td><%= @course.teaching_form %></td>
-	</tr>
-	<tr>
-		<td><strong>Duration:</strong></td>
-		<td><%= @course.duration %></td>
-	</tr>
+	<dt>Teaching form</dt>
+		<dd><%= @course.teaching_form %></dd>
 	<% if @course.blocked_courses.count > 0 %>
-	<tr>
-		<td><strong>Point blocks</strong></td>
-		<td>
+	<dt>Point blocks</dt>
+		<dd>
 		<% @course.blocked_courses.each do |bc| %>
 			<%= bc.course_no %><% if bc != @course.blocked_courses.last %>,<% end %>
 		<% end%>
-		</td>
-	</tr>
+		</dd>
 	<% end %>
 	<% if @course.qualification_courses.count > 0 %>
-	<tr>
-		<td><strong>Qualificatied prerequisites</strong></td>
-		<td>
+	<dt>Qualificatied prerequisites</dt>
+		<dd>
 		<% @course.qualification_courses.each do |bc| %>
 			<%= bc.course_no %><% if bc != @course.qualification_courses.last %>, <% end %>
 		<% end %>
-		</td>
-	</tr>
+		</dd>
 	<% end %>
+
+
 	<% if @course.optional_courses.count > 0 %>
-	<tr>
-		<td><strong>Optional prerequisites</strong></td>
-		<td>
+		<dt>Optional prerequisites</dt>
+		<dd>
 		<% @course.optional_courses.each do |bc| %>
 			<%= bc.course_no %><% if bc != @course.optional_courses.last %>,<% end %>
 		<% end %>
-		</td>
-	</tr>
+		</dd>
 	<% end %>
 	<% if @course.mandatory_courses.count > 0 %>
-	<tr>
-		<td><strong>Mandatory prerequisites</strong></td>
-		<td>
+	
+	<dt>Mandatory prerequisites</dt>
+		<dd>
 		<% @course.mandatory_courses.each do |bc| %>
 			<%= bc.course_no %>
 		<% end %>
-		</td>
-	</tr>
+		</dd>
+	
 	<% end %>
 	<% if @course.participant_limit %>
-		<tr>
-			<td><strong>Participant limit:</strong></td>
-			<td><%= @course.participant_limit %></td>
-		</tr>
+		
+			<dt>Participant limit</dt>
+			<dd><%= @course.participant_limit %></dd>
+		
 	<% end %>
-	<tr>
-		<td><strong>Course objectives:</strong></td>
-		<td><%= @course.course_objectives %></td>
-	</tr>
-	<tr>
-		<td><strong>Learn objectives:</strong></td>
-		<td>
+	
+		<dt>Course objectives</dt>
+		<dd><%= @course.course_objectives %></dd>
+	
+	
+		<dt>Learn objectives</dt>
+		<dd>
 			<ul>
 	  		<% @course.learn_objectives.each do |lo| %>
 					<li><%= lo %></li>
 				<% end %>
 			</ul>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Content:</strong></td>
-		<td><%= @course.content %></td>
-	</tr>
+		</dd>
+	
+	
+		<dt>Content</dt>
+		<dd><%= @course.content %></dd>
+	
 	<% if @course.litteratur %>
-		<tr>
-			<td><strong>Litteratur:</strong></td>
-			<td><%= @course.litteratur %></td>
-		</tr>
+		
+			<dt>Litteratur</dt>
+			<dd><%= @course.litteratur %></dd>
+		
 	<% end %>
-	<tr>
-		<td><strong>Kursusansvarlig:</strong></td>
-		<td>
+	
+	<dt>Kursusansvarlig</dt>
+		<dd>
 			<% @course.teachers.each do |t| %>
 				<%= link_to (image_tag(t.image(70), :border => 0)), t.link, :target => '_blank' %><%= ', ' if t != @course.teachers.last %>
 			<% end %>
-		</td>
-	</tr>
-	<tr>
-		<td><strong>Institute:</strong></td>
-		<td><%= @course.institute.display %></td>
-	</tr>
-	<tr>
-		<td><strong>Registration:</strong></td>
-		<td><%= @course.registration %></td>
-	</tr>
+		</dd>
+	
+	
+	<dt>Institute</dt>
+		<dd><%= @course.institute.display %></dd>
+	
+	
+	<dt>Registration</dt>
+		<dd><%= @course.registration %></dd>
+	
 	<% if @course.homepage %>
-		<tr>
-			<td><strong>Homepage:</strong></td>
-			<td><%= link_to @course.homepage, @course.homepage %></td>
-		</tr>
+		
+	<dt>Homepage</dt>
+			<dd><%= link_to @course.homepage, @course.homepage %></dd>
+		
 	<% end %>
 	<% if !@course.keywords.empty? %>
-		<tr>
-			<td><strong>Keywords:</strong></td>
-			<td>
+	<dt>Keywords</dt>
+			<dd>
 					<% @course.keywords.each do |k| 
 						if k.respond_to? :title %>
 							<%= k.title %><%= ', ' if k != @course.keywords.last%>
 					<% 	end
 					end %>
-			</td>
-		</tr>
-	<% end %>	
-</table>
+			</dd>
+		
+	<% end %>
+</dl>
 
 <div id="qualifications">
 	<h3>This course is a prerequisite for these courses:</h3>
