@@ -7,6 +7,7 @@ gem 'rails', '3.2.1'
 
 gem 'globalize3'
 gem 'simple-navigation'
+gem 'mechanize'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -63,7 +64,6 @@ group :development do
 end
 
 group :production do
-  gem 'mechanize'
   gem 'pg'
   gem 'thin'
 end

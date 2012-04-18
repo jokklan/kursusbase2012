@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412074742) do
+ActiveRecord::Schema.define(:version => 20120418101603) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -24,6 +24,17 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
 
   add_index "course_relations", ["course_id"], :name => "index_course_prerequisites_on_course_id"
   add_index "course_relations", ["related_course_id"], :name => "index_course_prerequisites_on_req_course_id"
+
+  create_table "course_student_data", :force => true do |t|
+    t.integer  "course_id"
+    t.integer  "student_data_id"
+    t.string   "semester"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "course_student_data", ["course_id"], :name => "index_course_student_data_on_course_id"
+  add_index "course_student_data", ["student_data_id"], :name => "index_course_student_data_on_student_data_id"
 
   create_table "course_translations", :force => true do |t|
     t.integer  "course_id"
@@ -184,13 +195,14 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
   end
 
   create_table "users", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "student_number"
     t.integer  "direction_id"
     t.integer  "start_year"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
     t.string   "api_key"
     t.string   "username"
+    t.string   "cn_access_key"
   end
 
   add_index "users", ["direction_id"], :name => "index_users_on_direction_id"
