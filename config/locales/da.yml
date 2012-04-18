@@ -1,0 +1,10 @@
+# DTU Kursusbase 2012 localisation
+# DANISH
+
+da:
+  courses:
+    spring: forår
+    autumn: efterår
+    show:
+      points: point
+      weeks: uger

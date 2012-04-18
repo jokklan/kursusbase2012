@@ -1,40 +1,21 @@
-<p id="notice"><%= notice %></p>
+# encoding: utf-8
+
 <% @course.serialize_objectives %>
-<h1><%= @course.course_no %> <%= @course.title %></h1>
-<h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
+<p id="notice"><%= notice %></p>
+<div id="coursehead">
+	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
+	<h2 class="altlang">Alt lang<%#= @course.title alt_language %></h2>
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, season</strong> (X <%= t('.weeks') %>)</h2>
+<!-- <h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
 <hr />
 <% if @course.top_comment %>
 	<%= @course.top_comment  %>
 	<hr />
 <% end %>
-<div id="qualifications" style="border: 1px solid black; padding: 15px">
-	<h3>This course is a prerequisite for these courses:</h3>
-	<ul style="list-style: none;">
-	<% @course.recommended_courses.each do |rec_course| %>
-		<li>
-		<% if rec_course.active %>
-			<%= link_to rec_course.course_no, rec_course %>
-		<% else %>
-			<%= rec_course.course_no %>
-		<% end %>
-		</li>
-		<% end %>
-	</ul>
+-->
 </div>
-<div id="has-also-taken" style="border: 1px solid black; padding: 15px">
-	<h3>People who has taken this course has also taken these courses:</h3>
-	<ul style="list-style: none">
-	<% @course.similar_courses.each do |key, sim_course| %>
-		<li>
-			<% if sim_course.active %>
-				<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
-			<% else %>
-				<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-			<% end %>
-		</li>
-	<% end %>
-	</ul>
-</div>
+
+
 <table id="course-table">
 	<tr>
 		<td><strong>Language:</strong></td>
@@ -174,10 +155,41 @@
 		<tr>
 			<td><strong>Keywords:</strong></td>
 			<td>
-					<% @course.keywords.each do |k| %>
-						<%= k.title %><%= ', ' if k != @course.keywords.last%>
-					<% end %>
+					<% @course.keywords.each do |k| 
+						if k.respond_to? :title %>
+							<%= k.title %><%= ', ' if k != @course.keywords.last%>
+					<% 	end
+					end %>
 			</td>
 		</tr>
 	<% end %>	
 </table>
+
+<div id="qualifications">
+	<h3>This course is a prerequisite for these courses:</h3>
+	<ul style="list-style: none;">
+	<% @course.recommended_courses.each do |rec_course| %>
+		<li>
+		<% if rec_course.active %>
+			<%= link_to rec_course.course_no, rec_course %>
+		<% else %>
+			<%= rec_course.course_no %>
+		<% end %>
+		</li>
+		<% end %>
+	</ul>
+</div>
+<div id="has-also-taken">
+	<h3>People who has taken this course has also taken these courses:</h3>
+	<ul style="list-style: none">
+	<% @course.similar_courses.each do |key, sim_course| %>
+		<li>
+			<% if sim_course.active %>
+				<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+			<% else %>
+				<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
+			<% end %>
+		</li>
+	<% end %>
+	</ul>
+</div>
