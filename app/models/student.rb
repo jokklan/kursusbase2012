@@ -16,14 +16,14 @@ class Student < ActiveRecord::Base
   has_many :course_students
   has_many :courses, :through => :course_students
   
-  attr_accessor :password
+  #attr_accessor :password
   
   attr_accessible :student_number, :password
   
   validates :student_number, :presence => true, :uniqueness => true
   
-  after_create :update_courses
-	before_create :authenticate
+  #after_create :update_courses
+	#before_create :authenticate
   
   def authenticate(pass = password)
     require "net/http"
@@ -95,8 +95,10 @@ class Student < ActiveRecord::Base
   end
 
 	def have_had_course(course)
-		if self.courses.find(course.id).nil? false
-		else true
+		if self.courses.include?(course) 
+			false
+		else 
+			true
 		end
 	end
   

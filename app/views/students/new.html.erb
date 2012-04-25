@@ -1,0 +1,10 @@
+<%= form_for(@student) do |f| %>
+	<div class="field">
+    <%= f.label :student_number %><br />
+    <%= f.text_field :student_number %>
+  </div>
+
+	<div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

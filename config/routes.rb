@@ -18,6 +18,7 @@ Kursusbase2012::Application.routes.draw do
     resources :courses
     resources :keywords
     resources :course_types
+		resources :students
   end
   
   root :to => 'Courses#index'
