@@ -98,7 +98,7 @@ class Course < ActiveRecord::Base
     end
   end
   
-  def schedule_class_name(sch)
+  def schedule_class_table_cell(sch)
     schs = schedules.select {|s| s.block[1,2] == sch}
     if schs.map {|s| s.block[0]}.include?("F") && schs.map {|s| s.block[0]}.include?("E")
       css_class = "allyear"
