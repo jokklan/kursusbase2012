@@ -380,7 +380,9 @@ namespace :scrape do
           # Keywords
           course_attributes[language][:keywords].each do |key, att|
             if att_title == att
-              current_course_keywords << att_column[1].text.chomp.strip
+							att_column[1].text.split(',').each do |k|
+								current_course_keywords << k.strip.chomp
+							end
             end
           end
         end # End of column.each
