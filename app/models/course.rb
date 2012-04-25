@@ -106,7 +106,7 @@ class Course < ActiveRecord::Base
     end
   end
 
-	def recommended_courses
+	def prereq_for
 		rec_courses = []
 		CourseRelation.where(['related_course_id = ? AND related_course_type = ?', self.id, "Mandatory"]).sort.each do |cr|
 			rec_courses << Course.find(cr.course_id)

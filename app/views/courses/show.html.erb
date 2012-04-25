@@ -155,10 +155,10 @@
 </div>
 
 <div id="courserec">
-	<% if not @course.recommended_courses.empty? %>
+	<% if not @course.prereq_for.empty? %>
 	<h3>This course is a prerequisite for these courses:</h3>
 	<ul>
-	<% @course.recommended_courses.each do |rec_course| %>
+	<% @course.prereq_for.each do |rec_course| %>
 		<li>
 		<% if rec_course.active %>
 			<%= link_to rec_course.course_no, rec_course %>
