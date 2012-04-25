@@ -2,6 +2,7 @@
 # ENGLISH
 
 en:
+  and: and
   languages:
     dansk: Danish
     da: Danish
@@ -17,9 +18,10 @@ en:
     sun: Sunday
     o: W
     l: S
-  courses:
+  seasons:
     spring: spring
     autumn: autumn
+  courses:
     show:
       points: points
       weeks: weeks

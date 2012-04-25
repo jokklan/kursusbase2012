@@ -2,6 +2,7 @@
 # DANISH
 
 da:
+  and: og
   languages:
     dansk: dansk
     da: dansk
@@ -17,9 +18,10 @@ da:
     sun: søndag
     o: O
     l: L
-  courses:
+  seasons:
     spring: forår
     autumn: efterår
+  courses:
     show:
       points: point
       weeks: uger

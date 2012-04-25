@@ -99,10 +99,12 @@ class Course < ActiveRecord::Base
   end
   
   def season()
-    if schedule[0] = "F"
-      I18n.translate('courses.spring')
-    elsif schedule[0] = "E"
-      I18n.translate('courses.autumn')
+    if schedules.map(&:block[0]).include? == "F" && schedules.map(&:block[0]).include? == "E"
+      I18n.translate('seasons.spring') + " " + I18n.translate('and') + " " + I18n.translate('seasons.autumn')
+    elsif schedules.map(&:block[0]).include? == "F"
+      I18n.translate('seasons.spring')
+    elsif schedules.map(&:block[0]).include? == "E"
+      I18n.translate('seasons.autumn')
     end
   end
 
