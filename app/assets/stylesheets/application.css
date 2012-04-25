@@ -280,3 +280,13 @@
 		#content #coursehead p {
 			margin: 0;
 		}
+
+		#content #courseinfo {
+			float: left;
+			width: 620px;
+		}
+
+		#content #courserec {
+			margin-left: 700px;
+			padding: 20px 0 0;
+		}

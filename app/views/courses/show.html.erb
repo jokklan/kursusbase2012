@@ -42,6 +42,7 @@
 	</div>
 </div>
 
+<div id="courseinfo">
 <dl class="section">
 <% if @course.top_comment %>
 	<dt>Kommentar</dt>
@@ -151,10 +152,12 @@
 		
 	<% end %>
 </dl>
+</div>
 
-<div id="qualifications">
+<div id="courserec">
+	<% if not @course.recommended_courses.empty? %>
 	<h3>This course is a prerequisite for these courses:</h3>
-	<ul style="list-style: none;">
+	<ul>
 	<% @course.recommended_courses.each do |rec_course| %>
 		<li>
 		<% if rec_course.active %>
@@ -165,22 +168,23 @@
 		</li>
 		<% end %>
 	</ul>
-</div>
-<div id="has-also-taken">
+	<% end %>
+	
+	<% if not @course.similar_courses.nil? and not @course.similar_courses.empty? %>
 	<h3>People who has taken this course has also taken these courses:</h3>
-	<ul style="list-style: none">
-	<%# if not @course.similar_courses.nil? %>
-		<% @course.similar_courses.each do |key, sim_course| %>
-			<li>
-				<% if sim_course.active %>
-					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
-				<% else %>
-					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-				<% end %>
-			</li>
-		<% end %>
-	<%# end %>
+	<ul>
+	<% @course.similar_courses.each do |key, sim_course| %>
+		<li>
+			<% if sim_course.active %>
+				<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+			<% else %>
+				<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
+			<% end %>
+		</li>
+	<% end %>
 	</ul>
+	<% end %>
+	
 </div>
 
-<h3><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
+<h3 style="clear:both"><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
