@@ -18,3 +18,10 @@ request.set_form_data({"username" => "s103472", "password" => "Supermand8"})
 response = http.request(request)
 
 puts response.to_yaml
+
+puts "ACCESS KEY:"
+if response.body =~ /LimitedAccess Password/
+  puts /Password=\"([^\"]*)\"/.match(response.body)[1]
+else
+  puts /Reason=\"([^\"]*)\"/.match(response.body)[1]
+end

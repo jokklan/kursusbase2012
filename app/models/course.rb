@@ -2,22 +2,23 @@
 #
 # Table name: courses
 #
-#  id              :integer         not null, primary key
-#  course_number   :integer
-#  language        :string(255)
-#  ects_points     :float
-#  open_education  :boolean
-#  schedule        :string(255)
-#  created_at      :datetime        not null
-#  updated_at      :datetime        not null
-#  institute_id    :integer
-#  former_course   :string(255)
-#  exam_schedule   :string(255)
-#  exam_form       :text
-#  exam_duration   :string(255)
-#  exam_aid        :string(255)
-#  evaluation_form :string(255)
-#  homepage        :string(255)
+#  id               :integer         not null, primary key
+#  course_number    :integer
+#  language         :string(255)
+#  ects_points      :float
+#  open_education   :boolean
+#  schedule         :text
+#  institute_id     :integer
+#  homepage         :string(255)
+#  exam_schedule    :text
+#  exam_duration    :string(255)
+#  point_block      :string(255)
+#  qualified_prereq :string(255)
+#  optional_prereq  :string(255)
+#  mandatory_prereq :string(255)
+#  active           :boolean
+#  created_at       :datetime        not null
+#  updated_at       :datetime        not null
 #
 
 class Course < ActiveRecord::Base
@@ -44,8 +45,8 @@ class Course < ActiveRecord::Base
             :conditions => [ "related_course_type = ?", "Optional" ], :after_add => lambda{|data, record| record.set_related_course_type("Optional")}
   has_many :optional_courses, :through => :advisable_qualifications, :source => :related_course
   
-  has_many :course_users
-  has_many :users, :through => :course_users
+  has_many :course_students
+  has_many :students, :through => :course_students
 	has_many :course_student_datas
 	has_many :student_datas, :through => :course_student_datas
   

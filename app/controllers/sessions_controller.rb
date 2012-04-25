@@ -3,9 +3,9 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_or_create_by_student_number(params[:student_number])
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
+    student = Student.find_or_create_by_student_number(:student_number => params[:student_number], :password => params[:password])
+    if student
+      session[:student_id] = student.id
       redirect_to root_url, notice: "Logged in!"
     else
       flash.now.alert = "Email or password is invalid"
@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    session[:student_id] = nil
     redirect_to root_url, notice: "Logged out!"
   end
 end

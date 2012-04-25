@@ -1,0 +1,9 @@
+<h1><%= @student.student_number %></h1>
+<h1><%= Direction.find(@student.direction_id) %></h1>
+
+<h2>Course taken</h2>
+<ul>
+	<% @student.courses.each do |c| %>
+	<li><%= c.course_number %></li>
+	<% end %>
+</ul>
