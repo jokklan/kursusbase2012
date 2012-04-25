@@ -40,7 +40,7 @@ namespace :import do
 				day = datex[1].to_i
 				datetime = DateTime.civil(year, month, day)
 			end
-			fos = FieldOfStudy.find_or_create_by_name(studyline_corrector[studyline]) unless studyline_corrector[studyline].nil?
+			fos = FieldOfStudy.find_or_create_by_title(studyline_corrector[studyline]) unless studyline_corrector[studyline].nil?
 			puts "id: #{id}"
 			StudentData.create({
 				:student_id => id,

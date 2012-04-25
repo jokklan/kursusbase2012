@@ -126,11 +126,12 @@ class Course < ActiveRecord::Base
 		algo1_counter = 0
 		n_values = 10 # how many results?
 		rec_array = {}
-		CourseStudentData.where('course_id = ?',self.id).each do |student|
+		CourseStudentData.where('course_id = ?',self.id).each do |data|
 			counter += 1
-			CourseStudentData.where('student_data_id = ?',student.id).each do |course_taken|
-				algo1_counter += 1 if c_id == 37
+			CourseStudentData.where('student_data_id = ?',data.student_data_id).each do |course_taken|
 				c_id = course_taken.course_id
+				algo1_counter += 1 if c_id == 37
+				
 				if rec_array[c_id].nil?
 					rec_array[c_id] = 1 
 				else
@@ -151,6 +152,6 @@ class Course < ActiveRecord::Base
 				index = index + 1
 			end
 		end
-		#return result
+		return result
 	end
 end

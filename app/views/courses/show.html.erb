@@ -169,15 +169,17 @@
 <div id="has-also-taken">
 	<h3>People who has taken this course has also taken these courses:</h3>
 	<ul style="list-style: none">
-	<% @course.similar_courses.each do |key, sim_course| %>
-		<li>
-			<% if sim_course.active %>
-				<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
-			<% else %>
-				<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-			<% end %>
-		</li>
-	<% end %>
+	<%# if not @course.similar_courses.nil? %>
+		<% @course.similar_courses.each do |key, sim_course| %>
+			<li>
+				<% if sim_course.active %>
+					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+				<% else %>
+					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
+				<% end %>
+			</li>
+		<% end %>
+	<%# end %>
 	</ul>
 </div>
 
