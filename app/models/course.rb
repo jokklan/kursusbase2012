@@ -98,12 +98,23 @@ class Course < ActiveRecord::Base
     end
   end
   
-  def season()
-    if schedules.map(&:block[0]).include? == "F" && schedules.map(&:block[0]).include? == "E"
+  def schedule_class_name(sch)
+    schs = schedules.select {|s| s.block[1,2] == sch}
+    if schs.map {|s| s.block[0]}.include?("F") && schs.map {|s| s.block[0]}.include?("E")
+      "class='allyear'"
+    elsif schs.map {|s| s.block[0]}.include?("F")
+      "class='spring'"
+    elsif schs.map {|s| s.block[0]}.include?("E")
+      "class='autumn'"
+    end
+  end
+  
+  def season_text()
+    if schedules.map {|s| s.block[0]}.include?("F") && schedules.map {|s| s.block[0]}.include?("E")
       I18n.translate('seasons.spring') + " " + I18n.translate('and') + " " + I18n.translate('seasons.autumn')
-    elsif schedules.map(&:block[0]).include? == "F"
+    elsif schedules.map {|s| s.block[0]}.include?("F")
       I18n.translate('seasons.spring')
-    elsif schedules.map(&:block[0]).include? == "E"
+    elsif schedules.map {|s| s.block[0]}.include?("E")
       I18n.translate('seasons.autumn')
     end
   end
