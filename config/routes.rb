@@ -3,18 +3,18 @@ Kursusbase2012::Application.routes.draw do
   get "sessions/new"
 
   scope "(:locale)", :locale => /en|da/ do
-    # match "/users/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
-    # match "/users/login" => "users#login"
-    # match "/users/logged_in" => "users#logged_in", :as => "logged_in_user"
-    # match "/users/get_courses" => "users#get_courses", :as => "get_courses_user"
-    # resources :users
+    # match "/students/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
+    # match "/students/login" => "students#login"
+    # match "/students/logged_in" => "students#logged_in", :as => "logged_in_student"
+    # match "/students/get_courses" => "students#get_courses", :as => "get_courses_student"
+    # resources :students
     
-    # get 'signup', to: 'users#new', as: 'signup'
+    # get 'signup', to: 'students#new', as: 'signup'
     get 'login', to: 'sessions#new', as: 'login'
     get 'logout', to: 'sessions#destroy', as: 'logout'
-
-    resources :users
-    resources :sessions
+    get 'test', to: 'sessions#test', as: 'test'
+    
+    resources :sessions, :only => [:create]
     
     resources :courses
     resources :keywords

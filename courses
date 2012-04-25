@@ -1,0 +1,26 @@
+<ElementGroupings>
+	<Grouping Name="Courses">
+		<Element Id="372079" ParentId="20197" Name="02102 Introductory Programming" ContextName="02102 Introductory Programming" IsArchived="false" SubgroupCount="0"/>
+		<Element Id="360285" ParentId="20197" Name="02110 Algorithms and Data Structures 2 E11" ContextName="02110 Algorithms and Data Structures 2 E11" IsArchived="true" SubgroupCount="0"/>
+		<Element Id="372171" ParentId="20197" Name="02122 Software Technology Project" ContextName="02122 Software Technology Project" IsArchived="false" SubgroupCount="1"/>
+		<Element Id="371823" ParentId="20197" Name="02141 Computer Science Modelling" ContextName="02141 Computer Science Modelling" IsArchived="false" SubgroupCount="0"/>
+		<Element Id="371811" ParentId="20197" Name="02170 Database Systems" ContextName="02170 Database Systems" IsArchived="false" SubgroupCount="0"/>
+		<ElementId="371857" ParentId="20197" Name="02180 Introduction to Artificial Intelligence" ContextName="02180 Introduction to Artificial Intelligence" IsArchived="false" SubgroupCount="0"/>
+		<ElementId="371955" ParentId="20173" Name="10020 Physics 1" ContextName="10020 Physics 1" IsArchived="false" SubgroupCount="0"/>
+	</Grouping>
+	<Grouping Name="Groups">
+		<ElementId="210205" ParentId="20137" Name="Bachelor" ContextName="ADM4/Bachelor" IsArchived="false" SubgroupCount="1"/><Element Id="337931" ParentId="329309" Name="Ruskilde" ContextName="dtu/PF/Studiestarten/KABS/KABS10/Vektor
+	  2010/Stenkilde/Ruskilde" IsArchived="false" SubgroupCount="0"/>
+		<Element Id="237227" ParentId="237201" Name="S/M activities" ContextName="DTU Informatics/The S/M council/S/M activities" IsArchived="false" SubgroupCount="0"/>
+		<Element Id="337533" ParentId="20197" Name="SoftMat-10" ContextName="DTU Informatics/SoftMat-10" IsArchived="false" SubgroupCount="2"/>
+	</Grouping>
+	<GroupingName="User groups">
+		<Element Id="319657" ParentId="0" Name="SoftwareEvent" ContextName="SoftwareEvent" IsArchived="false" SubgroupCount="0"/><Element Id="284485" ParentId="0" Name="SoftwareJob" ContextName="SoftwareJob" IsArchived="false" SubgroupCount="0"/>
+	</Grouping>
+</ElementGroupings>
+
+
+
+	<Element Id="372079" ParentId="20197"
+	  Name="02102 Introductory Programming" ContextName="02102 Introductory Programming"
+	  IsArchived="false" SubgroupCount="0"/>

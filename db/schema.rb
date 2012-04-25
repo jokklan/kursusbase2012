@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412074742) do
+ActiveRecord::Schema.define(:version => 20120425090855) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
 
   add_index "course_student_data", ["course_id"], :name => "index_course_student_data_on_course_id"
   add_index "course_student_data", ["student_data_id"], :name => "index_course_student_data_on_student_data_id"
+
+  create_table "course_students", :force => true do |t|
+    t.integer "student_id"
+    t.integer "course_id"
+    t.string  "semester"
+  end
+
+  add_index "course_students", ["course_id"], :name => "index_course_users_on_course_id"
+  add_index "course_students", ["student_id"], :name => "index_course_users_on_user_id"
 
   create_table "course_translations", :force => true do |t|
     t.integer  "course_id"
@@ -83,15 +92,6 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
 
   add_index "course_types_courses", ["course_id"], :name => "index_course_types_courses_on_course_id"
   add_index "course_types_courses", ["course_type_id"], :name => "index_course_types_courses_on_course_type_id"
-
-  create_table "course_users", :force => true do |t|
-    t.integer "user_id"
-    t.integer "course_id"
-    t.string  "semester"
-  end
-
-  add_index "course_users", ["course_id"], :name => "index_course_users_on_course_id"
-  add_index "course_users", ["user_id"], :name => "index_course_users_on_user_id"
 
   create_table "courses", :force => true do |t|
     t.integer  "course_number"
@@ -189,6 +189,17 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
 
   add_index "student_data", ["field_of_study_id"], :name => "index_student_data_on_field_of_study_id"
 
+  create_table "students", :force => true do |t|
+    t.string   "student_number"
+    t.integer  "direction_id"
+    t.integer  "start_year"
+    t.string   "cn_access_key"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "students", ["student_number"], :name => "index_users_on_student_number"
+
   create_table "teachers", :force => true do |t|
     t.string   "name"
     t.string   "location"
@@ -198,16 +209,5 @@ ActiveRecord::Schema.define(:version => 20120412074742) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
   end
-
-  create_table "users", :force => true do |t|
-    t.integer  "student_number"
-    t.integer  "direction_id"
-    t.integer  "start_year"
-    t.string   "cn_access_key"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
-  end
-
-  add_index "users", ["student_number"], :name => "index_users_on_student_number"
 
 end

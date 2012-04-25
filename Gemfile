@@ -8,6 +8,7 @@ gem 'rails', '3.2.1'
 gem 'globalize3'
 gem 'simple-navigation'
 gem 'mechanize'
+gem 'crack'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -26,6 +27,7 @@ gem 'jquery-rails'
 group :test, :development do
   gem 'sqlite3'
   
+  gem 'debugger'
   
   gem 'guard-cucumber'
   gem 'guard-rspec'
@@ -58,7 +60,7 @@ end
 group :development do
   gem 'heroku'
   gem 'sqlite3'
-  # gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'taps'
 
 end
