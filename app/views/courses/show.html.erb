@@ -5,7 +5,7 @@
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang"><%= @course.title alt_language %></h2>
-	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season_text %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= season_text %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
 	<h3><% @course.main_course_types.each do |mct| %><%= mct.title %>, <% end %><%= t('languages.' + @course.language.downcase) %></h3>
 <% if @course.open_education %>
 	<p><%= t('.openedu') %></p>
@@ -23,18 +23,18 @@
 			</thead>
 			<tbody>
 				<tr>
-					<%= @course.schedule_class_table_cell('1A') %>
-					<%= @course.schedule_class_table_cell('3A') %>
-					<%= @course.schedule_class_table_cell('5A') %>
-					<%= @course.schedule_class_table_cell('2B') %>
-					<%= @course.schedule_class_table_cell('4B') %>
+					<%= schedule_table_cell('1A') %>
+					<%= schedule_table_cell('3A') %>
+					<%= schedule_table_cell('5A') %>
+					<%= schedule_table_cell('2B') %>
+					<%= schedule_table_cell('4B') %>
 				</tr>
 				<tr>
-					<%= @course.schedule_class_table_cell('2A') %>
-					<%= @course.schedule_class_table_cell('4A') %>
-					<%= @course.schedule_class_table_cell('5B') %>
-					<%= @course.schedule_class_table_cell('1B') %>
-					<%= @course.schedule_class_table_cell('3B') %>
+					<%= schedule_table_cell('2A') %>
+					<%= schedule_table_cell('4A') %>
+					<%= schedule_table_cell('5B') %>
+					<%= schedule_table_cell('1B') %>
+					<%= schedule_table_cell('3B') %>
 				</tr>
 			</tbody>
 		</table>
@@ -155,7 +155,7 @@
 </div>
 
 <div id="courserec">
-	<% if not @course.prereq_for.empty? %>
+	<% if not @course.prereq_for.blank? %>
 	<h3>This course is a prerequisite for these courses:</h3>
 	<ul>
 	<% @course.prereq_for.each do |rec_course| %>
@@ -170,7 +170,7 @@
 	</ul>
 	<% end %>
 	
-	<% if not @course.similar_courses.nil? and not @course.similar_courses.empty? %>
+	<% if not @course.similar_courses.blank? %>
 	<h3>People who has taken this course has also taken these courses:</h3>
 	<ul>
 	<% @course.similar_courses.each do |key, sim_course| %>
