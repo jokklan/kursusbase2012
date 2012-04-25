@@ -171,13 +171,15 @@
 	<ul style="list-style: none">
 	<%# if not @course.similar_courses.nil? %>
 		<% @course.similar_courses.each do |key, sim_course| %>
-			<li>
-				<% if sim_course.active %>
-					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
-				<% else %>
-					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-				<% end %>
-			</li>
+			<% if current_student %>
+				<li>
+					<% if sim_course.active && current_student.have_had_course(sim_course) %>
+						<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+					<% else %>
+						<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
+					<% end %>
+				</li>
+			<% end %>
 		<% end %>
 	<%# end %>
 	</ul>

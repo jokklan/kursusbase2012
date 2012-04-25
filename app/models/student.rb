@@ -93,6 +93,12 @@ class Student < ActiveRecord::Base
       short_year + 1900
     end
   end
+
+	def have_had_course(course)
+		if self.courses.find(course.id).nil? false
+		else true
+		end
+	end
   
   class << self
     ## GLOBALIZE MISSING FUNCTION. HOPELY THERE WILL BE A FIX SOON!
