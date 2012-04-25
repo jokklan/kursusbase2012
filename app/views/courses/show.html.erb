@@ -5,7 +5,7 @@
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang"><%= @course.title alt_language %></h2>
-	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= @course.season_text %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
 	<h3><% @course.main_course_types.each do |mct| %><%= mct.title %>, <% end %><%= t('languages.' + @course.language.downcase) %></h3>
 <% if @course.open_education %>
 	<p><%= t('.openedu') %></p>
@@ -23,18 +23,18 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td>1A</td>
-					<td>3A</td>
-					<td>5A</td>
-					<td>2B</td>
-					<td>4B</td>
+					<%= @course.schedule_class_table_cell('1A') %>
+					<%= @course.schedule_class_table_cell('3A') %>
+					<%= @course.schedule_class_table_cell('5A') %>
+					<%= @course.schedule_class_table_cell('2B') %>
+					<%= @course.schedule_class_table_cell('4B') %>
 				</tr>
 				<tr>
-					<td>2A</td>
-					<td>4A</td>
-					<td>5B</td>
-					<td>1B</td>
-					<td>3B</td>
+					<%= @course.schedule_class_table_cell('2A') %>
+					<%= @course.schedule_class_table_cell('4A') %>
+					<%= @course.schedule_class_table_cell('5B') %>
+					<%= @course.schedule_class_table_cell('1B') %>
+					<%= @course.schedule_class_table_cell('3B') %>
 				</tr>
 			</tbody>
 		</table>

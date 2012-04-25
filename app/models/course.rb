@@ -101,11 +101,11 @@ class Course < ActiveRecord::Base
   def schedule_class_name(sch)
     schs = schedules.select {|s| s.block[1,2] == sch}
     if schs.map {|s| s.block[0]}.include?("F") && schs.map {|s| s.block[0]}.include?("E")
-      "class='allyear'"
+      ' class="allyear"'.html_safe
     elsif schs.map {|s| s.block[0]}.include?("F")
-      "class='spring'"
+      ' class="spring"'.html_safe
     elsif schs.map {|s| s.block[0]}.include?("E")
-      "class='autumn'"
+      ' class="autumn"'.html_safe
     end
   end
   
