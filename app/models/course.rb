@@ -101,12 +101,18 @@ class Course < ActiveRecord::Base
   def schedule_class_name(sch)
     schs = schedules.select {|s| s.block[1,2] == sch}
     if schs.map {|s| s.block[0]}.include?("F") && schs.map {|s| s.block[0]}.include?("E")
-      ' class="allyear"'.html_safe
+      css_class = "allyear"
     elsif schs.map {|s| s.block[0]}.include?("F")
-      ' class="spring"'.html_safe
+      css_class = "spring"
     elsif schs.map {|s| s.block[0]}.include?("E")
-      ' class="autumn"'.html_safe
+      css_class = "autumn"
     end
+    if css_class.blank?
+      "<td>#{sch}</td>".html_safe
+    else
+      "<td class=\"#{css_class}\"><strong>#{sch}</strong></td>".html_safe
+    end
+      
   end
   
   def season_text()
