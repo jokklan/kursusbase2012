@@ -9,6 +9,8 @@ gem 'globalize3'
 gem 'simple-navigation'
 gem 'mechanize'
 gem 'crack'
+gem 'simple_form'
+gem 'rails-i18n'
 
 # Gems used only for assets and not required
 # in production environments by default.

@@ -1,14 +1,18 @@
 class SessionsController < ApplicationController
   def new
+    if current_student
+      redirect_to root_url
+    else
+      @student = Student.new
+    end
   end
 
   def create
-    student = Student.find_or_create_by_student_number(:student_number => params[:student_number], :password => params[:password])
-    if student
-      session[:student_id] = student.id
+    @student = Student.find_or_initialize_by_student_number(params[:student])
+    if @student.save
+      session[:student_id] = @student.id
       redirect_to root_url, notice: "Logged in!"
     else
-      flash.now.alert = "Email or password is invalid"
       render "new"
     end
   end

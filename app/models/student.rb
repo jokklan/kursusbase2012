@@ -21,14 +21,20 @@ class Student < ActiveRecord::Base
   attr_accessible :student_number, :password
   
   validates :student_number, :presence => true, :uniqueness => true
+  validate :must_be_authenticated
   
-  #after_create :update_courses
-	#before_create :authenticate
+  after_create :update_courses
   
-  def authenticate(pass = password)
+  def must_be_authenticated
+    if cn_access_key.blank? && !authenticate(password)
+      errors[:base] << "student number or password is invalid"
+    end
+  end
+  
+  def authenticate(pass)
     require "net/http"
     require "uri"
-
+    
     uri = URI.parse("https://auth.dtu.dk/dtu/mobilapp.jsp")
 
     http = Net::HTTP.new(uri.host, uri.port)
@@ -41,31 +47,34 @@ class Student < ActiveRecord::Base
     response = http.request(request)
     
     if response.body =~ /LimitedAccess Password/ && key = /Password=\"([^\"]*)\"/.match(response.body)
-      self.update_attribute(:cn_access_key, key[1] )
+      self.cn_access_key = key[1]
+      true
     else
       false
     end
   end
   
   def get_info
-    student_info = CambusNet.api_call(self, "UserInfo")
+    student_info = CampusNet.api_call(self, "UserInfo")
     raise student_info.to_yaml
     
   end
   
   def old_courses
-    cn_courses = CambusNet.api_call(self, "Grades")['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
+    cn_courses = CampusNet.api_call(self, "Grades")['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
     
-    cn_courses.each do |course|
-      course_number = course['CourseCode']
+    cn_courses.each do |cn_course|
+      course_number = cn_course['CourseCode']
       course = Course.find_by_course_number(course_number)
-      course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester(course['Year'], course['Period'] == "Winter" ? 1 : 0 )) unless course.nil?
+      semester_number = semester(cn_course['Year'], cn_course['Period'] == "Winter" ? 1 : 0 )
+      puts "Year: #{course['Year']}, Period: #{course['Period']} = #{course['Period'] == "Winter" ? 1 : 0}, Semester: #{semester_number.inspect}"
+      course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number) unless course.nil?
     end
     self.save
   end
   
   def current_courses
-    cn_courses = CambusNet.api_call(self, "Elements")['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
+    cn_courses = CampusNet.api_call(self, "Elements")['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
     
     cn_courses.each do |course|
       course_number = course['Name'].match('(\d{5})')[0]
@@ -104,8 +113,8 @@ class Student < ActiveRecord::Base
   
   class << self
     ## GLOBALIZE MISSING FUNCTION. HOPELY THERE WILL BE A FIX SOON!
-    def find_or_create_by_student_number(nr)
-      find_by_student_number(nr) || create(:student_number => nr)
+    def find_or_create_by_student_number!(options = {})
+      find_by_student_number(options[:student_number]) || create!(options)
     end
     
   end

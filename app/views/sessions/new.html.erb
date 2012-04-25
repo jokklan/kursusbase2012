@@ -1,13 +1,12 @@
 <h1>Log In</h1>
 
-<%= form_tag sessions_path do %>
-  <div class="field">
-    <%= label_tag :student_number %><br />
-    <%= text_field_tag :student_number, params[:student_number] %>
-  </div>
-  <div class="field">
-    <%= label_tag :password %><br />
-    <%= password_field_tag :password %>
-  </div>
-  <div class="actions"><%= submit_tag "Log In" %></div>
+<%= simple_form_for @student, :url => sessions_path do |f| %>
+	<%= f.error_notification %>
+	<%= f.error :base %>
+	
+	<%= f.input :student_number %>
+	<%= f.input :password %>
+	
+	<%= f.button :submit, "Log in" %>
+
 <% end %>
