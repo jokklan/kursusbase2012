@@ -67,7 +67,6 @@ class Student < ActiveRecord::Base
       course_number = cn_course['CourseCode']
       course = Course.find_by_course_number(course_number)
       semester_number = semester(cn_course['Year'], cn_course['Period'] == "Winter" ? 1 : 0 )
-      puts "Year: #{course['Year']}, Period: #{course['Period']} = #{course['Period'] == "Winter" ? 1 : 0}, Semester: #{semester_number.inspect}"
       course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number) unless course.nil?
     end
     self.save
@@ -113,9 +112,9 @@ class Student < ActiveRecord::Base
   
   class << self
     ## GLOBALIZE MISSING FUNCTION. HOPELY THERE WILL BE A FIX SOON!
-    def find_or_create_by_student_number!(options = {})
-      find_by_student_number(options[:student_number]) || create!(options)
-    end
+    # def find_or_create_by_student_number!(options = {})
+    #   find_by_student_number(options[:student_number]) || create!(options)
+    # end
     
   end
     
