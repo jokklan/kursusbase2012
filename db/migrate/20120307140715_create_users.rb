@@ -12,7 +12,7 @@ class CreateUsers < ActiveRecord::Migration
     add_index :users, :student_number
     
     create_table :course_users do |t|
-      t.references :student
+      t.references :user
       t.references :course
       t.string :semester
     end
