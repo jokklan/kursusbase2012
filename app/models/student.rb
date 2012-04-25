@@ -23,8 +23,9 @@ class Student < ActiveRecord::Base
   validates :student_number, :presence => true, :uniqueness => true
   
   after_create :update_courses
+	before_create :authenticate
   
-  def authenticate(password)
+  def authenticate(pass = password)
     require "net/http"
     require "uri"
 
@@ -36,7 +37,7 @@ class Student < ActiveRecord::Base
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     request = Net::HTTP::Post.new(uri.request_uri)
-    request.set_form_data({"username" => self.student_number, "password" => password})
+    request.set_form_data({"username" => self.student_number, "password" => pass})
     response = http.request(request)
     
     if response.body =~ /LimitedAccess Password/ && key = /Password=\"([^\"]*)\"/.match(response.body)

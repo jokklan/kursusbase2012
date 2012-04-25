@@ -1,6 +1,5 @@
 Kursusbase2012::Application.routes.draw do
 
-  get "sessions/new"
 
   scope "(:locale)", :locale => /en|da/ do
     # match "/students/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")

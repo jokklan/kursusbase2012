@@ -190,7 +190,7 @@ ActiveRecord::Schema.define(:version => 20120425090855) do
   add_index "student_data", ["field_of_study_id"], :name => "index_student_data_on_field_of_study_id"
 
   create_table "students", :force => true do |t|
-    t.string   "student_number"
+    t.integer  "student_number"
     t.integer  "direction_id"
     t.integer  "start_year"
     t.string   "cn_access_key"
