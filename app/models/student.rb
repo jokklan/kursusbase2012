@@ -15,6 +15,7 @@ class Student < ActiveRecord::Base
   belongs_to :field_of_study
   has_many :course_students
   has_many :courses, :through => :course_students
+	has_many :course_recommendations
   
   attr_accessor :password
   
@@ -119,6 +120,16 @@ class Student < ActiveRecord::Base
 			end
 		end
 		blocked_courses
+	end
+	
+	def find_recommendations
+		Rake::Task["rake:pearson:sim_coeff"].execute()
+	end
+	
+	def clear_recommendations
+		self.course_recommendations.each do |cr|
+			cr.destroy
+		end
 	end
   
   class << self
