@@ -97,8 +97,6 @@ class Course < ActiveRecord::Base
       self.course_number
     end
   end
-<<<<<<< HEAD
-=======
   
   def season
     # if schedules.map(&:block[0]).include? == "F" && schedules.map(&:block[0]).include? == "E"
@@ -109,7 +107,6 @@ class Course < ActiveRecord::Base
     #       I18n.translate('seasons.autumn')
     #     end
   end
->>>>>>> tweaked scraper. added recommender functionalities to views. started working on adv. rec system
 
 	def prereq_for
 		rec_courses = []
