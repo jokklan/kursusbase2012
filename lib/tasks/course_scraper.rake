@@ -20,6 +20,11 @@ namespace :scrape do
 			scrape_prereq = true
 			db_seed = false
 		end
+		
+		if ENV['debug']
+			db_seed = false
+			db_debug = true
+		end
     
     languages = [:en, :da]
     languages.each do |language|
@@ -80,9 +85,16 @@ namespace :scrape do
 				current_course_schedules = []
           
         other_info = {}
-        page = agent.get("#{url_dtu}#{e}")
+
+				page_error = false
+				begin
+					page = agent.get("#{url_dtu}#{e}")
+				rescue
+					page_error = true
+				end
+        
         top_comment = ''
-      
+      	if not page_error
         # The table with content
         table = page.search("div.CourseViewer table")[1]
         table_rows = table.search("tr")
@@ -241,7 +253,9 @@ namespace :scrape do
                              }
       
         # Taking each row in the nice tables of kurser.dtu.dk
+				#scraping_course_t1 = Time.now
         content_rows.each_with_index do |row, row_i|
+					
           att_column = row.search("td")
           att_title = att_column[0].text.chomp.strip
         
@@ -259,8 +273,6 @@ namespace :scrape do
 						schedules.each do |s|
 							current_course_schedules << s
 						end
-						
-						
 					end
         
           # Evaluation attributes
@@ -397,7 +409,9 @@ namespace :scrape do
             end
           end
         end
-      
+				
+				#puts "Title: #{current_course[:title]}"
+				
         # Printing debug data
         if debug      
           puts "Title: #{current_course[:title]}"
@@ -416,7 +430,7 @@ namespace :scrape do
         end
 
 				# Adding course-relations
-				if language == :en && scrape_prereq
+				if language == :en
 					created_course = Course.find_by_course_number(current_course[:course_number])
 					current_course_prereq.each do |key, att|
 						group_no = 1
@@ -448,16 +462,10 @@ namespace :scrape do
 						end
 						created_course.save
 					end
-					print "|" if i == 0 || i == course_amount - 1
-          if Integer(Float(i) % (Float(course_amount) / 100)) == 0
-            print "="
-            procent_ind = procent_ind + 1
-            print "#{procent_ind}%" if procent_ind % 10 == 0
-          end
-				end
-      
-        if !debug && db_seed
-	
+				end			
+				
+        if db_seed
+					#creating_course_t1 = Time.now
           # Adding institute
           created_institute = Institute.find_by_dtu_institute_id(current_course_institute[:dtu_institute_id])
           if created_institute.nil?
@@ -484,79 +492,130 @@ namespace :scrape do
 					#end
 					
           # Adding teachers
+					#t1 = Time.now
           current_course_teachers.each do |t|
             teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
 
+					#t2 = Time.now
+					#elapsed = (t2 - t1)*1000.0
+					#puts "Time elapsed [teachers]: #{elapsed}"
+
+					
 					
         
           # Adding keywords
+					performance_test = true
           if language == :en
 						# Adding schedules
+						#t1 = Time.now
 						current_course_schedules.each do |s|
 							schedule = Schedule.find_by_block(s)
 							created_course.schedules << schedule if not schedule.nil? and not created_course.schedules.include? (schedule)
 						end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [schedule]: #{elapsed}"
 						
+						#t1 = Time.now
 						# Adding keywords
             current_course_keywords.each do |k|
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword
             end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [keywords]: #{elapsed}"
         
             # Adding head course-types (civil, diplom osv.)
+						#t1 = Time.now
             current_course_types_head.each do |cth|
               # Manual fixing of some weird titles
-							if cth == 'Civil- Grundlæggende kursus'
-								cth = 'Grundlæggende civil kursus'
-							elsif cth == 'Civil- Videregående Kursus'
-								cth = 'Videregående civil kursus'
+							type = cth
+							if type == 'Civil- Grundlæggende kursus'
+								type = 'Grundlæggende civil kursus'
+							elsif type == 'Civil- Videregående Kursus'
+								type = 'Videregående civil kursus'
 							end
-              course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
-              course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
+              course_type = CourseType.find_by_title_and_course_type_type(type, "Main")
+              course_type = CourseType.create(:title => type, :course_type_type => "Main") if course_type.nil? 
               created_course.main_course_types << course_type
             end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [main course type]: #{elapsed}"
         
             # Adding special course-types (teknologisk specialisering osv.)
+						#t1 = Time.now
             current_course_types.each do |ct|
               course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
               course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
               created_course.spec_course_types << course_type
             end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [special course type]: #{elapsed}"
           else
+						#t1 = Time.now if performance_test == true
             created_course.keywords.with_translations(:en).each_index do |i|
+							#t1 = Time.now
               keyword = created_course.keywords[i]
+							#t2 = Time.now
+							#elapsed = (t2 - t1)*1000.0
+							#puts "Time elapsed [find course]: #{elapsed}"
+
+							#t1 = Time.now
+							#da_keyword = {:title => current_course_keywords, :locale => language, }
               keyword.update_attributes(:title => current_course_keywords[i], :locale => language)
+							#t2 = Time.now
+							#elapsed = (t2 - t1)*1000.0
+							#puts "Time elapsed [updating keyword-title on danish]: #{elapsed}"
+
+							#t1 = Time.now
               keyword.save
+							#t2 = Time.now
+							#elapsed = (t2 - t1)*1000.0
+							#puts "Time elapsed [saving]: #{elapsed}"
             end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [keywords on danish]: #{elapsed}"
           
+						#t1 = Time.now
             created_course.main_course_types.with_translations(:en).where(:course_type_type => "Main").each_index do |i|
               course_type = created_course.main_course_types[i]
               course_type.update_attributes(:title => current_course_types_head[i], :locale => language)
               course_type.save
             end
-          
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [main course type on danish]: #{elapsed}"
+						
+          	#t1 = Time.now
             created_course.spec_course_types.with_translations(:en).where(:course_type_type => "Spec").each_index do |i|
               course_type = created_course.spec_course_types[i]
               course_type.update_attributes(:title => current_course_types[i], :locale => language)
               course_type.save
             end
+						#t2 = Time.now
+						#elapsed = (t2 - t1)*1000.0
+						#puts "Time elapsed [special course type on danish]: #{elapsed}"
           end
         
           # Saving course
           created_course.save
+					end
+        end
+
+				print "|" if i == 0 || i == course_amount - 1
+        if Integer(Float(i) % (Float(course_amount) / 100)) == 0
+          print "="
+          procent_ind = procent_ind + 1
+          print "#{procent_ind}%" if procent_ind % 10 == 0
         end
       
-        if db_seed || check_db_types
-          print "|" if i == 0 || i == course_amount - 1
-          if Integer(Float(i) % (Float(course_amount) / 100)) == 0
-            print "="
-            procent_ind = procent_ind + 1
-            print "#{procent_ind}%" if procent_ind % 10 == 0
-          end
-        end
       end
     
       # Link loop end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120425090855) do
+ActiveRecord::Schema.define(:version => 20120502131230) do
 
   create_table "course_relations", :force => true do |t|
     t.integer  "course_id"
@@ -167,6 +167,7 @@ ActiveRecord::Schema.define(:version => 20120425090855) do
 
   add_index "keyword_translations", ["keyword_id"], :name => "index_keyword_translations_on_keyword_id"
   add_index "keyword_translations", ["locale"], :name => "index_keyword_translations_on_locale"
+  add_index "keyword_translations", ["title"], :name => "index_keyword_translations_on_title"
 
   create_table "keywords", :force => true do |t|
     t.datetime "created_at", :null => false
@@ -190,7 +191,7 @@ ActiveRecord::Schema.define(:version => 20120425090855) do
   add_index "student_data", ["field_of_study_id"], :name => "index_student_data_on_field_of_study_id"
 
   create_table "students", :force => true do |t|
-    t.integer  "student_number"
+    t.string   "student_number"
     t.integer  "direction_id"
     t.integer  "start_year"
     t.string   "cn_access_key"

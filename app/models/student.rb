@@ -102,12 +102,23 @@ class Student < ActiveRecord::Base
     end
   end
 
-	def have_had_course(course)
-		if self.courses.include?(course) 
+	def should_be_recommended(course)
+		blocked_courses = self.blocked_courses
+		if self.courses.include?(course) or blocked_courses.include?(course)
 			false
 		else 
 			true
 		end
+	end
+	
+	def blocked_courses
+		blocked_courses = []
+		self.courses.each do |c|
+			c.blocked_courses.each do |pb|
+				blocked_courses << pb
+			end
+		end
+		blocked_courses
 	end
   
   class << self

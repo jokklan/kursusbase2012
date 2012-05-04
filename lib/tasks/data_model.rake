@@ -70,17 +70,17 @@ namespace :import do
 			course	 	= Course.find_by_course_number(course_number)
 			student 	= StudentData.find_by_student_id(id)
 			
-			#if not course.nil? and not student.nil?
-			#	puts "student #{id}"
-			#	if not course_semester.nil?
-			#		puts " - Adding course #{course} at semester #{course_semester}"
-			#		student.course_student_datas << CourseStudentData.new(:course_id => course.id, :semester => course_semester)
-			#	else
-			#		puts " - Adding course #{course}"
-			#		student.course_student_datas << CourseStudentData.new(:course_id => course.id)
-			#	end
-			#	puts "course added!"				
-			#end
+			if not course.nil? and not student.nil?
+				puts "student #{id}"
+				if not course_semester.nil?
+					puts " - Adding course #{course} at semester #{course_semester}"
+					student.course_student_datas << CourseStudentData.new(:course_id => course.id, :semester => course_semester)
+				else
+					puts " - Adding course #{course}"
+					student.course_student_datas << CourseStudentData.new(:course_id => course.id)
+				end
+				puts "course added!"				
+			end
 		end
 	end
 end

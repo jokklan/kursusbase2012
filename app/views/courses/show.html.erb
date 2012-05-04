@@ -155,36 +155,39 @@
 </div>
 
 <div id="courserec">
-	<% if not @course.prereq_for.blank? %>
-	<h3>This course is a prerequisite for these courses:</h3>
-	<ul>
-	<% @course.prereq_for.each do |rec_course| %>
-		<li>
-		<% if rec_course.active %>
-			<%= link_to rec_course.course_no, rec_course %>
-		<% else %>
-			<%= rec_course.course_no %>
-		<% end %>
-		</li>
-		<% end %>
-	</ul>
-	<% end %>
-	
-	<% if not @course.similar_courses.blank? %>
+	<% if not @course.similar_courses.nil? and not @course.similar_courses.empty? %>
 	<h3>People who has taken this course has also taken these courses:</h3>
 	<ul>
 	<% @course.similar_courses.each do |key, sim_course| %>
-		<li>
-			<% if sim_course.active %>
-				<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
-			<% else %>
-				<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-			<% end %>
-		</li>
+		<% if current_student.should_be_recommended sim_course %>
+			<li>
+				<% if sim_course.active %>
+					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+				<% else %>
+					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
+				<% end %>
+			</li>
+		<% end %>
 	<% end %>
 	</ul>
 	<% end %>
 	
+	<% if not @course.prereq_for.empty? %>
+	<h3>This course is a prerequisite for these courses:</h3>
+	<ul>
+	<% @course.prereq_for.each do |rec_course| %>
+		<% if current_student.should_be_recommended rec_course %>
+			<li>
+			<% if rec_course.active %>
+				<%= link_to rec_course.course_no, rec_course %>
+			<% else %>
+				<%= rec_course.course_no %>
+			<% end %>
+			</li>
+			<% end %>
+		<% end %>
+	</ul>
+	<% end %>	
 </div>
 
 <h3 style="clear:both"><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
