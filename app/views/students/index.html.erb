@@ -1,6 +1,6 @@
 <h1>Students</h1>
 <ul>
 	<% @students.each do |s| %>
-		<li><%= s.student_number %></li>
+		<li><%= link_to s.student_number, s %></li>
 	<% end %>
 </ul>
