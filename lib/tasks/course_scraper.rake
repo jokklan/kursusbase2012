@@ -431,7 +431,7 @@ namespace :scrape do
 
 				# Adding course-relations
 				if language == :en
-					created_course = Course.find_by_course_number(current_course[:course_number])
+					created_course = Course.find_or_create_by_course_number(current_course[:course_number])
 					current_course_prereq.each do |key, att|
 						group_no = 1
 						att.each do |a|
