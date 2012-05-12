@@ -160,7 +160,7 @@
 	<h3>People who has taken this course has also taken these courses:</h3>
 	<ul>
 	<% @course.similar_courses.each do |key, sim_course| %>
-		<% if current_student.should_be_recommended sim_course %>
+		<% if not current_student and current_student.should_be_recommended sim_course %>
 			<li>
 				<% if sim_course.active %>
 					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
@@ -177,7 +177,7 @@
 	<h3>This course is a prerequisite for these courses:</h3>
 	<ul>
 	<% @course.prereq_for.each do |rec_course| %>
-		<% if current_student.should_be_recommended rec_course %>
+		<% if not current_student or current_student.should_be_recommended rec_course %>
 			<li>
 			<% if rec_course.active %>
 				<%= link_to rec_course.course_no, rec_course %>
