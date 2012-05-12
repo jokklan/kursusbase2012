@@ -131,6 +131,12 @@ class Student < ActiveRecord::Base
 			cr.destroy
 		end
 	end
+	
+	def calculate_recommendations
+		if self.course_recommendations.first.nil?
+			system "/usr/bin/rake pearson:sim_coeff STUDENT_NUMBER='#{self.student_number}'"
+		end
+	end
   
   class << self
     ## GLOBALIZE MISSING FUNCTION. HOPELY THERE WILL BE A FIX SOON!

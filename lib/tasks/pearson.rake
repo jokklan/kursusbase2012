@@ -11,8 +11,20 @@ namespace :pearson do
 		StudentData.all.each do |sd|
 			s_with_c_data += 1 if sd.courses.count > 0
 		end
-		puts "Students with course data: #{s_with_c_data}"	
-		Student.all.each do |a|
+		puts "Students with course data: #{s_with_c_data}"
+		
+		
+		
+		
+		if ENV['STUDENT_NUMBER']
+			puts ENV['STUDENT_NUMBER']
+			students = Student.where(:student_number => ENV['STUDENT_NUMBER'])
+		else
+			students = []
+			return
+		end
+		students.all.each do |a|
+		
 			# Get students a
 			start_time = Time.now
 			procent_ind = 0
