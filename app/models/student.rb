@@ -123,7 +123,12 @@ class Student < ActiveRecord::Base
 	end
 	
 	def find_recommendations
-		Rake::Task["rake:pearson:sim_coeff"].execute()
+		if self.course_recommendations.empty?
+			puts "calculating recommendations for #{self.student_number}"
+			system "/usr/bin/rake pearson:sim_coeff STUDENT_NUMBER='#{self.student_number}' --trace 2>&1 >> #{Rails.root}/log/rake.log &"
+		else
+			puts "course recommendations not empty?"
+		end
 	end
 	
 	def clear_recommendations
@@ -133,8 +138,11 @@ class Student < ActiveRecord::Base
 	end
 	
 	def calculate_recommendations
-		if self.course_recommendations.first.nil?
-			system "/usr/bin/rake pearson:sim_coeff STUDENT_NUMBER='#{self.student_number}'"
+		if self.course_recommendations.empty?
+			puts "calculating recommendations for #{self.student_number}"
+			system "/usr/bin/rake pearson:sim_coeff STUDENT_NUMBER='#{self.student_number}' --trace 2>&1 >> #{Rails.root}/log/rake.log &"
+		else
+			puts "course recommendations not empty?"
 		end
 	end
   

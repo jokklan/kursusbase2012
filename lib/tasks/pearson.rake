@@ -15,9 +15,8 @@ namespace :pearson do
 		
 		
 		
-		
-		if ENV['STUDENT_NUMBER']
-			puts ENV['STUDENT_NUMBER']
+		student = Student.find_by_student_number(ENV['STUDENT_NUMBER'])
+		if student
 			students = Student.where(:student_number => ENV['STUDENT_NUMBER'])
 		else
 			students = []
