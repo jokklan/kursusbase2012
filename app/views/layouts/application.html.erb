@@ -2,12 +2,7 @@
 	site_title = "DTU Kursusbasen"
 	page_title = yield(:title)
 	
-	if page_title != "" then
-		title = page_title + " | " + site_title
-	else
-		title = site_title
-	end
-	
+	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
 %>
 <!DOCTYPE html>
 <html>
@@ -21,11 +16,7 @@
 	<div id="wrapper">
 		<div id="container">
 			<div id="head"><div>
-				<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
-				<%= render_navigation %>
-				<form action="/search" method="get">
-					<input type="text" name="q" value="">
-				</form>
+				<%= render :partial => "header" %>
 			</div></div>
 			<div id="content">
 				<%= yield %>
