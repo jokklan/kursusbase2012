@@ -273,6 +273,24 @@ a:hover {
 	font-weight: normal;
 }
 
+#content #coursehead #courseschedule td.autumn {
+	background-color: #fc3;
+}
+
+#content #coursehead #courseschedule td.autumn strong {
+	color: #564512;
+	font-weight: normal;
+}
+
+#content #coursehead #courseschedule td.allyear {
+	background-color: #a4efff;
+}
+
+#content #coursehead #courseschedule td.allyear strong {
+	color: #334c52;
+	font-weight: normal;
+}
+
 #content #coursehead #courseschedule p strong {
 	white-space: nowrap;
 }
