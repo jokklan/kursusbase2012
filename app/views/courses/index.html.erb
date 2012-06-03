@@ -3,9 +3,9 @@
 <table class="courses">
 	<thead>
 		<tr>
-			<th scope="col"></th>
-			<th scope="col">Title</th>
-			<th scope="col">Points</th>
+			<th scope="col" class="no">No.</th>
+			<th scope="col" class="title">Title</th>
+			<th scope="col" class="points">Points</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -14,9 +14,9 @@
 
 %>
 		<tr class="<%= cycle("odd", "even") %>">
-			<td><%= course.course_no %></td>
-			<td><%= link_to course.title, course %></td>
-			<td><%= "%g" % course.ects_points %></td>
+			<td class="no"><%= course.course_no %></td>
+			<td class="title"><%= link_to course.title, course %></td>
+			<td class="points"><%= "%g" % course.ects_points %></td>
 
 <%#
     #<td><%= link_to 'Edit', edit_course_path(course) % ></td>
