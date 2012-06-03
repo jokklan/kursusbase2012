@@ -96,7 +96,7 @@ a:hover {
 	border-top-right-radius: 5px;
 }
 
-#head li strong {
+#head li strong, #head li a.selected {
 	background-color: #fff;
 	color: #333;
 }
