@@ -22,6 +22,11 @@ da:
     spring: forår
     autumn: efterår
   courses:
+    index:
+      allcourses: Alle kurser
+      nonono: Nr.
+      title: Titel
+      points: Point
     show:
       points: point
       weeks: uger

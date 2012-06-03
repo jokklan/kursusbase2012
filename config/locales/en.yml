@@ -22,6 +22,11 @@ en:
     spring: spring
     autumn: autumn
   courses:
+    index:
+      allcourses: All courses
+      nonono: No.
+      title: Title
+      points: Points
     show:
       points: points
       weeks: weeks

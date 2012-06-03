@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   def index
     @courses = Course.where(:active => true)
+    @page_title = "All courses"
   end
 
   def show
