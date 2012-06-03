@@ -10,6 +10,7 @@ gem 'simple-navigation'
 gem 'mechanize'
 gem 'crack'
 gem 'simple_form'
+gem 'delayed_job_active_record'
 # gem 'rails-i18n'
 
 # Gems used only for assets and not required

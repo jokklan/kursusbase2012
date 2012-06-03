@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
 	  system "/usr/bin/rake #{task} #{args.join(' ')} --trace 2>&1 >> #{Rails.root}/log/rake.log &"
 	end
   
-  
   private
 
   def current_student
