@@ -104,12 +104,7 @@ class Student < ActiveRecord::Base
   end
 
 	def should_be_recommended(course)
-		blocked_courses = self.blocked_courses
-		if self.courses.include?(course) or blocked_courses.include?(course)
-			false
-		else 
-			true
-		end
+		not self.courses.include?(course) or self.blocked_courses.include?(course)
 	end
 	
 	def blocked_courses
@@ -134,15 +129,6 @@ class Student < ActiveRecord::Base
 	def clear_recommendations
 		self.course_recommendations.each do |cr|
 			cr.destroy
-		end
-	end
-	
-	def calculate_recommendations
-		if self.course_recommendations.empty?
-			puts "calculating recommendations for #{self.student_number}"
-			system "/usr/bin/rake pearson:sim_coeff STUDENT_NUMBER='#{self.student_number}' --trace 2>&1 >> #{Rails.root}/log/rake.log &"
-		else
-			puts "course recommendations not empty?"
 		end
 	end
   

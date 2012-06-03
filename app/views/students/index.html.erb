@@ -1,4 +1,6 @@
+<% title "Your custom title" %>
 <h1>Students</h1>
+
 <ul>
 	<% @students.each do |s| %>
 		<li><%= link_to s.student_number, s %></li>
