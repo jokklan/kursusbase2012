@@ -32,3 +32,11 @@ da:
       weeks: uger
       openedu: Udbydes under åben uddannelse
       examdate: Eksamensplacering
+      schedule: Skemaplacering
+      form: Undervisningsform
+      duration: Kursets varighed
+      assesstype: Evalueringsform
+      examduration: Eksamens varighed
+      aid: Hjælpemidler
+      evalform: Bedømmelsesform
+      pointblock: Pointspærring

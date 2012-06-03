@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+<% has_schedule = @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]"%>
+
 <% @course.serialize_objectives %>
 <% if notice %><p id="notice"><%= notice %></p><% end %>
 <div id="coursehead">
@@ -11,6 +13,7 @@
 	<p><%= t('.openedu') %></p>
 <% end %>
 	<div id="courseschedule">
+<% if has_schedule %>
 		<table>
 			<thead>
 				<tr>
@@ -38,6 +41,7 @@
 				</tr>
 			</tbody>
 		</table>
+<% end %>
 		<p><%= t('.examdate') %> <strong><%= @course.exam_schedule %></strong></p>
 	</div>
 </div>
