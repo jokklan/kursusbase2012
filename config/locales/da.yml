@@ -40,3 +40,21 @@ da:
       aid: Hjælpemidler
       evalform: Bedømmelsesform
       pointblock: Pointspærring
+      cobjectives: Overordnede kursusmål
+      lobjectives: Læringsmål
+      qprerequisites: Faglige forudsætninger
+      oprerequisites: Ønskelige forudsætninger
+      mprerequisites: Påkrævede forudsætninger
+      limit: Deltagerbegrænsning
+      previous: Tidligere kursus
+      content: Kursusindhold
+      remarks: Bemærkninger
+      responsible: Kursusansvarlig
+      institute: Institut
+      homepage: Kursushjemmeside
+      registration: Tilmelding
+      
+      
+      
+      
+      

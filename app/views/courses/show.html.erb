@@ -126,7 +126,7 @@
 	<dt>Kursusansvarlig</dt>
 		<dd>
 			<% @course.teachers.each do |t| %>
-				<%= link_to (image_tag(t.image(70), :border => 0)), t.link, :target => '_blank' %><%= ', ' if t != @course.teachers.last %>
+				<%= link_to (image_tag(t.image(70), :width => 70, :height => 93)), t.link, :target => '_blank' %><%= ', ' if t != @course.teachers.last %>
 			<% end %>
 		</dd>
 	

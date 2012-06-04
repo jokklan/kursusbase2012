@@ -40,3 +40,21 @@ en:
       aid: Aid
       evalform: Evaluation
       pointblock: Not applicable with
+      cobjectives: General course objectives
+      lobjectives: Learning objectives
+      qprerequisites: Qualified prerequisites
+      oprerequisites: Optional prerequisites
+      mprerequisites: Mandatory prerequisites
+      limit: Participant limit
+      previous: Previous course
+      content: Content
+      remarks: Remarks
+      responsible: Responsible
+      institute: Institute
+      homepage: Course home page
+      registration: Registration sign up
+      
+      
+      
+      
+      
