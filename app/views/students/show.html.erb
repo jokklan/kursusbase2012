@@ -10,7 +10,7 @@
 	<% @student.course_recommendations.each do |rec| %>
 		<% if rec.priority_value > 10%>
 			<li>
-				<%= link_to "#{rec.course.course_no} #{rec.course.title}", rec.course,  %> - <%= rec.priority_value %> recommends this!
+				<%= link_to "#{rec.course.course_no} #{rec.course.title}", rec.course  %> - <%= rec.priority_value %> recommends this!
 			</li>
 		<% end %>
 	<% end %>
