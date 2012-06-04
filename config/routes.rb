@@ -18,6 +18,8 @@ Kursusbase2012::Application.routes.draw do
     resources :keywords
     resources :course_types
 		resources :students
+		
+		post "search", to: "searches#new", as: "search"
   end
   
   root :to => 'Courses#index'

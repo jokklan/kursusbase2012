@@ -55,6 +55,9 @@ class Course < ActiveRecord::Base
 	has_and_belongs_to_many :schedules
 	has_and_belongs_to_many :student_datas
 	has_and_belongs_to_many :course_recommendations
+	
+	# Search indexes
+	acts_as_indexed :fields => [:title]
   
   # Course attributes
   attr_accessible :course_number,:title, 

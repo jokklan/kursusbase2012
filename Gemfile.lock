@@ -28,6 +28,7 @@ GEM
     activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
+    acts_as_indexed (0.7.8)
     addressable (2.2.6)
     arel (3.0.0)
     builder (3.0.0)
@@ -251,6 +252,11 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+<<<<<<< HEAD
+=======
+  acts_as_indexed
+  annotate!
+>>>>>>> course search
   capybara
   coffee-rails (~> 3.2.1)
   crack

@@ -7,6 +7,6 @@
 	<li><a href="/schedule">Skema</a></li>
 </ul>
 -->
-<form action="/search" method="get">
-	<input type="text" name="q" value="">
-</form>
+<%= form_tag search_path do %>
+	<%= text_field_tag "q" %>
+<% end %>
