@@ -22,7 +22,7 @@ Kursusbase2012::Application.routes.draw do
 		post "search", to: "searches#new", as: "search"
   end
   
-  root :to => 'Courses#index'
+  root :to => 'Home#index'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

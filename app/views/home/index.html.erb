@@ -1,0 +1,27 @@
+<table id="schedule">
+	<thead>
+		<tr>
+			<th scope="col" title="<%= t('days.mon') %>">M</th>
+			<th scope="col" title="<%= t('days.tue') %>">T</th>
+			<th scope="col" title="<%= t('days.wed') %>"><%= t('days.o') %></th>
+			<th scope="col" title="<%= t('days.thu') %>">T</th>
+			<th scope="col" title="<%= t('days.fri') %>">F</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<%= schedule_table_cell('1A') %>
+			<%= schedule_table_cell('3A') %>
+			<%= schedule_table_cell('5A') %>
+			<%= schedule_table_cell('2B') %>
+			<%= schedule_table_cell('4B') %>
+		</tr>
+		<tr>
+			<%= schedule_table_cell('2A') %>
+			<%= schedule_table_cell('4A') %>
+			<%= schedule_table_cell('5B') %>
+			<%= schedule_table_cell('1B') %>
+			<%= schedule_table_cell('3B') %>
+		</tr>
+	</tbody>
+</table>

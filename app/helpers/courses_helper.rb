@@ -13,7 +13,6 @@ module CoursesHelper
     else
       "<td class=\"#{css_class}\"><strong>#{sch}</strong></td>".html_safe
     end
-      
   end
   
   def season_text()
