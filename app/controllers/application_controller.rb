@@ -3,6 +3,13 @@ class ApplicationController < ActionController::Base
   
   before_filter :set_locale
   
+  # Ransack, Meta Search
+  # before_filter :course_search
+  # # 
+  # def course_search
+  #   @q = Course.search(params[:q])
+  # end
+  
   def default_url_options(options={})
     logger.debug "default_url_options is passed options: #{options.inspect}\n"
     { :locale => I18n.locale }

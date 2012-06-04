@@ -19,7 +19,7 @@ Kursusbase2012::Application.routes.draw do
     resources :course_types
 		resources :students
 		
-		post "search", to: "searches#new", as: "search"
+		post "search", to: "courses#index", as: "search"
   end
   
   root :to => 'Home#index'

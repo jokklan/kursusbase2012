@@ -11,8 +11,8 @@ gem 'mechanize'
 gem 'crack'
 gem 'simple_form'
 gem 'delayed_job_active_record'
-gem 'acts_as_indexed'
-# gem 'rails-i18n'
+gem 'pg_search'
+gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.

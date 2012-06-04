@@ -10,10 +10,7 @@
 		</tr>
 	</thead>
 	<tbody>
-<%
-	@courses.each do |course|
-
-%>
+<% @courses.each do |course| %>
 		<tr class="<%= cycle("odd", "even") %>">
 			<td class="no"><%= course.course_no %></td>
 			<td class="title"><%= link_to course.title, course %></td>
@@ -24,9 +21,7 @@
     #<td><%= link_to 'Destroy', course, confirm: 'Are you sure?', method: :delete % ></td>
 %>
 		</tr>
-<%
-	end
-%>
+<% end %>
 	</tbody>
 </table>
 
