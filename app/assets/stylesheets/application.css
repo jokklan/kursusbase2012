@@ -146,6 +146,23 @@ a:hover {
 	width: 900px;
 }
 
+#localhost {
+	position: relative;
+	background-color: #264c82;
+	color: #fff;
+	font-size: 125%;
+	padding: 8px 30px;
+}
+
+#localhost a {
+	position: absolute;
+	top: 8px;
+	right: 30px;
+	text-align: right;
+	color: #d8dee8;
+	font-weight: normal;
+}
+
 /* Content
 ------------------------------------------------------ */
 

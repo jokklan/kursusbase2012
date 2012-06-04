@@ -3,6 +3,8 @@
 
 en:
   and: and
+  internal:
+      onheroku: This page on Heroku
   languages:
     dansk: Danish
     da: Danish
