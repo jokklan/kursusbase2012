@@ -3,7 +3,7 @@
 	you = current_student
 
 if you %>
-<h1><%= t('.welcome') %> <%= you.student_number %>, <%= t('.hereisyour') %></h1>
+<h1><%= t('.welcome') %> <%= you.student_number %>, <%= t('.hereisyour') %>:</h1>
 <table id="schedule">
 	<thead>
 		<tr>
@@ -31,6 +31,9 @@ if you %>
 		</tr>
 	</tbody>
 </table>
+
+<p>Dine kurser: <%= current_student.course_ids %></p>
+
 <% else %>
 	<h1>Søg</h1>
 	<%= form_tag search_path do %>

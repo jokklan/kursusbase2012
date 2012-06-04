@@ -1,3 +1,6 @@
+<%
+	you = current_student
+%>
 <% if ["127.0.0.1", "localhost", "0.0.0.0"].include? request.host %>
 <div id="localhost">Local host <a href="http://kursusbase2012.herokuapp.com<%= request.path %>"><%= t('internal.onheroku') %></a></div>
 <% end %>
@@ -7,4 +10,9 @@
 	<%= form_tag search_path do %>
 		<%= text_field_tag "q" %>
 	<% end %>
+<div id="you"><% if you %>
+	<%= t('you.are') %> <strong><%= you.student_number %></strong>. <a href="/logout"><%= t('you.logout') %></a>
+<% else %>
+	<a href="/login"><%= t('you.login') %></a>
+<% end %></div>
 </div></div>

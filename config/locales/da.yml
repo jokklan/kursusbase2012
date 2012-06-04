@@ -63,6 +63,10 @@ da:
     index:
       welcome: Velkommen
       hereisyour: her er dit skema
+  you:
+    are: Du er
+    login: Log ind
+    logout: Log ud
       
       
       

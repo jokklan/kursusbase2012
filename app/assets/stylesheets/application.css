@@ -149,6 +149,18 @@ a:hover {
 	width: 900px;
 }
 
+#head #you {
+	position: absolute;
+	top: 25px;
+	right: 240px;
+	text-align: right;
+	text-shadow: 0 1px rgba(0, 0, 0, .2);
+}
+
+#head #you, #head #you a, #head #you strong {
+	color: #fff;
+}
+
 #localhost {
 	position: relative;
 	background-color: #264c82;

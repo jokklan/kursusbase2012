@@ -63,6 +63,10 @@ en:
     index:
       welcome: Welcome
       hereisyour: here is your schedule
+  you:
+    are: You are
+    login: Log in
+    logout: Log out
       
       
       
