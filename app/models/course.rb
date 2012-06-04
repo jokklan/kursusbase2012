@@ -55,6 +55,7 @@ class Course < ActiveRecord::Base
 	has_and_belongs_to_many :schedules
 	has_and_belongs_to_many :student_datas
 	has_and_belongs_to_many :course_recommendations
+	has_and_belongs_to_many :field_course_types
 	
 	# Search indexes
 	acts_as_indexed :fields => [:title]
@@ -63,7 +64,7 @@ class Course < ActiveRecord::Base
   attr_accessible :course_number,:title, 
                   :language, :ects_points, :open_education, :active,
                   :schedule, :teaching_form, :duration, :participant_limit,
-                  :course_objectives, :learn_objectives, :content,
+                  :course_objectives, :learn_objectives, :content, :schedule_note,
                   :litteratur, :remarks, :institute_id, :registration, :homepage, :top_comment, :former_course,
                   :exam_schedule, :exam_form, :exam_duration, :exam_aid, :evaluation_form,
 									:point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
@@ -77,7 +78,7 @@ class Course < ActiveRecord::Base
   #               
   translates   :title, 
                :teaching_form, :duration, :participant_limit,  
-               :course_objectives, :learn_objectives, :content,
+               :course_objectives, :learn_objectives, :content, :schedule_note,
                :litteratur, :remarks, :registration, :top_comment, :former_course,
                :exam_form, :exam_aid, :evaluation_form
   

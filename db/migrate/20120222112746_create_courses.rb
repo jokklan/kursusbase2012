@@ -5,7 +5,8 @@ class CreateCourses < ActiveRecord::Migration
       t.string :language
       t.float :ects_points
       t.boolean :open_education
-      t.text :schedule
+			t.string :schedule
+      t.text :schedule_note
       t.integer :institute_id
       t.string :homepage
       t.text :exam_schedule
@@ -28,6 +29,7 @@ class CreateCourses < ActiveRecord::Migration
       :participant_limit => :string, 
       :registration =>  :string,
       :course_objectives => :text,
+			:schedule_note => :text,
       :learn_objectives => :text,
       :content => :text,
       :litteratur => :text,
