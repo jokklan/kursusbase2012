@@ -254,10 +254,6 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-<<<<<<< HEAD
-  acts_as_indexed
-=======
->>>>>>> added search functionality with pg_search
   capybara
   coffee-rails (~> 3.2.1)
   crack

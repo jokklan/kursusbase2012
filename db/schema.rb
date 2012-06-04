@@ -11,11 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(:version => 20120604093857) do
-=======
 ActiveRecord::Schema.define(:version => 20120604100252) do
->>>>>>> added search functionality with pg_search
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
@@ -67,10 +63,6 @@ ActiveRecord::Schema.define(:version => 20120604100252) do
     t.string   "participant_limit"
     t.string   "registration"
     t.text     "course_objectives"
-<<<<<<< HEAD
-    t.text     "schedule_note"
-=======
->>>>>>> added search functionality with pg_search
     t.text     "learn_objectives"
     t.text     "content"
     t.text     "litteratur"
@@ -117,12 +109,7 @@ ActiveRecord::Schema.define(:version => 20120604100252) do
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
-<<<<<<< HEAD
-    t.string   "schedule"
-    t.text     "schedule_note"
-=======
     t.text     "schedule"
->>>>>>> added search functionality with pg_search
     t.integer  "institute_id"
     t.string   "homepage"
     t.text     "exam_schedule"
@@ -234,8 +221,6 @@ ActiveRecord::Schema.define(:version => 20120604100252) do
   create_table "keywords", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-<<<<<<< HEAD
-=======
   end
 
   create_table "pg_search_documents", :force => true do |t|
@@ -244,7 +229,6 @@ ActiveRecord::Schema.define(:version => 20120604100252) do
     t.string   "searchable_type"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
->>>>>>> added search functionality with pg_search
   end
 
   create_table "schedules", :force => true do |t|
