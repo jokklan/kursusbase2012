@@ -1,3 +1,9 @@
+<%
+
+	you = current_student
+
+if you %>
+<h1><%= t('.welcome') %> <%= you.student_number %>, <%= t('.hereisyour') %></h1>
 <table id="schedule">
 	<thead>
 		<tr>
@@ -25,3 +31,9 @@
 		</tr>
 	</tbody>
 </table>
+<% else %>
+	<h1>Søg</h1>
+	<%= form_tag search_path do %>
+		<%= text_field_tag "q" %>
+	<% end %>
+<% end %>

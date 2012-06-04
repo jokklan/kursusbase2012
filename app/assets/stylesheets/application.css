@@ -255,21 +255,21 @@ a:hover {
 	width: 168px;
 }
 
-#content #coursehead #courseschedule table {
+#content #coursehead #courseschedule table, table#schedule {
 	border-spacing: 3px;
 	line-height: normal;
 	margin: 0 0 0 -3px;
 }
 
-#content #coursehead #courseschedule th, #content #coursehead #courseschedule td {
+#content #coursehead #courseschedule th, #content #coursehead #courseschedule td, table#schedule th, table#schedule td {
 	text-align: center;
 }
 
-#content #coursehead #courseschedule th {
+#content #coursehead #courseschedule th, table#schedule th {
 	line-height: 0.9em;
 }
 
-#content #coursehead #courseschedule td {
+#content #coursehead #courseschedule td, table#schedule td {
 	background-color: #eee;
 	color: #ddd;
 	padding: 2px 7px;
@@ -396,3 +396,25 @@ table tr.odd {
 	background-image: -moz-linear-gradient(-90deg, #2c2c2c, #666);
 	text-shadow: 0 1px #2c2c2c;
 }
+
+table#schedule {
+	font-size: 300%;
+	width: 80%;
+	margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

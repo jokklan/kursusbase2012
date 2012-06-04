@@ -59,7 +59,10 @@ en:
       registration: Registration sign up
       keywords: Keywords
       addto: Add to Study Plan
-      
+  home:
+    index:
+      welcome: Welcome
+      hereisyour: here is your schedule
       
       
       
