@@ -17,8 +17,9 @@ namespace :scrape do
 
 		# Set debug (printing course attributes)
 		if ENV['debug']
-			db_seed = false
-			db_debug = true
+			db_seed 			 = false
+			db_debug 			 = true
+			test_db_types = false
 		end
 		
 		# if ENV['prereq']
@@ -268,7 +269,7 @@ namespace :scrape do
 						string = att_column[1].text.strip.chomp
 						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a
 						schedule_string = %r{^((E|F)([0-9])(A|B)?|Efterår|Forår|Spring|Autumn|Fall|January|Januar|June|Juni)}.match(string)
-						current_course[:schedule] = schedule_string[0] if language = :da and not schedule_string.nil?
+						current_course[:schedule] = schedule_string[0] if language == :da and not schedule_string.nil?
 						schedules.each do |s|
 							current_course_schedules << s
 						end
@@ -400,7 +401,7 @@ namespace :scrape do
         # Testing data types
         string_att = [:title, :language, :registration, :homepage, :duration, :participant_limit, :exam_duration, 
                       :exam_aid, :evaluation_form, :former_course]
-        if check_db_types
+        if test_db_types
           current_course.each do |key, att|
             if string_att.include?(key)
               error[key] = att if att.length > 255 && !error[key]
@@ -411,7 +412,7 @@ namespace :scrape do
 				#puts "Title: #{current_course[:title]}"
 				
         # Printing debug data
-        if debug      
+        if db_debug      
           puts "Title: #{current_course[:title]}"
           puts "Course types"
           pp current_course_types_head
@@ -567,7 +568,7 @@ namespace :scrape do
       end
     
       # Link loop end
-      if check_db_types
+      if test_db_types
         if error.empty?
           puts "\nNo error on string-datatypes"
         else
