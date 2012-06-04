@@ -76,11 +76,13 @@ class Student < ActiveRecord::Base
   def current_courses
     cn_courses = CampusNet.api_call(self, "Elements")['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
     
-    cn_courses.each do |course|
-      course_number = course['Name'].match('(\d{5})')[0]
-      course = Course.find_by_course_number(course_number)
-      course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester) unless course.nil?
-    end
+		if not cn_courses.nil?
+    	cn_courses.each do |course|
+    	  course_number = course['Name'].match('(\d{5})')[0]
+    	  course = Course.find_by_course_number(course_number)
+    	  course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester) unless course.nil?
+    	end
+		end
     self.save
   end
   

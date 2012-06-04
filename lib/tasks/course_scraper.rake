@@ -15,25 +15,25 @@ namespace :scrape do
       Rake::Task['db:reset'].invoke
     end
 
-		if ENV['prereq']
-			puts "Scraping prerequisites"
-			scrape_prereq = true
-			db_seed = false
-		end
-		
+		# Set debug (printing course attributes)
 		if ENV['debug']
 			db_seed = false
 			db_debug = true
 		end
-    
+		
+		# if ENV['prereq']
+		# 	puts "Scraping prerequisites"
+		# 	scrape_prereq = true
+		# 	db_seed = false
+		# end
+		
+		
+    # Scraping for each language
     languages = [:en, :da]
     languages.each do |language|
       
-      #puts "Current #{language}"
-      I18n.locale = language			
-			
-      debug          				= false   # debug = true for print in console
-      check_db_types 				= false      # true if the scraper should check data-types      
+      # Setting language
+      I18n.locale = language			   
     
       # URL's for different searches on kurser.dtu.dk
       url_dtu      = "http://www.kurser.dtu.dk/"
@@ -41,14 +41,11 @@ namespace :scrape do
       url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
       url_test2    = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
 			url_math     = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=matematik&YearGroup=2011-2012&btnSearch=Search"
+			url_java		 = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=Java&YearGroup=2011-2012,2012-2013&btnSearch=Search"
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_civil
-
-			if ENV['url']
-				url = ENV['url']
-			end
+      url = url_math
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -60,7 +57,7 @@ namespace :scrape do
         array << link_url unless array.include?(link_url)
       end
     
-      # Error hash used for checking data-types
+      # Error hash used for testing data-types
       error = {}
     
       # Console display
@@ -158,7 +155,7 @@ namespace :scrape do
 				# :point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
         course_attributes = { :da => {
                                       :mandatory => {
-                                                    :schedule => "Skemaplacering:",
+                                                    :schedule_note => "Skemaplacering:",
                                                     :teaching_form => "Undervisningsform:",
                                                     :duration => "Kursets varighed:",
                                                     :former_course => "Tidligere kursus:",
@@ -204,7 +201,7 @@ namespace :scrape do
                               },
                               :en => {
                                       :mandatory => {
-                                                    :schedule => "Schedule:",
+                                                    :schedule_note => "Schedule:",
                                                     :teaching_form => "Scope and form:",
                                                     :duration => "Duration of Course:",
                                                     :former_course => "Previous Course:",
@@ -270,6 +267,8 @@ namespace :scrape do
           if course_attributes[language][:mandatory][:schedule] == att_title
 						string = att_column[1].text.strip.chomp
 						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a
+						schedule_string = %r{^((E|F)([0-9])(A|B)?|Efterår|Forår|Spring|Autumn|Fall|January|Januar|June|Juni)}.match(string)
+						current_course[:schedule] = schedule_string[0] if language = :da and not schedule_string.nil?
 						schedules.each do |s|
 							current_course_schedules << s
 						end
@@ -464,8 +463,7 @@ namespace :scrape do
 				end			
 				
         if db_seed
-					#creating_course_t1 = Time.now
-          # Adding institute
+
           created_institute = Institute.find_by_dtu_institute_id(current_course_institute[:dtu_institute_id])
           if created_institute.nil?
             created_institute = Institute.create(current_course_institute)
@@ -486,121 +484,72 @@ namespace :scrape do
 
 					# Adding objectives
 					created_course.learn_objectives = current_course[:learn_objectives]
-					#if !created_course.nil?
-					#	created_course.serialize_objectives
-					#end
-					
-          # Adding teachers
-					#t1 = Time.now
+
           current_course_teachers.each do |t|
             teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
 
-					#t2 = Time.now
-					#elapsed = (t2 - t1)*1000.0
-					#puts "Time elapsed [teachers]: #{elapsed}"
-
-					
-					
-        
           # Adding keywords
-					performance_test = true
           if language == :en
-						# Adding schedules
-						#t1 = Time.now
+
 						current_course_schedules.each do |s|
 							schedule = Schedule.find_by_block(s)
 							created_course.schedules << schedule if not schedule.nil? and not created_course.schedules.include? (schedule)
 						end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [schedule]: #{elapsed}"
-						
-						#t1 = Time.now
-						# Adding keywords
+
             current_course_keywords.each do |k|
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [keywords]: #{elapsed}"
-        
-            # Adding head course-types (civil, diplom osv.)
-						#t1 = Time.now
+
             current_course_types_head.each do |cth|
               # Manual fixing of some weird titles
-							type = cth
-							if type == 'Civil- Grundlæggende kursus'
-								type = 'Grundlæggende civil kursus'
-							elsif type == 'Civil- Videregående Kursus'
-								type = 'Videregående civil kursus'
-							end
-              course_type = CourseType.find_by_title_and_course_type_type(type, "Main")
-              course_type = CourseType.create(:title => type, :course_type_type => "Main") if course_type.nil? 
+              course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
+              course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
               created_course.main_course_types << course_type
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [main course type]: #{elapsed}"
-        
-            # Adding special course-types (teknologisk specialisering osv.)
-						#t1 = Time.now
+
             current_course_types.each do |ct|
               course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
               course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
               created_course.spec_course_types << course_type
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [special course type]: #{elapsed}"
           else
-						#t1 = Time.now if performance_test == true
+						
+	
             created_course.keywords.with_translations(:en).each_index do |i|
-							#t1 = Time.now
               keyword = created_course.keywords[i]
-							#t2 = Time.now
-							#elapsed = (t2 - t1)*1000.0
-							#puts "Time elapsed [find course]: #{elapsed}"
-
-							#t1 = Time.now
-							#da_keyword = {:title => current_course_keywords, :locale => language, }
               keyword.update_attributes(:title => current_course_keywords[i], :locale => language)
-							#t2 = Time.now
-							#elapsed = (t2 - t1)*1000.0
-							#puts "Time elapsed [updating keyword-title on danish]: #{elapsed}"
-
-							#t1 = Time.now
               keyword.save
-							#t2 = Time.now
-							#elapsed = (t2 - t1)*1000.0
-							#puts "Time elapsed [saving]: #{elapsed}"
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [keywords on danish]: #{elapsed}"
-          
-						#t1 = Time.now
+
             created_course.main_course_types.with_translations(:en).where(:course_type_type => "Main").each_index do |i|
               course_type = created_course.main_course_types[i]
               course_type.update_attributes(:title => current_course_types_head[i], :locale => language)
               course_type.save
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [main course type on danish]: #{elapsed}"
+
+						ct_popped = {}
+						current_course_types.each {|ct| ct_popped[ct] = false }
 						
           	#t1 = Time.now
             created_course.spec_course_types.with_translations(:en).where(:course_type_type => "Spec").each_index do |i|
               course_type = created_course.spec_course_types[i]
               course_type.update_attributes(:title => current_course_types[i], :locale => language)
+							ct_popped[current_course_types[i]] = true
               course_type.save
             end
-						#t2 = Time.now
-						#elapsed = (t2 - t1)*1000.0
-						#puts "Time elapsed [special course type on danish]: #{elapsed}"
+
+						ct_popped.each do |ct, popped|
+							if not popped
+								course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
+	              course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
+								created_course.spec_course_types << course_type
+							end
+						end
+
           end
         
           # Saving course
