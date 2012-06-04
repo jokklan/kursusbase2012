@@ -173,6 +173,10 @@ a:hover {
 	padding: 30px;
 }
 
+#content h1 {
+	margin-top: 0;
+}
+
 #content ul {
 	list-style-image: url(bullet.png);
 }
