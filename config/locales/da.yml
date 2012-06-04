@@ -47,14 +47,18 @@ da:
       qprerequisites: Faglige forudsætninger
       oprerequisites: Ønskelige forudsætninger
       mprerequisites: Påkrævede forudsætninger
-      limit: Deltagerbegrænsning
+      limit: Deltagerbegrænsn.
       previous: Tidligere kursus
       content: Kursusindhold
+      literature: Litteratur
       remarks: Bemærkninger
+      comment: Kommentar
       responsible: Kursusansvarlig
       institute: Institut
       homepage: Kursushjemmeside
       registration: Tilmelding
+      keywords: Nøgleord
+      addto: Tilføj til studieplan
       
       
       

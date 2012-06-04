@@ -255,7 +255,7 @@ a:hover {
 #content #coursehead #courseschedule table {
 	border-spacing: 3px;
 	line-height: normal;
-	margin: 0 0 1em -3px;
+	margin: 0 0 0 -3px;
 }
 
 #content #coursehead #courseschedule th, #content #coursehead #courseschedule td {
@@ -299,6 +299,10 @@ a:hover {
 	font-weight: normal;
 }
 
+#content #coursehead #courseschedule p {
+	margin: 1em 0 0;
+}
+
 #content #coursehead #courseschedule p strong {
 	white-space: nowrap;
 }
@@ -310,6 +314,13 @@ a:hover {
 #content #courseinfo {
 	float: left;
 	width: 620px;
+}
+
+#content #courseinfo #topcomment {
+	background-color: #eee;
+	border-radius: 5px;
+	padding: 5px 20px;
+	margin: 30px 0 -15px;
 }
 
 #content #courserec {

@@ -50,11 +50,15 @@ en:
       limit: Participant limit
       previous: Previous course
       content: Content
+      literature: Literature
       remarks: Remarks
+      comment: Comment
       responsible: Responsible
       institute: Institute
       homepage: Course home page
       registration: Registration sign up
+      keywords: Keywords
+      addto: Add to Study Plan
       
       
       
