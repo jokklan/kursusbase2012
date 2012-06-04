@@ -11,8 +11,8 @@ gem 'mechanize'
 gem 'crack'
 gem 'simple_form'
 gem 'delayed_job_active_record'
-gem 'acts_as_indexed'
-# gem 'rails-i18n'
+gem 'pg_search'
+gem 'pg'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -64,7 +64,7 @@ end
 group :development do
   gem 'heroku'
   gem 'sqlite3'
-  #gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
+  gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
   gem 'taps'
 
 end

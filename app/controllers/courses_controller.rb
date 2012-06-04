@@ -1,6 +1,15 @@
 class CoursesController < ApplicationController
   def index
-    @courses = Course.where(:active => true)
+    if params[:search]    
+      @courses = Course.active.search(params[:search])
+    else
+      @courses = Course.active
+    end
+    
+    if @courses.count == 1
+      redirect_to @courses.first
+    end
+    
     @page_title = "All courses"
   end
 

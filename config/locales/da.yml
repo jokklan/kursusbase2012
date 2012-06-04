@@ -25,6 +25,7 @@ da:
     autumn: efterår
   courses:
     index:
+      courses: Kurser
       allcourses: Alle kurser
       nonono: Nr.
       title: Titel
@@ -59,8 +60,8 @@ da:
       registration: Tilmelding
       keywords: Nøgleord
       addto: Tilføj til studieplan
-  home:
-    index:
+  students:
+    show:
       welcome: Velkommen
       hereisyour: her er dit skema
   you:

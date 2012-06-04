@@ -1,17 +1,15 @@
-<%
-	you = current_student
-%>
+<% you = current_student %>
 <% if ["127.0.0.1", "localhost", "0.0.0.0"].include? request.host %>
 <div id="localhost">Local host <a href="http://kursusbase2012.herokuapp.com<%= request.path %>"><%= t('internal.onheroku') %></a></div>
 <% end %>
 <div id="head"><div>
 	<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
 	<%= render_navigation %>
-	<%= form_tag search_path do %>
-		<%= text_field_tag "q" %>
+	<%= form_tag courses_path, :method => :get do %>
+		<%= text_field_tag :search, params[:search] %>
 	<% end %>
 <div id="you"><% if you %>
-	<%= t('you.are') %> <strong><%= you.student_number %></strong>. <a href="/logout"><%= t('you.logout') %></a>
+	<%= t('you.are') %> <strong><%= you.fullname %></strong>. <a href="/logout"><%= t('you.logout') %></a>
 <% else %>
 	<a href="/login"><%= t('you.login') %></a>
 <% end %></div>

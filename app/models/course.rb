@@ -23,6 +23,35 @@
 
 class Course < ActiveRecord::Base
   serialize :learn_objectives, Array
+  include PgSearch
+  
+  pg_search_scope :number_search, against: :course_number, using: { tsearch: {dictionary: "simple", prefix: true} }
+  
+  pg_search_scope :danish_search, 
+    using: {
+      tsearch: {
+        dictionary: "danish", 
+        prefix: true
+      }
+    },
+    associated_against: {
+      translations: {
+        :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
+      }
+    }
+  
+  pg_search_scope :english_search, 
+    using: {
+      tsearch: {
+        dictionary: "english", 
+        prefix: true
+      }
+    },
+    associated_against: {
+      translations: {
+        :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
+      }
+    }
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
@@ -56,9 +85,6 @@ class Course < ActiveRecord::Base
 	has_and_belongs_to_many :student_datas
 	has_and_belongs_to_many :course_recommendations
 	has_and_belongs_to_many :field_course_types
-	
-	# Search indexes
-	acts_as_indexed :fields => [:title]
   
   # Course attributes
   attr_accessible :course_number,:title, 
@@ -81,13 +107,32 @@ class Course < ActiveRecord::Base
                :course_objectives, :learn_objectives, :content, :schedule_note,
                :litteratur, :remarks, :registration, :top_comment, :former_course,
                :exam_form, :exam_aid, :evaluation_form
+               
+  # Scopes
+  scope :active, where(:active => true)
+               
+  def self.is_numeric?(obj) 
+    obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  end
   
-   # Instance methods  
+  # Class methods
+  def self.search(query, locale = I18n.locale)
+    if is_numeric? query
+      puts "NUMERIC"
+      Course.number_search(query.to_i)
+    elsif locale == :en
+      Course.english_search(query)
+    else
+      Course.danish_search(query)
+    end
+    
+  end
+  
+  # Instance methods  
+  
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
   end
-
-
 
 	def serialize_objectives
 		if !self.learn_objectives.blank?

@@ -1,0 +1,26 @@
+<%# @student.find_recommendations %>
+<h1><%= @student.student_number %></h1>
+<h1><%#= Direction.find(@student.direction_id) %></h1>
+
+
+
+<% if @student.course_recommendations.count > 0 %>
+<h2>Recommended Courses</h2>
+<ul>
+	<% @student.course_recommendations.each do |rec| %>
+		<% if rec.priority_value > 10%>
+			<li>
+				<%= link_to "#{rec.course.course_no} #{rec.course.title}", rec.course  %> - <%= rec.priority_value %> recommends this!
+			</li>
+		<% end %>
+	<% end %>
+</ul>
+<% end %>
+
+
+<h2>Course taken</h2>
+<ul>
+	<% @student.courses.each do |c| %>
+	<li><%= c.course_number %></li>
+	<% end %>
+</ul>

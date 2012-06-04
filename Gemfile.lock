@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/ctran/annotate_models.git
+  revision: 18cd39ad01829deba5aa34634b8540d6675ab978
+  specs:
+    annotate (2.4.1.beta1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -28,7 +34,6 @@ GEM
     activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    acts_as_indexed (0.7.8)
     addressable (2.2.6)
     arel (3.0.0)
     builder (3.0.0)
@@ -146,6 +151,9 @@ GEM
       railties (~> 3.0)
     pg (0.13.1)
     pg (0.13.1-x86-mingw32)
+    pg_search (0.5)
+      activerecord (>= 3)
+      activesupport (>= 3)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.1)
@@ -252,7 +260,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  acts_as_indexed
+  annotate!
   capybara
   coffee-rails (~> 3.2.1)
   crack
@@ -271,6 +279,7 @@ DEPENDENCIES
   launchy
   mechanize
   pg
+  pg_search
   rails (= 3.2.1)
   rb-fsevent
   rspec-rails

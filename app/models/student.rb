@@ -19,12 +19,16 @@ class Student < ActiveRecord::Base
   
   attr_accessor :password
   
-  attr_accessible :student_number, :password
+  attr_accessible :student_number, :password, :firstname, :lastname, :email
   
   validates :student_number, :presence => true, :uniqueness => true
   validate :must_be_authenticated
   
   after_create :update_courses
+  
+  def fullname
+    firstname + " " + lastname
+  end
   
   def must_be_authenticated
     if cn_access_key.blank? && !authenticate(password)
@@ -56,9 +60,8 @@ class Student < ActiveRecord::Base
   end
   
   def get_info
-    student_info = CampusNet.api_call(self, "UserInfo")
-    raise student_info.to_yaml
-    
+    info = CampusNet.api_call(self, "UserInfo")["User"]
+    {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]}
   end
   
   def old_courses

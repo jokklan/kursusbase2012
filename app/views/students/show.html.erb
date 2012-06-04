@@ -1,26 +1,31 @@
-<%# @student.find_recommendations %>
-<h1><%= @student.student_number %></h1>
-<h1><%#= Direction.find(@student.direction_id) %></h1>
+<h1><%= t('.welcome') %> <%= @student.fullname %>, <%= t('.hereisyour') %>:</h1>
+<table id="schedule">
+	<thead>
+		<tr>
+			<th scope="col" title="<%= t('days.mon') %>">M</th>
+			<th scope="col" title="<%= t('days.tue') %>">T</th>
+			<th scope="col" title="<%= t('days.wed') %>"><%= t('days.o') %></th>
+			<th scope="col" title="<%= t('days.thu') %>">T</th>
+			<th scope="col" title="<%= t('days.fri') %>">F</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<%= schedule_table_cell('1A') %>
+			<%= schedule_table_cell('3A') %>
+			<%= schedule_table_cell('5A') %>
+			<%= schedule_table_cell('2B') %>
+			<%= schedule_table_cell('4B') %>
+		</tr>
+		<tr>
+			<%= schedule_table_cell('2A') %>
+			<%= schedule_table_cell('4A') %>
+			<%= schedule_table_cell('5B') %>
+			<%= schedule_table_cell('1B') %>
+			<%= schedule_table_cell('3B') %>
+		</tr>
+	</tbody>
+</table>
 
-
-
-<% if @student.course_recommendations.count > 0 %>
-<h2>Recommended Courses</h2>
-<ul>
-	<% @student.course_recommendations.each do |rec| %>
-		<% if rec.priority_value > 10%>
-			<li>
-				<%= link_to "#{rec.course.course_no} #{rec.course.title}", rec.course  %> - <%= rec.priority_value %> recommends this!
-			</li>
-		<% end %>
-	<% end %>
-</ul>
-<% end %>
-
-
-<h2>Course taken</h2>
-<ul>
-	<% @student.courses.each do |c| %>
-	<li><%= c.course_number %></li>
-	<% end %>
-</ul>
+<p>Dine kurser: </p>
+<p><%= @student.courses.map(&:title).join("</p><p>").html_safe %></p>
