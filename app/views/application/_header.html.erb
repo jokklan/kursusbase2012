@@ -9,7 +9,7 @@
 		<%= text_field_tag :search, params[:search] %>
 	<% end %>
 <div id="you"><% if you %>
-	<%= t('you.are') %> <strong><%= you.student_number %></strong>. <a href="/logout"><%= t('you.logout') %></a>
+	<%= t('you.are') %> <strong><%= you.fullname %></strong>. <a href="/logout"><%= t('you.logout') %></a>
 <% else %>
 	<a href="/login"><%= t('you.login') %></a>
 <% end %></div>

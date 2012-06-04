@@ -1,9 +1,5 @@
-<%
-
-	you = current_student
-
-if you %>
-<h1><%= t('.welcome') %> <%= you.student_number %>, <%= t('.hereisyour') %>:</h1>
+<% if current_student %>
+<h1><%= t('.welcome') %> <%= current_student.fullname %>, <%= t('.hereisyour') %>:</h1>
 <table id="schedule">
 	<thead>
 		<tr>
@@ -32,7 +28,8 @@ if you %>
 	</tbody>
 </table>
 
-<p>Dine kurser: <%= current_student.course_ids %></p>
+<p>Dine kurser: </p>
+<p><%= current_student.courses.map(&:title).join("</p><p>").html_safe %></p>
 
 <% else %>
 	<h1>Søg</h1>

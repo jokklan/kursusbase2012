@@ -25,6 +25,7 @@ en:
     autumn: autumn
   courses:
     index:
+      courses: Courses
       allcourses: All courses
       nonono: No.
       title: Title
@@ -59,8 +60,8 @@ en:
       registration: Registration sign up
       keywords: Keywords
       addto: Add to Study Plan
-  home:
-    index:
+  students:
+    home:
       welcome: Welcome
       hereisyour: here is your schedule
   you:

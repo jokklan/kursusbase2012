@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604100252) do
+ActiveRecord::Schema.define(:version => 20120604134003) do
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
@@ -254,6 +254,9 @@ ActiveRecord::Schema.define(:version => 20120604100252) do
     t.string   "cn_access_key"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "email"
   end
 
   add_index "students", ["student_number"], :name => "index_users_on_student_number"

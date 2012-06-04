@@ -1,5 +1,10 @@
-<% title t('.allcourses') %>
-<h1><%= t('.allcourses') %></h1>
+<% if params[:search] %>
+	<% title t('.courses') %>
+	<h1><%= t('.courses') %></h1>
+<% else %>
+	<% title t('.allcourses') %>
+	<h1><%= t('.allcourses') %></h1>
+<% end %>
 
 <table class="courses">
 	<thead>
