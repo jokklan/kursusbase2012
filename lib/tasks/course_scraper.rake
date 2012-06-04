@@ -384,8 +384,7 @@ namespace :scrape do
           # Website / Homepage / Hjemmeside ...
           course_attributes[language][:homepage].each do |key, att|
             if att_title == att
-              homepage = att_column[1].search("a").text.chomp.strip
-              current_course[key] = homepage.strip
+              current_course[key] = att_column[1].at_css("a")[:href]
             end
           end 
         
