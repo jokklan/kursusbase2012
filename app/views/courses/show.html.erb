@@ -1,8 +1,12 @@
-<% # encoding: utf-8 %>
+<% # encoding: utf-8 
 
-<% has_schedule = ( @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]" ) %>
+	# Value preparations
+	title "#{@course.course_no} #{@course.title}" 
+	has_schedule = ( @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]" )
+	
+	@course.serialize_objectives
 
-<% @course.serialize_objectives %>
+%>
 <% if notice %><p id="notice"><%= notice %></p><% end %>
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
