@@ -1,0 +1,13 @@
+LOG:  database system was shut down at 2012-06-05 13:52:53 CEST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  database "andy" does not exist
+FATAL:  role "kursusbase2012" does not exist
+FATAL:  role "postgres" does not exist
+ERROR:  tablespace location must be an absolute path
+STATEMENT:  CREATE TABLESPACE kursusbase2012 OWNER kursusbase2012 LOCATION 'Hej';
+	
+ERROR:  directory "/usr/local/var/postgres/kursusbase2012" does not exist
+STATEMENT:  CREATE TABLESPACE kursusbase2012 OWNER kursusbase2012 LOCATION '/usr/local/var/postgres/kursusbase2012';
+	
+FATAL:  database "kursusbase2012" does not exist

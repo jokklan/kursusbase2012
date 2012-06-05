@@ -46,6 +46,15 @@ a:hover {
 	overflow: hidden;
 }
 
+body#home {
+	background-color: #fff;
+}
+
+body#home #container {
+	background-color: transparent;
+	text-align: center;
+}
+
 /* Head
 ------------------------------------------------------ */
 
