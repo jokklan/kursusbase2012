@@ -1,7 +1,4 @@
 <% you = current_student %>
-<% if ["127.0.0.1", "localhost", "0.0.0.0"].include? request.host %>
-<div id="localhost">Local host <a href="http://kursusbase2012.herokuapp.com<%= request.path %>"><%= t('internal.onheroku') %></a></div>
-<% end %>
 <div id="head"><div>
 	<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
 	<%= render_navigation %>

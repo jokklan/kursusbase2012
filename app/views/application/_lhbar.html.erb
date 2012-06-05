@@ -1,0 +1,3 @@
+<% if ["127.0.0.1", "localhost", "0.0.0.0"].include? request.host %>
+<div id="localhost">Local host <a href="http://kursusbase2012.herokuapp.com<%= request.path %>"><%= t('internal.onheroku') %></a></div><%
+	end %>
