@@ -46,19 +46,10 @@ a:hover {
 	overflow: hidden;
 }
 
-body#home {
-	background-color: #fff;
-}
-
-body#home #container {
-	background-color: transparent;
-	text-align: center;
-}
-
 /* Head
 ------------------------------------------------------ */
 
-#head {
+#head, #home form {
 	position: relative;
 	overflow: hidden;
 	background-color: #bf2f38;
@@ -70,7 +61,7 @@ body#home #container {
 	zoom: 1;
 }
 
-#head > div {
+#head > div, #home form > div {
 	background: transparent url(headertexture.png) repeat;
 	overflow: hidden;
 }
@@ -110,7 +101,7 @@ body#home #container {
 	right: 30px;
 }
 
-#head form input {
+#head form input, #home form input {
 	border-width: 0;
 	width: 163px;
 	padding: 4px 6px 4px 24px;
@@ -124,12 +115,13 @@ body#home #container {
 	background: url(loupe.png) 7px 5px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
 }
 
-#head form input:active, #head form input:focus {
+#head form input:active, #head form input:focus,
+#home form input:active, #home form input:focus {
 	outline: none;
 	box-shadow: 0 0 15px rgba(0,0,0,.6);
 }
 
-#head form input.inactive {
+#head form input.inactive, #home form input.inactive {
 	color: #999;
 	font-style: italic;
 }
@@ -186,6 +178,42 @@ body#home #container {
 	text-align: right;
 	color: #d8dee8;
 	font-weight: normal;
+}
+
+/* Home
+------------------------------------------------------ */
+
+body#home {
+	background-color: #fff;
+	margin: 0;
+}
+
+#home #content {
+	padding: 100px 0 0;
+}
+
+#home #container {
+	margin: 0;
+	width: auto;
+	background-color: transparent;
+	text-align: center;
+}
+
+#home #localhost {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#home form {
+	margin: 20px 0 0;
+	color: #fff;
+}
+
+#home form input {
+	width: 480px;
+	margin: 20px 0 0;
 }
 
 /* Content
