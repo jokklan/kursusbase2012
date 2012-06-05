@@ -28,7 +28,7 @@ class Student < ActiveRecord::Base
   after_create :update_courses
   
   def fullname
-    firstname + " " + lastname
+    "#{firstname} #{lastname}"
   end
   
   def must_be_authenticated
