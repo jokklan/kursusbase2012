@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     @student = Student.find_or_initialize_by_student_number(params[:student][:student_number])
     
     if (
-      if @student.new_record?
+      if @student.new_record? || @student.firstname.nil?
         @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
       else
         @student.password = params[:student][:password]
