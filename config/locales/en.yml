@@ -64,6 +64,16 @@ en:
     home:
       welcome: Welcome
       hereisyour: here is your schedule
+  home:
+    index:
+      search: Search
+      login: Log in
+      toplan: to plan your study
+      example: For example, search for
+      example1: mathematics
+      example2: 01227
+      example3: wednesday
+      example4: autumn
   you:
     are: You are
     login: Log in

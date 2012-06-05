@@ -1,6 +1,13 @@
-<img src="/assets/homelogo.svg" width="325" height="70" alt="">
-<h1>Søgning</h1>
+<a id="toplogin" href="/login"><%= t('.login') %></a>
+<div id="logo">
+	<img src="/assets/homelogo.svg" width="325" height="70" alt="">
+	<h1><%= t('.search') %></h1>
+</div>
 <%= form_tag courses_path, :method => :get do %><div>
 	<%= text_field_tag :search, params[:search], :tabindex => 1 %><script>document.getElementById("search").focus()</script>
-	<p>Søg eksempelvis efter &#8220;matematik&#8221;, &#8220;01227&#8221;, &#8220;onsdag&#8221;, &#8220;efterår&#8221;&#8230;</p>
+	<p><%= t('.example') %> &#8220;<%= t('.example1') %>&#8221;, &#8220;01227&#8221;, &#8220;<%= t('.example3') %>&#8221;, &#8220;<%= t('.example4') %>&#8221;&#8230;</p>
 </div><% end %>
+
+<p id="logintro"><a href="/login"><strong><%= t('.login') %></strong> <span><%= t('.toplan') %></span></a></p>
+
+<p id="languages"><a href="/da">Danish</a> / <a href="/en">English</a></p>

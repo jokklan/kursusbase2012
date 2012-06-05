@@ -4,7 +4,7 @@
  */
 
 body {
-	background-color: #eee;
+	background: #eee url(noise.gif);
 	text-align: center;
 	margin: 0;
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -166,7 +166,7 @@ a:hover {
 	position: relative;
 	background-color: #264c82;
 	color: #fff;
-	font-size: 125%;
+	font-size: 123.1%;
 	text-align: left;
 	padding: 8px 30px;
 }
@@ -184,12 +184,12 @@ a:hover {
 ------------------------------------------------------ */
 
 body#home {
-	background-color: #fff;
+	background: #fff url(homegradient.png) repeat-x;
 	margin: 0;
 }
 
 #home #content {
-	padding: 100px 0 0;
+	padding: 150px 0 0;
 }
 
 #home #container {
@@ -207,13 +207,115 @@ body#home {
 }
 
 #home form {
-	margin: 20px 0 0;
+	margin: 24px 0 0;
 	color: #fff;
+}
+
+#home form, #home #logintro a {
+	font-size: 115.4%;
 }
 
 #home form input {
 	width: 480px;
-	margin: 20px 0 0;
+	margin: 22px 0 0;
+	background: #f7f7f7 url(loupe.png) no-repeat 7px 6px;
+	background: url(loupe.png) 7px 6px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: url(loupe.png) 7px 6px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+}
+
+#home form p {
+	color: rgba(255,255,255,.7);
+}
+
+#home #logo {
+	width: 325px;
+	text-align: left;
+	margin: 0 auto;
+}
+
+#home #logo h1 {
+	color: #999;
+	font-size: 169.2%;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin: -30px 0 0 69px;
+}
+
+#home #logintro {
+	margin: 2.5em 0 2em;
+}
+
+#home #logintro a:hover, #home a#toplogin:hover {
+	text-decoration: none;
+}
+
+#home #logintro a:hover span {
+	text-decoration: underline;
+}
+
+#home #logintro a, #home #toplogin {
+	color: #333;
+	text-shadow: 0 1px #fff;
+}
+
+#home #toplogin {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 10px 12px 0 0;
+}
+
+#home #toplogin, #home #logintro a strong {
+	background-color: #eee;
+	border: 1px solid #d8d8d8;
+	border-radius: 6px;
+	background-image: gradient(linear, left top, left bottom, from(#f3f3f3), to(#e3e3e3));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e3e3e3));
+	background-image: -o-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e3e3e3));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e3e3e3));
+	background-image: -moz-linear-gradient(top, #f3f3f3, #e3e3e3);
+}
+
+#home #logintro a strong {
+	padding: 8px 12px;
+	margin: 0 1ex 0 0;
+}
+
+#home #toplogin {
+	padding: 2px 11px;
+	border-radius: 3px;
+}
+
+#home a#toplogin:hover, #home #logintro a:hover strong {
+	background-color: #eee;
+	background-image: gradient(linear, left top, left bottom, from(#fafafa), to(#eaeaea));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#eaeaea));
+	background-image: -o-gradient(linear, left top, left bottom, from(#fafafa), to(#eaeaea));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#fafafa), to(#eaeaea));
+	background-image: -moz-linear-gradient(top, #fafafa, #eaeaea);
+}
+
+#home a#toplogin:active {
+	padding: 3px 11px 1px;
+}
+
+#home a#toplogin:active, #home #logintro a:active strong {
+	background-color: #eee;
+	background-image: gradient(linear, left top, left bottom, from(#e3e3e3), to(#f3f3f3));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#f3f3f3));
+	background-image: -o-gradient(linear, left top, left bottom, from(#e3e3e3), to(#f3f3f3));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#e3e3e3), to(#f3f3f3));
+	background-image: -moz-linear-gradient(top, #e3e3e3, #f3f3f3);
+}
+
+#home #languages {
+	font-size: 92.3%;
+	color: #999;
+}
+
+#home #languages a {
+	color: #999;
+	font-weight: normal;
 }
 
 /* Content

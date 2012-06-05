@@ -64,6 +64,16 @@ da:
     show:
       welcome: Velkommen
       hereisyour: her er dit skema
+  home:
+    index:
+      search: Søgning
+      login: Log ind
+      toplan: for at lægge en studieplan
+      example: Søg eksempelvis efter
+      example1: matematik
+      example2: 01227
+      example3: onsdag
+      example4: efterår
   you:
     are: Du er
     login: Log ind
