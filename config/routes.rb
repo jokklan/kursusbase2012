@@ -17,13 +17,12 @@ Kursusbase2012::Application.routes.draw do
     resources :courses
     resources :keywords
     resources :course_types
-		resources :students, only: [] do
-		  get "show", on: :collection, as: "show_student"
-	  end
+	  
+    # get "/", to: 'student#show', as: "show_student"
 		
 		post "search", to: "courses#index", as: "search"
 		
-		root :to => 'home#index'
+		root :to => 'students#show'
   end
   
   
