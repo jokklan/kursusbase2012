@@ -46,13 +46,20 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_math
+      url = url_java
       page = agent.get(url)
     
       # Saving each link of the course in the array
       array = []
+			course_schedules = {}
       agent.page.links_with(:href => %r{\d{5}\.aspx\?menulanguage=.*}).each do |link|
         link_url = link.href.to_s
+				schedule_regex = %r{^((E|F)([0-9])(A|B)?|Efterår|Forår|Spring|Autumn|Fall|January|Januar|June|Juni)}.match(link.text)
+				if not schedule_regex.nil?
+					course_number_regex = %r{(\d{5})}.match(link.href.to_s)
+					course_schedules[course_number_regex[1].to_i] = link.text
+					puts "#{course_number_regex[1]} has schedule #{link.text}"
+				end
         link_url = link_url.gsub("en","da") if language == :da
         link_url = link_url.gsub("da","en") if language == :en
         array << link_url unless array.include?(link_url)
@@ -72,6 +79,7 @@ namespace :scrape do
       # Taking each link and scraping
       array.each_with_index do |e, i|   
 				
+				# Storing the current info
         current_course = {}
         current_course_teachers = []
         current_course_types_head = []
@@ -83,7 +91,8 @@ namespace :scrape do
 				current_course_schedules = []
           
         other_info = {}
-
+				
+				# Rescuing error if trouble connecting to the dtu.dk
 				page_error = false
 				begin
 					page = agent.get("#{url_dtu}#{e}")
@@ -91,8 +100,6 @@ namespace :scrape do
 					page_error = true
 				end
         
-        top_comment = ''
-      	if not page_error
         # The table with content
         table = page.search("div.CourseViewer table")[1]
         table_rows = table.search("tr")
@@ -105,12 +112,8 @@ namespace :scrape do
         current_course[:title] = %r{^\d{5}.(.+)}.match(title)[1].to_s
         current_course[:course_number] = %r{^\d{5}}.match(title).to_s.to_i
 				current_course[:active] = true
-        #puts "Title: #{current_course[:title]}" 
-        # Top comment (only existing if comment written)
-        # Observed: 
-        #   if the css selector below is used the course page will give
-        #   exactly 2 results (array with length 2). else the length is
-        #   3 or more. maybe not for all?
+				
+				# Top Comment
         if table.search("tr:nth-child(2) .normal").length == 2
           current_course[:top_comment] = table_rows[2].search("p").text
         end      
@@ -120,6 +123,12 @@ namespace :scrape do
       
         # Content table rows    
         content_rows = content_table.search("tr")
+
+				# Another index, if new versions
+				if content_rows[2].nil?
+	        content_table = page.search("div.CourseViewer table")[2]
+	        content_rows = content_table.search("tr")
+				end
           
         # Title på et andet sprog (row 1)
         other_info[:title_other_language] = content_rows[1].search("td")[1].text.strip.chomp
@@ -132,7 +141,6 @@ namespace :scrape do
       
         # Course types (row 5)
         # Her angives, om det er Civil, Diplom, Levnedsmiddel, Ph.d. etc.
-        # Hvordan skal det struktureres i databasen?
         column_text = content_rows[4].search("table td")[0].to_s.chomp.strip
         current_course_types_head = column_text[4,(column_text.length - 9)].chomp.strip.split("<br>")
       
@@ -251,9 +259,9 @@ namespace :scrape do
                              }
       
         # Taking each row in the nice tables of kurser.dtu.dk
-				#scraping_course_t1 = Time.now
         content_rows.each_with_index do |row, row_i|
 					
+					# Getting attribute title and matching
           att_column = row.search("td")
           att_title = att_column[0].text.chomp.strip
         
@@ -265,11 +273,20 @@ namespace :scrape do
           end
 
 					# Schedule
-          if course_attributes[language][:mandatory][:schedule] == att_title
+          if course_attributes[language][:mandatory][:schedule_note] == att_title
 						string = att_column[1].text.strip.chomp
 						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a
-						schedule_string = %r{^((E|F)([0-9])(A|B)?|Efterår|Forår|Spring|Autumn|Fall|January|Januar|June|Juni)}.match(string)
-						current_course[:schedule] = schedule_string[0] if language == :da and not schedule_string.nil?
+						# if not schedule_regex.nil?
+						# 							schedule_string = schedule_regex[1]
+						# 							schedule_string += "#{schedule_regex[5]}" if not schedule_regex[5].nil?
+						# 							
+						# 							puts current_course[:schedule]
+						# 						end				
+						schedule = course_schedules[current_course[:course_number]]
+						if not schedule.nil?
+							current_course[:schedule] = schedule
+							puts schedule
+						end
 						schedules.each do |s|
 							current_course_schedules << s
 						end
@@ -409,8 +426,6 @@ namespace :scrape do
           end
         end
 				
-				#puts "Title: #{current_course[:title]}"
-				
         # Printing debug data
         if db_debug      
           puts "Title: #{current_course[:title]}"
@@ -463,8 +478,10 @@ namespace :scrape do
 					end
 				end			
 				
+				# Creating the courses
         if db_seed
-
+					
+					# Finding or creating institute
           created_institute = Institute.find_by_dtu_institute_id(current_course_institute[:dtu_institute_id])
           if created_institute.nil?
             created_institute = Institute.create(current_course_institute)
@@ -473,8 +490,10 @@ namespace :scrape do
             created_institute.save
           end
           
+					# Adding institute to current course
           current_course[:institute_id] = created_institute.id
           
+					# Finding or creating course
           created_course = Course.find_by_course_number(current_course[:course_number])
           if created_course.nil?
             created_course = Course.create(current_course)
@@ -485,33 +504,38 @@ namespace :scrape do
 
 					# Adding objectives
 					created_course.learn_objectives = current_course[:learn_objectives]
-
+					
+					# Finding or creating teachers
           current_course_teachers.each do |t|
+						
             teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
-
-          # Adding keywords
+					
+					# Attributes, which should be translated
           if language == :en
-
+						
+						# Finding or creating schedule blocks (E1, E2, F3 osv.)
 						current_course_schedules.each do |s|
 							schedule = Schedule.find_by_block(s)
 							created_course.schedules << schedule if not schedule.nil? and not created_course.schedules.include? (schedule)
 						end
-
+						
+						# Finding or adding keywords
             current_course_keywords.each do |k|
               keyword = Keyword.find_by_title(k)
               keyword = Keyword.create(:title => k) if keyword.nil?
               created_course.keywords << keyword
             end
 
+						# Finding or adding course types
             current_course_types_head.each do |cth|
-              # Manual fixing of some weird titles
               course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
               course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
               created_course.main_course_types << course_type
             end
 
+						# Finding or adding special course types
             current_course_types.each do |ct|
               course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
               course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
@@ -519,13 +543,14 @@ namespace :scrape do
             end
           else
 						
-	
+						# Finding the keyword in english and adding it in danish
             created_course.keywords.with_translations(:en).each_index do |i|
               keyword = created_course.keywords[i]
               keyword.update_attributes(:title => current_course_keywords[i], :locale => language)
               keyword.save
             end
 
+						# Finding the course type in english and adding it in danish
             created_course.main_course_types.with_translations(:en).where(:course_type_type => "Main").each_index do |i|
               course_type = created_course.main_course_types[i]
               course_type.update_attributes(:title => current_course_types_head[i], :locale => language)
@@ -535,7 +560,7 @@ namespace :scrape do
 						ct_popped = {}
 						current_course_types.each {|ct| ct_popped[ct] = false }
 						
-          	#t1 = Time.now
+          	# Finding the special course types in english and adding it in danish
             created_course.spec_course_types.with_translations(:en).where(:course_type_type => "Spec").each_index do |i|
               course_type = created_course.spec_course_types[i]
               course_type.update_attributes(:title => current_course_types[i], :locale => language)
@@ -550,12 +575,10 @@ namespace :scrape do
 								created_course.spec_course_types << course_type
 							end
 						end
-
           end
         
           # Saving course
           created_course.save
-					end
         end
 
 				print "|" if i == 0 || i == course_amount - 1
