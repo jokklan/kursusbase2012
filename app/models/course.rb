@@ -125,10 +125,13 @@ class Course < ActiveRecord::Base
     else
       Course.danish_search(query)
     end
-    
   end
   
-  # Instance methods  
+  # Instance methods 
+  
+  def to_param
+    course_number
+  end 
   
   def set_related_course_type(course_relation, type)
     course_relation.related_course_type = type
@@ -139,12 +142,16 @@ class Course < ActiveRecord::Base
 			self.learn_objectives = self.learn_objectives.split(">")
 		end
 	end
+	
+	def course_number
+	  course_no
+  end
 
   def course_no
-    if self.course_number < 9999
-      "0#{self.course_number}"
+    if read_attribute(:course_number) < 9999
+      "0#{read_attribute(:course_number)}"
     else
-      self.course_number
+      read_attribute(:course_number)
     end
   end
 

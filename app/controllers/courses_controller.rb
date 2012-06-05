@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
+    @course = Course.find_by_course_number(params[:id])
     @blocked_courses = CourseRelation.where(:related_course_id => @course.id, :related_course_type => "Blocked")
   end
 
