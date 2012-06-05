@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604134003) do
+ActiveRecord::Schema.define(:version => 20120605132456) do
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
