@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   def index
-    if params[:search]    
-      @courses = Course.active.search(params[:search])
+    if params[:search]
+      @courses = Course.search_params(params[:search])
     else
       @courses = Course.active
     end

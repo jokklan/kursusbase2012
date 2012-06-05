@@ -11,17 +11,19 @@ Kursusbase2012::Application.routes.draw do
     # get 'signup', to: 'students#new', as: 'signup'
     get 'login', to: 'sessions#new', as: 'login'
     post 'login', to: 'sessions#create', as: 'sessions'
+    put 'login', to: 'sessions#create', as: 'sessions'
     get 'logout', to: 'sessions#destroy', as: 'logout'
-    get 'test', to: 'sessions#test', as: 'test'
     
     resources :courses
     resources :keywords
     resources :course_types
-		resources :students
+		resources :students, only: [] do
+		  get "show", on: :collection, as: "show_student"
+	  end
 		
 		post "search", to: "courses#index", as: "search"
 		
-		root :to => 'students#show'
+		root :to => 'home#index'
   end
   
   

@@ -5,7 +5,7 @@
 #  id              :integer         not null, primary key
 #  course_id       :integer
 #  req_course_id   :integer
-#  req_course_no   :integer
+#  req_course_number   :integer
 #  prerequisite    :string(255)
 #  req_course_type :string(255)
 #  created_at      :datetime        not null

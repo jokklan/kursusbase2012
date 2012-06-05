@@ -5,7 +5,7 @@
 #  id              :integer         not null, primary key
 #  course_id       :integer
 #  req_course_id   :integer
-#  req_course_no   :integer
+#  req_course_number   :integer
 #  prerequisite    :string(255)
 #  req_course_type :string(255)
 #  created_at      :datetime        not null
@@ -17,13 +17,13 @@
 one:
   course: 
   prerequisite_course: 
-  prerequisite_course_no: 1
+  prerequisite_course_number: 1
   prerequisite: MyString
   course_type: MyString
 
 two:
   course: 
   prerequisite_course: 
-  prerequisite_course_no: 1
+  prerequisite_course_number: 1
   prerequisite: MyString
   course_type: MyString

@@ -151,7 +151,7 @@ namespace :pearson do
 			puts "Recommendations:"
 			recs.each do |course_id, value|
 				course = Course.find(course_id)
-				puts "#{course.course_no} - #{value} recommendations" unless not a.should_be_recommended(course)
+				puts "#{course.course_number} - #{value} recommendations" unless not a.should_be_recommended(course)
 				if a.should_be_recommended(course)
 					a.course_recommendations << CourseRecommendation.new(:course_id => course.id, :priority_value => value)
 				end

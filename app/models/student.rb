@@ -22,6 +22,7 @@ class Student < ActiveRecord::Base
   attr_accessible :student_number, :password, :firstname, :lastname, :email
   
   validates :student_number, :presence => true, :uniqueness => true
+  validate :must_exists
   validate :must_be_authenticated
   
   after_create :update_courses
@@ -31,8 +32,16 @@ class Student < ActiveRecord::Base
   end
   
   def must_be_authenticated
-    if cn_access_key.blank? && !authenticate(password)
+    if cn_access_key.blank? || !authenticate(password)
       errors[:base] << "student number or password is invalid"
+    end
+  end
+  
+  def must_exists
+    if !(student_number =~ /^s\d{6}$/)
+      errors.add(:student_number, "student number must be of format s######")
+    elsif get_info.empty?
+      errors.add(:student_number, "no student with given student nr.")
     end
   end
   
@@ -61,7 +70,11 @@ class Student < ActiveRecord::Base
   
   def get_info
     info = CampusNet.api_call(self, "UserInfo")["User"]
-    {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]}
+    if info.nil?
+      {}
+    else
+       {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]} 
+    end
   end
   
   def old_courses

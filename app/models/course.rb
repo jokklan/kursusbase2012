@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 # == Schema Information
 #
 # Table name: courses
@@ -125,6 +127,13 @@ class Course < ActiveRecord::Base
     else
       Course.danish_search(query)
     end
+  end
+  
+  def self.search_params(query)
+    if query =~ /((E|F)([0-9])(A|B)?|efterår|forår|spring|autumn|fall|january|januar|june|juni)/i
+      # TODO: self.active.where(:schedule => $1).search(query)
+    end
+    self.active.search(query)
   end
   
   # Instance methods 

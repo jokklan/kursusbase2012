@@ -1,0 +1,24 @@
+<%
+	site_title = "DTU Kursusbasen"
+	page_title = yield(:title)
+	
+	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
+%>
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%= title %></title>
+	<%= stylesheet_link_tag    "application", :media => "all" %>
+	<%= javascript_include_tag "application" %>
+	<%= csrf_meta_tags %>
+</head>
+<body>
+	<div id="wrapper">
+		<div id="container">
+			<div id="content">
+				<%= yield %>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
