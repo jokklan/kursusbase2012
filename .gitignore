@@ -16,3 +16,6 @@
 
 # Sensitive data
 dtu_access_test.rb
+
+# Temporary files unneeded
+.DS_Store
