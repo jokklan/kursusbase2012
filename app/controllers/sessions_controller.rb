@@ -9,10 +9,10 @@ class SessionsController < ApplicationController
 
   def create
     @student = Student.find_or_initialize_by_student_number(params[:student])
-    if @student.save
+    if @student.save && @student.authenticate(params[:password])
       session[:student_id] = @student.id
       @student.update_courses
-      unless @student.firstname.present?
+      if @student.new_record?
         @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k})
       end
       redirect_to root_url, notice: "Logged in!"

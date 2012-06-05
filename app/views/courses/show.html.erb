@@ -1,6 +1,6 @@
-# encoding: utf-8
+<% # encoding: utf-8 %>
 
-<% has_schedule = @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]"%>
+<% has_schedule = ( @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]" ) %>
 
 <% @course.serialize_objectives %>
 <% if notice %><p id="notice"><%= notice %></p><% end %>

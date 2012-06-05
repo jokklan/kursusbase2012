@@ -1,5 +1,6 @@
 module CoursesHelper
   def schedule_table_cell(sch)
+    puts "Schedule: #{sch}"
     schs = @course.schedules.select {|s| s.block[1,2] == sch}
     if schs.map {|s| s.block[0]}.include?("F") && schs.map {|s| s.block[0]}.include?("E")
       css_class = "allyear"
