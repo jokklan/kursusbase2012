@@ -200,6 +200,10 @@ html, body, #container {
 /* Home
 ------------------------------------------------------ */
 
+html.home {
+	background: #fff;
+}
+
 body#home {
 	background: #fff url(homegradient.png) repeat-x;
 	height: auto;
