@@ -8,6 +8,11 @@ en:
   cancel: Cancel
   internal:
     onheroku: This page on Heroku
+  menu:
+    home: Home
+    schedule: Schedule
+    courses: Courses
+    plan: Study Plan
   languages:
     dansk: Danish
     da: Danish

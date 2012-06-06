@@ -8,6 +8,11 @@ da:
   cancel: Annuller
   internal:
     onheroku: Denne side på Heroku
+  menu:
+    home: Forside
+    schedule: Skema
+    courses: Kurser
+    plan: Studieplan
   languages:
     dansk: dansk
     da: dansk
