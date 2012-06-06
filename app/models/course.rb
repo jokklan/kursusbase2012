@@ -27,13 +27,12 @@ class Course < ActiveRecord::Base
   serialize :learn_objectives, Array
   include PgSearch
   
-  pg_search_scope :number_search, against: :course_number, using: { tsearch: {dictionary: "simple", prefix: true} }
+  pg_search_scope :number_search, against: :course_number, using: { tsearch: {dictionary: "simple"} }
   
   pg_search_scope :danish_search, 
     using: {
       tsearch: {
-        dictionary: "danish", 
-        prefix: true
+        dictionary: "danish"
       }
     },
     associated_against: {
@@ -45,8 +44,7 @@ class Course < ActiveRecord::Base
   pg_search_scope :english_search, 
     using: {
       tsearch: {
-        dictionary: "english", 
-        prefix: true
+        dictionary: "english"
       }
     },
     associated_against: {
@@ -54,10 +52,55 @@ class Course < ActiveRecord::Base
         :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
       }
     }
+    
+  pg_search_scope :institute_search, 
+    using: {
+      tsearch: {
+        dictionary: "danish"
+      }
+    },
+    associated_against: {
+      institute_translations: {
+        :title => 'A'
+      }
+    }
+    
+  pg_search_scope :teacher_search, 
+    using: {
+      tsearch: {
+        dictionary: "danish"
+      }
+    },
+    associated_against: {
+      teachers: {
+        :name => 'A'
+      }
+    }
+    
+  pg_search_scope :course_type_search, 
+    using: {
+      tsearch: {
+        dictionary: "danish"
+      }
+    },
+    associated_against: {
+      main_course_types_translations: {
+        :title => 'A'
+      },
+      field_of_study_translations: {
+        :title => 'A'
+      },
+      flag_model_type: {
+        :title => 'A'
+      }
+    }
+    
+    
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
 	has_and_belongs_to_many :main_course_types
+	has_many :main_course_types_translations, :class_name => "MainCourseType::Translation", :through => :main_course_types, :source => :translations
 	
   
   has_many :point_blocks, :class_name => "CourseRelation", :foreign_key => "course_id", 
@@ -82,8 +125,14 @@ class Course < ActiveRecord::Base
 	has_many :student_datas, :through => :course_student_datas
 	has_many :course_specializations
 	has_many :spec_course_types, :through => :course_specializations
+	has_many :field_of_study, :through => :spec_course_types
+	has_many :field_of_study_translations, :class_name => "FieldOfStudy::Translation", :through => :field_of_study, :source => :translations
+	
+	has_many :flag_model_type, :through => :spec_course_types
+  # has_many :flag_model_type_translations, :class_name => "FlagModelType::Translation", :through => :flag_model_type, :source => :translations
   
   belongs_to :institute
+  has_many :institute_translations, :class_name => "Institute::Translation", :through => :institute, :source => :translations
 
 	has_and_belongs_to_many :schedules
 	has_and_belongs_to_many :student_datas
@@ -150,30 +199,81 @@ class Course < ActiveRecord::Base
     end
   end
   
-  def self.search_params(query)
-    if query =~ /((E|F)([0-9])(A|B)?|efterår|forår|spring|autumn|fall|january|januar|june|juni)/i
-      match = $1
-      query.gsub(query, "")
-      if match =~ /((E|F)([0-9])(A|B)?)/i
-        puts "#{$1}"
-        Course.joins{schedules}.where{schedules.block =~ "#{$1}%"}
-      elsif match =~ /(forår|spring)(\d{4})?/
-        puts "SEARCHING FOR: F#{$2}%"
-        # Course.select()
-        Course.joins{schedules}.where{schedules.block =~ "F#{$2}%"}
-      elsif match =~ /efterår|fall|autumn/
-        Course.joins{schedules}.where{schedules.block =~ "E%"}
-      elsif match =~ /januar|january/
-        Course.joins{schedules}.where{schedules.block == "januar"}
-      elsif match =~ /june|juni/
-        Course.joins{schedules}.where{schedules.block == "juni"}
-      else
-        
-      end
-      # result.active.search(query)
+  def self.search_params(param_string)
+    search_string = param_string.dup
+    result_query = Course.active.uniq
+    
+    result_query = if search_string =~ /((?:point:|ects:)([\d\,\.]*))/i
+      match = $2
+      search_string.gsub!($1, "")
+      result_query.where(:ects_points => match.gsub(",","."))
     else
-      self.active.search(query)
+      result_query
     end
+    
+    result_query = if search_string =~ /((?:institute?:)([\w-]*))/i
+      match = $2
+      search_string.gsub!($1, "")
+      result_query.institute_search(match.gsub("-"," "))
+    else
+      result_query
+    end
+    
+    result_query = if search_string =~ /((?:coursetype:|kursustype:|type:)([\w-]*))/i
+      match = $2
+      search_string.gsub!($1, "")
+      result_query.course_type_search(match.gsub("-"," "))
+    else
+      result_query
+    end
+    
+    result_query = if search_string =~ /((?:teacher:|lærer:)([\w-]*))/i
+      match = $2
+      search_string.gsub!($1, "")
+      result_query.teacher_search(match.gsub("-"," "))
+    else
+      result_query
+    end
+    
+    result_query = if search_string =~ /((?:language:|sprog:)(english|engelsk|en|danish|dansk|da))/i
+      match = $1
+      search_string.gsub!(match, "")
+      
+      if match =~ /english|engelsk|en/
+        result_query.where(:language => "English")
+      elsif match =~ /danish|dansk|da/
+        result_query.where(:language => "Danish")
+      else
+        result_query
+      end
+    else
+      
+      result_query
+    end
+    
+    result_query = if search_string =~ /((schedule:|skema:)?(E|F)([0-9])(A|B)?|efterår|forår|spring|autumn|fall|january|januar|june|juni)/i
+      match = $1
+      search_string.gsub!(match, "")
+      
+      if match =~ /((E|F)([0-9])(A|B)?)/i
+        result_query.joins{schedules}.where{schedules.block =~ "#{$1}%"}
+      elsif match =~ /(forår|spring)(\d{4})?/
+        result_query.joins{schedules}.where{schedules.block =~ "F#{$2}%"}
+      elsif match =~ /efterår|fall|autumn/
+        result_query.joins{schedules}.where{schedules.block =~ "E%"}
+      elsif match =~ /januar|january/
+        result_query.joins{schedules}.where{schedules.block == "Januar"}
+      elsif match =~ /june|juni/
+        result_query.joins{schedules}.where{schedules.block == "Juni"}
+      else
+        result_query
+      end
+    else
+      result_query
+    end
+    
+    puts (search_string.blank? ? "SQL FOR BLANK: "+result_query.to_sql : "SQL FOR '#{search_string}': "+result_query.search(search_string).to_sql)
+    search_string.blank? ? result_query : result_query.search(search_string)
   end
   
   # Instance methods 
