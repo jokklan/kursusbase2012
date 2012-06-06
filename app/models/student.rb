@@ -83,7 +83,7 @@ class Student < ActiveRecord::Base
     end
   end
   
-  def old_courses
+  def update_old_courses
     cn_courses = CampusNet.api_call(self, "Grades")['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
     
     cn_courses.each do |cn_course|
@@ -95,7 +95,7 @@ class Student < ActiveRecord::Base
     self.save
   end
   
-  def current_courses
+  def update_current_courses
     cn_courses = CampusNet.api_call(self, "Elements")['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
     
 		if not cn_courses.nil?
@@ -109,8 +109,14 @@ class Student < ActiveRecord::Base
   end
   
   def update_courses
-    old_courses
-    current_courses
+    update_old_courses
+    update_current_courses
+  end
+  
+  def current_courses
+    courses = []
+    self.course_students.where('semester = ?', self.semester.to_s).each {|cs| courses << cs.course}
+    courses
   end
   
   def semester(year = Time.now.year, semester = Time.now.month === 2...7 ? 1 : 0)

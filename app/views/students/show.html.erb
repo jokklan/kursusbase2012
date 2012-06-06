@@ -11,24 +11,30 @@
 	</thead>
 	<tbody>
 		<tr>
-			<%= student_schedule_table_cell('1A') %>
-			<%= student_schedule_table_cell('3A') %>
-			<%= student_schedule_table_cell('5A') %>
-			<%= student_schedule_table_cell('2B') %>
-			<%= student_schedule_table_cell('4B') %>
+			<%= student_schedule_table_cell '1A' %>
+			<%= student_schedule_table_cell '3A' %>
+			<%= student_schedule_table_cell '5A' %>
+			<%= student_schedule_table_cell '2B' %>
+			<%= student_schedule_table_cell '4B' %>
 		</tr>
 		<tr>
-			<%= student_schedule_table_cell('2A') %>
-			<%= student_schedule_table_cell('4A') %>
-			<%= student_schedule_table_cell('5B') %>
-			<%= student_schedule_table_cell('1B') %>
-			<%= student_schedule_table_cell('3B') %>
+			<%= student_schedule_table_cell '2A' %>
+			<%= student_schedule_table_cell '4A' %>
+			<%= student_schedule_table_cell '5B' %>
+			<%= student_schedule_table_cell '1B' %>
+			<%= student_schedule_table_cell '3B' %>
 		</tr>
 	</tbody>
 </table>
 
 <p>Dine kurser: </p>
 <%#= "is project course: #{Course.find_by_course_number(02122).is_project_course(@student)}" %>
+
+<ul>
+<% @student.current_courses.each do |c| %>
+	<li><%= c.title%></li>
+<% end %>
+</ul>
 <% if not @student.field_of_study.nil? %>
 <% @student.courses.each do |c| %>
 	<% if c.is_basic_course(@student) %>
