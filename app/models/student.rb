@@ -16,6 +16,10 @@ class Student < ActiveRecord::Base
   has_many :course_students
   has_many :courses, :through => :course_students
 	has_many :course_recommendations
+	
+	has_many :main_courses, 		:through => :field_of_study
+	has_many :project_courses, :through => :field_of_study
+	has_many :basic_courses, 	:through => :field_of_study
   
   attr_accessor :password
   

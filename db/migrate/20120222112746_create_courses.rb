@@ -6,7 +6,6 @@ class CreateCourses < ActiveRecord::Migration
       t.float :ects_points
       t.boolean :open_education
 			t.string :schedule
-      t.text :schedule_note
       t.integer :institute_id
       t.string :homepage
       t.text :exam_schedule

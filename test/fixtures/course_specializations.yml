@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  spec_course_type: 
+  optional: false
+  recommended_semester: MyString
+
+two:
+  spec_course_type: 
+  optional: false
+  recommended_semester: MyString

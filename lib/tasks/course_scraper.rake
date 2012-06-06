@@ -30,7 +30,7 @@ namespace :scrape do
 		
 		
     # Scraping for each language
-    languages = [:en, :da]
+    languages = [:da, :en]
     languages.each do |language|
       
       # Setting language
@@ -41,12 +41,13 @@ namespace :scrape do
       url_civil    = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
       url_software = "http://www.kurser.dtu.dk/search.aspx?lstTeachingPeriod=E1;E2;E3;E4;E5;E1A;E2A;E3A;E4A;E5A;E1B;E2B;E3B;E4B;E5B;E&lstType=Teknologisk%20linjefag,%20Softwareteknologi&YearGroup=2011-2012&btnSearch=Search"
       url_test2    = "http://www.kurser.dtu.dk/search.aspx?lstType=DTU_FOOD_SCI%C2%A4&YearGroup=2011-2012&btnSearch=Search"
-			url_math     = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=matematik&YearGroup=2011-2012&btnSearch=Search"
-			url_java		 = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=Java&YearGroup=2011-2012,2012-2013&btnSearch=Search"
+			url_math     = "http://www.kurser.dtu.dk/search.aspx?lstDepartment=1&YearGroup=2011-2012&btnSearch=Search"
+			url_java		 = "http://www.kurser.dtu.dk/search.aspx?txtSearchKeyword=Java&YearGroup=2011-2012&btnSearch=Search"
+			url_inform	 = "http://www.kurser.dtu.dk/search.aspx?lstDepartment=1,2&lstType=DTU_MSC%C2%A4&YearGroup=2011-2012&btnSearch=Search"
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_java
+      url = url_inform
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -58,7 +59,6 @@ namespace :scrape do
 				if not schedule_regex.nil?
 					course_number_regex = %r{(\d{5})}.match(link.href.to_s)
 					course_schedules[course_number_regex[1].to_i] = link.text
-					puts "#{course_number_regex[1]} has schedule #{link.text}"
 				end
         link_url = link_url.gsub("en","da") if language == :da
         link_url = link_url.gsub("da","en") if language == :en
@@ -274,19 +274,11 @@ namespace :scrape do
 
 					# Schedule
           if course_attributes[language][:mandatory][:schedule_note] == att_title
-						string = att_column[1].text.strip.chomp
-						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a
-						# if not schedule_regex.nil?
-						# 							schedule_string = schedule_regex[1]
-						# 							schedule_string += "#{schedule_regex[5]}" if not schedule_regex[5].nil?
-						# 							
-						# 							puts current_course[:schedule]
-						# 						end				
 						schedule = course_schedules[current_course[:course_number]]
-						if not schedule.nil?
-							current_course[:schedule] = schedule
-							puts schedule
-						end
+						current_course[:schedule] = schedule if not schedule.nil?
+						
+						string = att_column[1].text.strip.chomp
+						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a	
 						schedules.each do |s|
 							current_course_schedules << s
 						end
@@ -300,7 +292,7 @@ namespace :scrape do
           end
         
           # Prerequisites
-					if language == :en
+					if language == :da
           	course_attributes[language][:prerequisites].each do |key, att|
 							has_letters = false
           	  if att_title == att
@@ -444,34 +436,33 @@ namespace :scrape do
         end
 
 				# Adding course-relations
-				if language == :en
+				if language == :da
 					created_course = Course.find_or_create_by_course_number(current_course[:course_number])
 					current_course_prereq.each do |key, att|
 						group_no = 1
 						att.each do |a|
 							a.each do |o|
-								if !Course.find_by_course_number(o)
-									Course.create(:course_number => o, :active => false)
+								course = Course.find_by_course_number(o)
+								if course.nil?
+									course = Course.create(:course_number => o, :active => false)
 								end
-								if Course.find_by_course_number(o)
-									case key
-										when :point_block
-											#puts "adding blocked courses"
-											created_course.point_blocks 				 << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Blocked')
-										when :optional_prereq
-											#puts "adding optional courses"
-											created_course.advisable_qualifications  << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Optional')
-										when :mandatory_prereq
-											#puts "adding mandatory courses"
-											created_course.mandatory_qualifications				 << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Mandatory')
-										when :qualified_prereq
-											#puts "adding qualified courses"
-											created_course.optional_qualifications	   << CourseRelation.new(:group_no => group_no, :related_course_id => Course.find_by_course_number(o).id, :related_course_type => 'Qualification')
-										else
-											puts "### ERROR when trying to scrape prerequisites ###"
-									end
-									group_no += 1
-								end
+								case key
+									when :point_block
+										#puts "adding blocked courses"
+										created_course.point_blocks 				 << CourseRelation.new(:group_no => group_no, :related_course_id => course.id, :related_course_type => 'Blocked')
+									when :optional_prereq
+										#puts "adding optional courses"
+										created_course.advisable_qualifications  << CourseRelation.new(:group_no => group_no, :related_course_id => course.id, :related_course_type => 'Optional')
+									when :mandatory_prereq
+										#puts "adding mandatory courses"
+										created_course.mandatory_qualifications				 << CourseRelation.new(:group_no => group_no, :related_course_id => course.id, :related_course_type => 'Mandatory')
+									when :qualified_prereq
+										#puts "adding qualified courses"
+										created_course.optional_qualifications	   << CourseRelation.new(:group_no => group_no, :related_course_id => course.id, :related_course_type => 'Qualification')
+									else
+										puts "### ERROR when trying to scrape prerequisites ###"
+								end	
+								group_no += 1
 							end
 						end
 						created_course.save
@@ -513,7 +504,7 @@ namespace :scrape do
           end
 					
 					# Attributes, which should be translated
-          if language == :en
+          if language == :da
 						
 						# Finding or creating schedule blocks (E1, E2, F3 osv.)
 						current_course_schedules.each do |s|
@@ -530,51 +521,134 @@ namespace :scrape do
 
 						# Finding or adding course types
             current_course_types_head.each do |cth|
-              course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
-              course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
-              created_course.main_course_types << course_type
+							course_type = MainCourseType.find_by_title(cth)
+							course_type = MainCourseType.create(:title => cth) if course_type.nil?
+							created_course.main_course_types << course_type
+              #course_type = CourseType.find_by_title_and_course_type_type(cth, "Main")
+              #course_type = CourseType.create(:title => cth, :course_type_type => "Main") if course_type.nil? 
+              #created_course.main_course_types << course_type
             end
+
+						bachelor_studylines = [
+							'Fysik og Nanoteknologi', 
+							'Design og Innovation',
+							'Miljøteknologi',
+							'Produktion og Konstruktion',
+							'Elektroteknologi',
+							'Medicin og Teknologi',
+							'Softwareteknologi',
+							'Matematik og Teknologi',
+							'Kemi og Teknologi',
+							'Byggeteknologi',
+							'Bioteknologi',
+							'Teknisk Biomedicin',
+							'Bioteknologi',
+							'IT og Kommunikationsteknologi',
+							'Kommunikationsteknologi',
+							'Bygningsdesign'
+						]
+
+						course_types = {
+							'Teknologisk specialisering' => 'Teknologisk specialisering',
+							'Teknologisk specialiserng'	 => 'Teknologisk specialisering',
+							'Naturvidenskabeligt grundfag' => 'Naturvidenskabeligt grundfag',
+							'Teknologisk linjefag' => 'Teknologisk linjefag',
+							'Generel retningskompetence' => 'Generel retningskompetence'
+						}
+						
+						flag_types = {
+							'Teknologisk specialisering'		=> 'Specialization',
+							'Naturvidenskabeligt grundfag'	=> 'Basics',
+							'Teknologisk linjefag'					=> 'Main',
+							'Generel retningskompetence'		=> 'General'
+						}
 
 						# Finding or adding special course types
             current_course_types.each do |ct|
-              course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
-              course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
-              created_course.spec_course_types << course_type
+							# Find course_type_type
+							course_type_split = ct.split(',')
+							# Finding or creating field of study
+							fos = FieldOfStudy.find_by_title(course_type_split[1].strip) unless course_type_split[1].nil?
+							if fos.nil?
+								if course_type_split[1].nil?
+									fos = nil
+								else
+									fos = FieldOfStudy.create(:title => course_type_split[1].strip)
+								end
+							end
+							
+							# Finding course type in hash
+							if course_types[course_type_split[0]].nil?
+								puts "ERROR occured when trying to find course_type title"
+								puts "Course Type: #{ct}"
+							end
+							# Spec Course Type TYPE
+							course_type_type = CourseTypeType.find_by_title(course_types[course_type_split[0]])
+							course_type_type = CourseTypeType.create(:title => course_types[course_type_split[0]]) if course_type_type.nil? 
+							
+							# Flag type
+							flag_model_type = FlagModelType.find_by_title(flag_types[course_type_type.title])
+							flag_model_type = FlagModelType.create(:title => flag_types[course_type_type.title]) if flag_model_type.nil?
+							
+							# Spec Course type
+							## Every bachelor line has basic subjects
+							if course_type_type.title == 'Naturvidenskabeligt grundfag'
+								bachelor_studylines.each do |fos_name|
+									fos = FieldOfStudy.find_by_title(fos_name)	
+									fos = FieldOfStudy.create(:title => fos_name) if fos.nil?
+									
+									ct = SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos)
+									ct = SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
+								end
+								
+								created_course.course_specializations.build(:spec_course_type => ct)
+							else
+								ct = SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos) unless course_type_split[0].nil?
+								ct = SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
+								created_course.course_specializations.build(:spec_course_type => ct)
+							end
             end
           else
 						
 						# Finding the keyword in english and adding it in danish
-            created_course.keywords.with_translations(:en).each_index do |i|
+            created_course.keywords.with_translations(:da).each_index do |i|
               keyword = created_course.keywords[i]
               keyword.update_attributes(:title => current_course_keywords[i], :locale => language)
               keyword.save
             end
 
 						# Finding the course type in english and adding it in danish
-            created_course.main_course_types.with_translations(:en).where(:course_type_type => "Main").each_index do |i|
+            created_course.main_course_types.with_translations(:da).each_index do |i|
               course_type = created_course.main_course_types[i]
-              course_type.update_attributes(:title => current_course_types_head[i], :locale => language)
-              course_type.save
+							if not current_course_types_head[i].nil?
+              	course_type.update_attributes(:title => current_course_types_head[i], :locale => language)
+              	course_type.save
+							end
             end
 
-						ct_popped = {}
-						current_course_types.each {|ct| ct_popped[ct] = false }
+						# ct_popped = {}
+						# current_course_types.each {|ct| ct_popped[ct] = false }
 						
           	# Finding the special course types in english and adding it in danish
-            created_course.spec_course_types.with_translations(:en).where(:course_type_type => "Spec").each_index do |i|
-              course_type = created_course.spec_course_types[i]
-              course_type.update_attributes(:title => current_course_types[i], :locale => language)
-							ct_popped[current_course_types[i]] = true
-              course_type.save
-            end
+            #created_course.spec_course_types.with_translations(:da).each_index do |i|
+            #  course_type = created_course.spec_course_types[i]
+						#	if not current_course_types[i].nil?
+						#		course_type_split = current_course_types[i].split(',')
+            #  	course_type.update_attributes(:title => course_type_split[0].strip, :locale => language)
+						#		if not course_type_split[1].nil?
+						#			course_type.field_of_study.update_attributes(:title => course_type_split[1].strip, :locale => language)
+						#		end
+						#	end
+            #  course_type.save
+            #end
 
-						ct_popped.each do |ct, popped|
-							if not popped
-								course_type = CourseType.find_by_title_and_course_type_type(ct, "Spec")
-	              course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
-								created_course.spec_course_types << course_type
-							end
-						end
+						# ct_popped.each do |ct, popped|
+						# 	if not popped
+						# 		course_type = CourseType.find_by_title(ct)
+						# 	              course_type = CourseType.create(:title => ct, :course_type_type => "Spec") if course_type.nil?
+						# 		created_course.spec_course_types << course_type
+						# 	end
+						# end
           end
         
           # Saving course
@@ -601,7 +675,39 @@ namespace :scrape do
         end
       end
       puts ""
-    end
+    end			
+		# Manual shit
+		
+		# Set up project courses
+		project_courses = {
+			'Softwareteknologi' => [02101, 02121, 02122, 42610]
+		}
+		
+		# Flag model
+		flag_model_name = 'ProjectAndGeneral'
+		flag_model_type = FlagModelType.find_by_title(flag_model_name)
+		flag_model_type = FlagModelType.create(:title => flag_model_name) if flag_model_type.nil?
+		
+		# Course type
+		course_type_name = 'Projekter og almene fag'
+		course_type_type = CourseTypeType.find_by_title(course_type_name)
+		course_type_type = CourseTypeType.create(:title => course_type_name) if course_type_type.nil?
+		
+		project_courses.each do |fos, c_array|
+			# Field of study
+			fos = FieldOfStudy.find_by_title(fos)
+			fos = FieldOfStudy.create(:title => fos) if fos.nil?
+			
+			# Spec course type
+			ct	= SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos)
+			ct	= SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
+			c_array.each do |c|
+				# Course
+				course = Course.find_by_course_number(c)
+				course = Course.create(:course_number => c)
+				course.course_specializations.build(:spec_course_type => ct)
+			end
+		end
   end
   
   task :teachers => :environment do
