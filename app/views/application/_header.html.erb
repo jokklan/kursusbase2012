@@ -3,7 +3,7 @@
 	<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
 	<%= render_navigation %>
 	<%= form_tag courses_path, :method => :get do %>
-		<%= text_field_tag :search, params[:search], :tabindex => 1 %>
+		<%= text_field_tag :search, params[:search], :tabindex => 1, :placeholder => 'Søg efter kurser…' %>
 	<% end %>
 <div id="you"><% if you %>
 	<%= t('you.are') %> <strong><%= you.fullname %></strong>. <a href="/logout"><%= t('you.logout') %></a>

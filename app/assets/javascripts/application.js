@@ -10,17 +10,20 @@ var strings = {
 	en: {
 		search: "Search",
 		login: "Log in",
-		cancel: "Cancel"
+		cancel: "Cancel",
+		placeholder: "Search for courses\u2026"
 	},
 	da: {
 		search: "S\u00f8gning",
 		login: "Log ind",
-		cancel: "Annuller"
+		cancel: "Annuller",
+		placeholder: "Søg efter kurser\u2026"
 	}
 }
 
 d.ready(function(){
 	if($("body").is("#home")){
+		// HOME
 		var loggingin = false
 		$("a[href^='/login'], a.cancel").click(function(){
 			if(loggingin){
@@ -41,6 +44,20 @@ d.ready(function(){
 			loggingin = !loggingin
 			return false
 		})
+	} else {
+		// NOT HOME
+		if(!("placeholder" in document.createElement("input"))){
+			var searchField = $("#head form input[type='text']")
+			searchField.val(strings[lang].placeholder).addClass("empty").focus(function(){
+				if(this.value == strings[lang].placeholder){
+					$(this).val("").removeClass("empty")
+				}
+			}).blur(function(){
+				if(!this.value){
+					$(this).val(strings[lang].placeholder).addClass("empty")
+				}
+			})
+		}
 	}
 })
 $(document).ready(function(){

@@ -143,6 +143,10 @@ html, body, #container {
 	font-style: italic;
 }
 
+/* These styles cannot be combined */
+#head form input::-webkit-input-placeholder { font-style: italic; }
+#head form input:-moz-placeholder { font-style: italic; }
+
 #head h1 {
 	position: relative;
 	margin: 11px 0 0 30px;
