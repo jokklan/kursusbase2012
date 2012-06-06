@@ -679,10 +679,13 @@ namespace :scrape do
       puts ""
     end			
 		# Manual shit
+		puts "Doing the manual stuff"
+		I18n.locale = :da
 		
 		# Set up project courses
 		project_courses = {
-			'Softwareteknologi' => [02101, 02121, 02122, 42610]
+			'Softwareteknologi' => { 02101 => 1, 02121 => 1, 02122 => 1, 42610 => 1},
+			'Matematik og Teknologi' => { 02525 => 1, 42610 => 0, 01543 => 0, 01666 => 0, 02101 => 0 }
 		}
 		
 		# Flag model
@@ -695,19 +698,21 @@ namespace :scrape do
 		course_type_type = CourseTypeType.find_by_title(course_type_name)
 		course_type_type = CourseTypeType.create(:title => course_type_name) if course_type_type.nil?
 		
-		project_courses.each do |fos, c_array|
+		project_courses.each do |fos_name, c_hash|
 			# Field of study
-			fos = FieldOfStudy.find_by_title(fos)
-			fos = FieldOfStudy.create(:title => fos) if fos.nil?
+			fos = FieldOfStudy.find_by_title(fos_name)
+			fos = FieldOfStudy.create(:title => fos_name) if fos.nil?
 			
 			# Spec course type
 			ct	= SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos)
 			ct	= SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
-			c_array.each do |c|
+			
+			c_hash.each do |c, optional|
 				# Course
 				course = Course.find_by_course_number(c)
-				course = Course.create(:course_number => c)
-				course.course_specializations.build(:spec_course_type => ct)
+				course = Course.create(:course_number => c) if course.nil?
+				spec = course.course_specializations.build(:spec_course_type => ct, :optional => optional)
+				course.save
 			end
 		end
   end
