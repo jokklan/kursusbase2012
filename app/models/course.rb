@@ -57,8 +57,10 @@ class Course < ActiveRecord::Base
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
-  has_and_belongs_to_many :main_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Main" ]
-  has_and_belongs_to_many :spec_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Spec" ]
+  #has_and_belongs_to_many :main_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Main" ]
+  #has_and_belongs_to_many :spec_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Spec" ]
+	has_and_belongs_to_many :main_course_types
+	
   
   has_many :point_blocks, :class_name => "CourseRelation", :foreign_key => "course_id", 
             :conditions => [ "related_course_type = ?", "Blocked" ], :after_add => lambda{|data, record| record.set_related_course_type("Blocked")}
@@ -80,13 +82,14 @@ class Course < ActiveRecord::Base
   has_many :students, :through => :course_students
 	has_many :course_student_datas
 	has_many :student_datas, :through => :course_student_datas
+	has_many :course_specializations
+	has_many :spec_course_types, :through => :course_specializations
   
   belongs_to :institute
 
 	has_and_belongs_to_many :schedules
 	has_and_belongs_to_many :student_datas
 	has_and_belongs_to_many :course_recommendations
-	has_and_belongs_to_many :field_course_types
   
   # Course attributes
   attr_accessible :course_number,:title, 

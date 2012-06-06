@@ -6,23 +6,28 @@ namespace :import do
 		require 'csv'    
 		
 		studyline_corrector = {
-			 "FYS & NAN"	=> 'Fysik og nanoteknologi', 
-			 "DES & INN"	=> 'Design og innovation',
+			 "FYS & NAN"	=> 'Fysik og Nanoteknologi', 
+			 "DES & INN"	=> 'Design og Innovation',
 			 "MILJOTEK"		=> 'Miljøteknologi',
-			 "PRO & KON"	=> 'Produktion og konstruktion',
+			 "PRO & KON"	=> 'Produktion og Konstruktion',
 			 "ELEKTROTEK" => 'Elektroteknologi',
-			 "MED & TEK"	=> 'Medicin og teknologi',
+			 "MED & TEK"	=> 'Medicin og Teknologi',
 			 "SOFTWARE"		=> 'Softwareteknologi',
-			 "MAT & TEK"	=> 'Matematik og teknologi',
-			 "KEMI & TEK"	=> 'Kemi og teknologi',
+			 "MAT & TEK"	=> 'Matematik og Teknologi',
+			 "KEMI & TEK"	=> 'Kemi og Teknologi',
 			 "BYGGETEK"		=> 'Byggeteknologi',
-			 "TEKBIO"			=> 'Teknologibio',
-			 "SUN & PRO"	=> 'Teknisk biomedicin',
+			 "TEKBIO"			=> 'Bioteknologi',
+			 "SUN & PRO"	=> 'Teknisk Biomedicin',
 			 "BIOTEK"			=> 'Bioteknologi',
-			 "IT & KOM"		=> 'IT og kommunikationsteknologi',
-			 "KOMMUTEK"		=> 'kommunikationsteknologi',
+			 "IT & KOM"		=> 'IT og Kommunikationsteknologi',
+			 "KOMMUTEK"		=> 'Kommunikationsteknologi',
 			 "BBYGDES"		=> 'Bygningsdesign'
 		}
+		
+		studylines_not_on_dtu = [
+			'Kommunikationsteknologi',
+			'Teknisk Biomedicin'
+		]
 		
 		file = 'db/student_data.csv'
 		studylines = []
@@ -40,7 +45,7 @@ namespace :import do
 				day = datex[1].to_i
 				datetime = DateTime.civil(year, month, day)
 			end
-			fos = FieldOfStudy.find_or_create_by_title(studyline_corrector[studyline]) unless studyline_corrector[studyline].nil?
+			fos = FieldOfStudy.find_by_title(studyline_corrector[studyline])
 			puts "id: #{id}"
 			StudentData.create({
 				:student_id => id,
@@ -71,15 +76,15 @@ namespace :import do
 			student 	= StudentData.find_by_student_id(id)
 			
 			if not course.nil? and not student.nil?
-				puts "student #{id}"
+				#puts "student #{id}"
 				if not course_semester.nil?
-					puts " - Adding course #{course} at semester #{course_semester}"
+					puts " - Adding course #{course.course_no} at semester #{course_semester} to student #{id}"
 					student.course_student_datas << CourseStudentData.new(:course_id => course.id, :semester => course_semester)
 				else
-					puts " - Adding course #{course}"
+					puts " - Adding course #{course.course_no} to student #{id}"
 					student.course_student_datas << CourseStudentData.new(:course_id => course.id)
 				end
-				puts "course added!"				
+				#puts "course added!"				
 			end
 		end
 	end

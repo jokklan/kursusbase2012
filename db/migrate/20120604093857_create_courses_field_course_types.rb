@@ -5,9 +5,8 @@ class CreateCoursesFieldCourseTypes < ActiveRecord::Migration
       t.references :field_course_type
 			t.string 		 :semester_recommended
 			t.boolean 	 :optional
-
-      t.timestamps
     end
+		
 		add_index :courses_field_course_types, :course_id
 		add_index :courses_field_course_types, :field_course_type_id
   end
