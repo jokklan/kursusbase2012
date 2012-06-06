@@ -1,0 +1,2 @@
+module StudyplanHelper
+end

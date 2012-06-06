@@ -59,7 +59,7 @@ namespace :import do
   task :course_data, [:filename] => :environment do |t,args|
 		require 'csv'    
 		file = 'db/course_data.csv'
-		CSV.foreach(file) do |row|
+		CSV.foreach(file,"r:ISO-8859-1") do |row|
 			#puts row
 			row = row.to_s.split(';')
 			id_row = row[0]

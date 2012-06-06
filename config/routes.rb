@@ -13,6 +13,8 @@ Kursusbase2012::Application.routes.draw do
     post 'login', to: 'application#login', as: 'sessions'
     put 'login', to: 'application#login', as: 'sessions'
     get 'logout', to: 'sessions#destroy', as: 'logout'
+
+		match "/studyplan" => "studyplan#show"
     
     resources :courses
     resources :keywords
