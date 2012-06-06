@@ -279,11 +279,17 @@ namespace :scrape do
 						
 						string = att_column[1].text.strip.chomp
 						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Juni|januar|juni)}).to_a	
+						
 						schedules.each do |s|
 							sch = s.first
 							sch.gsub!('januar','Januar')
 							sch.gsub!('juni','Juni')
-							current_course_schedules << sch
+							if %r{F\d{1}\z}.match(sch) or %r{E\d{1}\z}.match(sch)
+								current_course_schedules << "#{sch}A"
+								current_course_schedules << "#{sch}B"
+							else
+								current_course_schedules << sch
+							end
 						end
 					end
         
@@ -715,7 +721,6 @@ namespace :scrape do
 				course_number = Integer(c)
 				course = Course.find_by_course_number(course_number)
 				course = Course.create(:course_number => course_number) if course.nil?
-				puts "Added new course for project - #{course.course_number}"
 				spec = course.course_specializations.build(:spec_course_type => ct, :optional => optional)
 				course.save
 			end

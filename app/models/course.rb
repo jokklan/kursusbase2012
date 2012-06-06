@@ -135,6 +135,10 @@ class Course < ActiveRecord::Base
   def self.is_numeric?(obj) 
     obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
   end
+
+	def schedule_by_semester(semester)
+		return self.schedules.first if schedule.count <= 1
+	end
   
   # Class methods
   def self.search(query, locale = I18n.locale)

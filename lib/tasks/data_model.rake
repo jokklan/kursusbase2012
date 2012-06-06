@@ -59,7 +59,7 @@ namespace :import do
   task :course_data, [:filename] => :environment do |t,args|
 		require 'csv'    
 		file = 'db/course_data.csv'
-		# CSV.foreach(file) do |row|
+		#CSV.foreach(file) do |row|
 		CSV.foreach(file, "r:ISO-8859-1") do |row|
 			#puts row
 			row = row.to_s.split(';')
@@ -71,22 +71,50 @@ namespace :import do
 			semester_match = %r{.*((Jun|Jan|E|F).?\d{2})}.match(course_string)
 			course_semester = semester_match[1] unless semester_match.nil?
 			
-			#puts "id: #{id}, course: #{course_number}, semester: #{course_semester}"
-			
+			year_regex = %r{(\d{2})}.match(course_semester)
+			if not year_regex.nil?
+				year = year_regex[1].to_i
+				if not year.nil?
+					if year <= 13
+						year += 2000
+					else
+						year += 1900
+					end
+				end
+			end
+
 			course	 	= Course.find_by_course_number(course_number)
-			student 	= StudentData.find_by_student_id(id)
+			student 	= StudentData.find_by_student_id(id)			
 			
 			if not course.nil? and not student.nil?
-				#puts "student #{id}"
-				if not course_semester.nil?
-					puts " - Adding course #{course.course_no} at semester #{course_semester} to student #{id}"
-					student.course_student_datas << CourseStudentData.new(:course_id => course.id, :semester => course_semester)
+				if not year.nil? and year >= 1990 and year <= 2013
+					semester_regex = %r{([a-zA-Z])}.match(course_semester)
+					
+					if not semester_regex.nil?
+					
+						semester = 0
+						if semester_regex[1] == 'Jan'
+							semester = -1
+						elsif semester_regex[1] == 'E'
+							semester = 1
+						end
+						semester_taken = (year - student.start_date.year) * 2 + semester
+						if not course.id.nil?
+							student.course_student_datas << CourseStudentData.new(:course_id => course.id, :semester => semester_taken)
+						end
+					else
+						student.course_student_datas << CourseStudentData.new(:course_id => course.id)
+					end
 				else
-					puts " - Adding course #{course.course_no} to student #{id}"
 					student.course_student_datas << CourseStudentData.new(:course_id => course.id)
-				end
-				#puts "course added!"				
+				end			
 			end
+		end
+		
+		# Deleting all student-data without any courses
+		puts "Removing redundant studendata"
+		StudentData.all.each do |sd|
+			sd.destroy if sd.courses.empty?
 		end
 	end
 end
