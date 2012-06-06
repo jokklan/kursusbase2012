@@ -36,3 +36,6 @@ heroku run rake db:migrate
 
 ## Hvis den ikke gider at migrate (SKAL HELST UNDGÅS!)
 heroku pg:reset SHARED_DATABASE
+
+## Postgresql
+pg_ctl -D /usr/local/var/postgres -l logfile start

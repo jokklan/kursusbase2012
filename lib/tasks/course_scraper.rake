@@ -599,9 +599,11 @@ namespace :scrape do
 									
 									ct = SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos)
 									ct = SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
+									
+									created_course.course_specializations.build(:spec_course_type => ct)
 								end
 								
-								created_course.course_specializations.build(:spec_course_type => ct)
+								
 							else
 								ct = SpecCourseType.find_by_course_type_type_id_and_field_of_study_id(course_type_type, fos) unless course_type_split[0].nil?
 								ct = SpecCourseType.create(:course_type_type => course_type_type, :field_of_study => fos, :flag_model_type => flag_model_type) if ct.nil?
