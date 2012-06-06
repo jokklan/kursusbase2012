@@ -3,10 +3,31 @@
 	<img src="/assets/homelogo.svg" width="325" height="70" alt="">
 	<h1><%= t('.search') %></h1>
 </div>
-<%= form_tag courses_path, :method => :get do %><div>
+<%= form_tag courses_path, :method => :get, :id => :searchform do %><div>
 	<%= text_field_tag :search, params[:search], :tabindex => 1 %><script>document.getElementById("search").focus()</script>
 	<p><%= t('.example') %> &#8220;<%= t('.example1') %>&#8221;, &#8220;01227&#8221;, &#8220;<%= t('.example3') %>&#8221;, &#8220;<%= t('.example4') %>&#8221;&#8230;</p>
 </div><% end %>
+
+<div id="login" style="display:none">
+	<%= simple_form_for @student, :style => 'display:none', :url => sessions_path do |f| %>
+		<%= puts @student.errors.to_yaml %>
+		<%= f.error_notification %>
+		<%= f.error :base %>
+		<%= f.input :student_number, :label => 'DTU Login' %>
+		<%= f.input :password, :label => t('login.password') %>
+		<p class="buttons"><%= f.button :submit, t('.login') %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
+	<% end %>
+	<div id="promo">
+		<h2><%= t('login.promo') %></h2>
+		<p><%= t('login.intro') %>:</p>
+		<ul>
+			<li><%= t('login.reason1') %></li>
+			<li><%= t('login.reason2') %></li>
+			<li><%= t('login.reason3') %></li>
+		</ul>
+		<p>&#8230;<%= t('login.outro') %></p>
+	</div>
+</div>
 
 <p id="logintro"><a href="/login"><strong><%= t('.login') %></strong> <span><%= t('.toplan') %></span></a></p>
 

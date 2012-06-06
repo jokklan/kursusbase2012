@@ -3,6 +3,9 @@
 
 en:
   and: and
+  or: or
+  ok: OK
+  cancel: Cancel
   internal:
     onheroku: This page on Heroku
   languages:
@@ -71,9 +74,17 @@ en:
       toplan: to plan your study
       example: For example, search for
       example1: mathematics
-      example2: 01227
       example3: wednesday
       example4: autumn
+  login:
+    login: Log in
+    password: Password
+    promo: There are many reasons to log in!
+    intro: When you’re logged in, you can
+    reason1: See your schedule
+    reason2: Plan your future study by combining courses
+    reason3: See personal course recommendations
+    outro: and much more!
   you:
     are: You are
     login: Log in

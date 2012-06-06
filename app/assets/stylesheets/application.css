@@ -49,7 +49,7 @@ a:hover {
 /* Head
 ------------------------------------------------------ */
 
-#head, #home form {
+#head, #home #searchform {
 	position: relative;
 	overflow: hidden;
 	background-color: #bf2f38;
@@ -61,7 +61,7 @@ a:hover {
 	zoom: 1;
 }
 
-#head > div, #home form > div {
+#head > div, #home #searchform > div {
 	background: transparent url(headertexture.png) repeat;
 	overflow: hidden;
 }
@@ -101,7 +101,7 @@ a:hover {
 	right: 30px;
 }
 
-#head form input, #home form input {
+#head form input, #home #searchform input {
 	border-width: 0;
 	width: 163px;
 	padding: 4px 6px 4px 24px;
@@ -116,12 +116,12 @@ a:hover {
 }
 
 #head form input:active, #head form input:focus,
-#home form input:active, #home form input:focus {
+#home #searchform input:active, #home #searchform input:focus {
 	outline: none;
 	box-shadow: 0 0 15px rgba(0,0,0,.6);
 }
 
-#head form input.inactive, #home form input.inactive {
+#head form input.inactive, #home #searchform input.inactive {
 	color: #999;
 	font-style: italic;
 }
@@ -185,7 +185,7 @@ a:hover {
 
 body#home {
 	background: #fff url(homegradient.png) repeat-x;
-	margin: 0;
+	margin: 0 0 40px;
 }
 
 #home #content {
@@ -206,24 +206,27 @@ body#home {
 	right: 0;
 }
 
-#home form {
+#home #searchform {
 	margin: 24px 0 0;
 	color: #fff;
 }
 
-#home form, #home #logintro a {
+#home #searchform, #home #logintro a, #login div.input {
 	font-size: 115.4%;
 }
 
-#home form input {
+#home #searchform input {
 	width: 480px;
 	margin: 22px 0 0;
 	background: #f7f7f7 url(loupe.png) no-repeat 7px 6px;
-	background: url(loupe.png) 7px 6px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: url(loupe.png) 7px 6px no-repeat, gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
 	background: url(loupe.png) 7px 6px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: url(loupe.png) 7px 6px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: url(loupe.png) 7px 6px no-repeat, -o-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: url(loupe.png) 7px 6px no-repeat, -ms-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
 }
 
-#home form p {
+#home #searchform p {
 	color: rgba(255,255,255,.7);
 }
 
@@ -316,6 +319,89 @@ body#home {
 #home #languages a {
 	color: #999;
 	font-weight: normal;
+}
+
+#login {
+	margin: 0 0 40px;
+}
+
+#home #login {
+	width: 600px;
+	margin: 24px auto 0;
+	text-align: left;
+	overflow: hidden;
+}
+
+#login form {
+	margin: 1px 30px 0 0;
+	width: 320px;
+	float: left;
+	background-color: #f1f1f1;
+	border-radius: 6px;
+	padding: 20px;
+}
+
+#login div.input input {
+	width: 12em;
+}
+
+#login div.input {
+	border: 1px solid #e1e1e1;
+	border-width: 1px 0;
+	margin-top: -1px;
+	padding: 10px 0;
+}
+
+#login div.input abbr {
+	display: none;
+}
+
+#login div.input label {
+	padding-top: 5px;
+	color: #555;
+}
+
+#content #login div.input label {
+	width: 8em;
+}
+
+#content #login div.input input {
+	background: gradient(linear, left top, left bottom, from(#f7f7f7), to(#fff));
+	background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#fff));
+	background: -moz-linear-gradient(top, #f7f7f7, #fff);
+	background: -o-gradient(linear, left top, left bottom, from(#f7f7f7), to(#fff));
+	background: -ms-gradient(linear, left top, left bottom, from(#f7f7f7), to(#fff));
+}
+
+#login .buttons {
+	margin: 1em 0 0;
+}
+
+#login input.button {
+	margin-right: 1ex;
+}
+
+#login #promo {
+	margin-left: 390px;
+	line-height: 1.4em;
+}
+
+#login #promo h2 {
+	margin: -.2em 0 0;
+	font-size: 115.4%;
+}
+
+#login #promo p {
+	margin: .5em 0;
+}
+
+#login #promo ul {
+	margin: .5em 0;
+	padding: 0 0 0 18px;
+}
+
+#login #promo li {
+	margin: .5em 0;
 }
 
 /* Content
@@ -514,11 +600,51 @@ table tr.odd {
 	background-color: #f9f9f9;
 }
 
+#content input, .fakeinput {
+	margin: 0;
+	padding: 3px 6px;
+	background-color: #f7f7f7;
+	background: gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: -o-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: -ms-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	font: 100% "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #333;
+	border-width: 0;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	box-shadow:         0 1px #fefffe;
+	-moz-box-shadow:    0 1px #fefffe;
+	-webkit-box-shadow: 0 1px #fefffe;
+	-o-box-shadow:      0 1px #fefffe;
+	-ms-box-shadow:     0 1px #fefffe;
+}
+
+#content input[type=text]:focus, #content input[type=password]:focus, #modal input[type=text]:focus, #modal input[type=password]:focus, .fakeinputfocus {
+	outline: none;
+	border-color: #0cf;
+	/*box-shadow:         0 0 8px #696;
+	-moz-box-shadow:    0 0 8px #696;
+	-webkit-box-shadow: 0 0 8px #696;
+	-o-box-shadow:      0 0 8px #696;
+	-ms-box-shadow:     0 0 8px #696;*/
+}
+
+#content input[disabled] {
+	color: #999;
+	cursor: default;
+}
+
 #content input.button, #content input.submit, #content a.button {
 	background-color: #bf2f38;
-	/* bf2f38 9b232a */
-	background-image: -moz-linear-gradient(top, #bf2f38, #9b232a); 
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#bf2f38), to(#9b232a)); 
+	background-image: gradient(linear, left top, left bottom,         from(#e33844), to(#9b232a));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e33844), to(#9b232a));
+	background-image: -moz-linear-gradient(top, #e33844, #9b232a); 
+	background-image: -o-gradient(linear, left top, left bottom,  from(#e33844), to(#9b232a));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#e33844), to(#9b232a));
 	color: #fff;
 	font-weight: bold;
 	font-size: 123.1%;
@@ -534,23 +660,39 @@ table tr.odd {
 	-moz-box-shadow: 0 1px #f7faf7;
 	-webkit-box-shadow: 0 1px #f7faf7;
 	-o-box-shadow: 0 1px #f7faf7;
-	filter: progid:DXImageTransform.Microsoft.gradient(StartColorstr='#bf2f38', EndColorstr='#9b232a', GradientType=0); /* old IE */
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#bf2f38', endColorstr='#9b232a')"; /* IE8/9 */
+	filter: progid:DXImageTransform.Microsoft.gradient(StartColorstr='#e33844', EndColorstr='#9b232a', GradientType=0); /* old IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#e33844', endColorstr='#9b232a')"; /* IE8/9 */
 	zoom: 1;
 }
 
 #content input.button:hover, #content input.submit:hover, #content a.button:hover {
 	text-decoration: none;
-	background-color: #555;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#888), to(#4c4c4c));
-	background-image: -moz-linear-gradient(-90deg, #888, #4c4c4c);
-	text-shadow: 0 -1px #4c4c4c;
+	background-color: #d8564e;
+	background-image: gradient(linear, left top, left bottom,         from(#e46356), to(#b12c32));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#e46356), to(#b12c32));
+	background-image: -moz-linear-gradient(top, #e46356, #b12c32); 
+	background-image: -o-gradient(linear, left top, left bottom,  from(#e46356), to(#b12c32));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#e46356), to(#b12c32));
+	filter: progid:DXImageTransform.Microsoft.gradient(StartColorstr='#e46356', EndColorstr='#b12c32', GradientType=0); /* old IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#e46356', endColorstr='#b12c32')"; /* IE8/9 */
+	text-shadow: 0 -1px #b12c32;
 }
 
 #content input.button:active, #content input.submit:active, #content a.button:active {
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#2c2c2c), to(#666));
-	background-image: -moz-linear-gradient(-90deg, #2c2c2c, #666);
-	text-shadow: 0 1px #2c2c2c;
+	background-image: gradient(linear, left top, left bottom,         from(#7e1c23), to(#cc313c));
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#7e1c23), to(#cc313c));
+	background-image: -moz-linear-gradient(top, #7e1c23, #cc313c); 
+	background-image: -o-gradient(linear, left top, left bottom,  from(#7e1c23), to(#cc313c));
+	background-image: -ms-gradient(linear, left top, left bottom, from(#7e1c23), to(#cc313c));
+	filter: progid:DXImageTransform.Microsoft.gradient(StartColorstr='#7e1c23', EndColorstr='#cc313c', GradientType=0); /* old IE */
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#7e1c23', endColorstr='#cc313c')"; /* IE8/9 */
+	text-shadow: 0 1px #7e1c23;
+}
+
+#content div.input label {
+	float: left;
+	clear: left;
+	width: 10em;
 }
 
 table#schedule {

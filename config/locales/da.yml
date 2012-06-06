@@ -3,6 +3,9 @@
 
 da:
   and: og
+  or: eller
+  ok: OK
+  cancel: Annuller
   internal:
     onheroku: Denne side på Heroku
   languages:
@@ -71,9 +74,17 @@ da:
       toplan: for at lægge en studieplan
       example: Søg eksempelvis efter
       example1: matematik
-      example2: 01227
       example3: onsdag
       example4: efterår
+  login:
+    login: Log ind
+    password: Adgangskode
+    promo: Der er mange fordele ved at logge ind!
+    intro: Når du er logget ind, kan du
+    reason1: Se dit skema
+    reason2: Planlægge dit fremtidige studie ved at kombinere kurser
+    reason3: Modtage personlige kursusanbefalinger
+    outro: og meget mere!
   you:
     are: Du er
     login: Log ind

@@ -1,13 +1,22 @@
-<h1>Log ind</h1>
+<h1><%= t('login.login') %></h1>
 
-<%= simple_form_for @student, :url => sessions_path do |f| %>
-	<%= puts @student.errors.to_yaml %>
-	<%= f.error_notification %>
-	<%= f.error :base %>
-	
-	<%= f.input :student_number %>
-	<%= f.input :password %>
-	
-	<%= f.button :submit, "Log in" %>
-
-<% end %>
+<div id="login">
+	<%= simple_form_for @student, :style => 'display:none', :url => sessions_path do |f| %>
+		<%= puts @student.errors.to_yaml %>
+		<%= f.error_notification %>
+		<%= f.error :base %>
+		<%= f.input :student_number, :label => 'DTU Login', :tabindex => 2 %>
+		<%= f.input :password, :label => t('login.password') %>
+		<p class="buttons"><%= f.button :submit, t('login.login') %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
+	<% end %>
+	<div id="promo">
+		<h2><%= t('login.promo') %></h2>
+		<p><%= t('login.intro') %>:</p>
+		<ul>
+			<li><%= t('login.reason1') %></li>
+			<li><%= t('login.reason2') %></li>
+			<li><%= t('login.reason3') %></li>
+		</ul>
+		<p>&#8230;<%= t('login.outro') %></p>
+	</div>
+</div>
