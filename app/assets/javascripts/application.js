@@ -47,8 +47,7 @@ d.ready(function(){
 	} else {
 		// NOT HOME
 		if(!("placeholder" in document.createElement("input"))){
-			var searchField = $("#head form input[type='text']")
-			searchField.val(strings[lang].placeholder).addClass("empty").focus(function(){
+			$("#head form input[type='text']").val(strings[lang].placeholder).addClass("empty").focus(function(){
 				if(this.value == strings[lang].placeholder){
 					$(this).val("").removeClass("empty")
 				}

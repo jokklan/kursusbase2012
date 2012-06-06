@@ -90,6 +90,11 @@ da:
     reason2: Planlægge dit fremtidige studie ved at kombinere kurser
     reason3: Modtage personlige kursusanbefalinger
     outro: og meget mere!
+  studyplan:
+    show:
+      studyplan: Studieplan
+      intro1: For dit
+      intro2: ser dit skema sådan ud
   you:
     are: Du er
     login: Log ind

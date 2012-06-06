@@ -90,6 +90,11 @@ en:
     reason2: Plan your future study by combining courses
     reason3: See personal course recommendations
     outro: and much more!
+  studyplan:
+    show:
+      studyplan: Study Plan
+      intro1: For your
+      intro2: your schedule looks like
   you:
     are: You are
     login: Log in
