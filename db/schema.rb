@@ -74,7 +74,6 @@ ActiveRecord::Schema.define(:version => 20120606124624) do
     t.string   "participant_limit"
     t.string   "registration"
     t.text     "course_objectives"
-    t.text     "schedule_note"
     t.text     "learn_objectives"
     t.text     "content"
     t.text     "litteratur"
@@ -90,6 +89,17 @@ ActiveRecord::Schema.define(:version => 20120606124624) do
 
   add_index "course_translations", ["course_id"], :name => "index_course_translations_on_course_id"
   add_index "course_translations", ["locale"], :name => "index_course_translations_on_locale"
+
+  create_table "course_type_translations", :force => true do |t|
+    t.integer  "course_type_id"
+    t.string   "locale"
+    t.string   "title"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  add_index "course_type_translations", ["course_type_id"], :name => "index_course_type_translations_on_course_type_id"
+  add_index "course_type_translations", ["locale"], :name => "index_course_type_translations_on_locale"
 
   create_table "course_type_type_translations", :force => true do |t|
     t.integer  "course_type_type_id"
@@ -107,12 +117,26 @@ ActiveRecord::Schema.define(:version => 20120606124624) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "course_types", :force => true do |t|
+    t.string   "course_type_type"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "course_types_courses", :force => true do |t|
+    t.integer "course_type_id"
+    t.integer "course_id"
+  end
+
+  add_index "course_types_courses", ["course_id"], :name => "index_course_types_courses_on_course_id"
+  add_index "course_types_courses", ["course_type_id"], :name => "index_course_types_courses_on_course_type_id"
+
   create_table "courses", :force => true do |t|
     t.integer  "course_number"
     t.string   "language"
     t.float    "ects_points"
     t.boolean  "open_education"
-    t.string   "schedule"
+    t.text     "schedule"
     t.integer  "institute_id"
     t.string   "homepage"
     t.text     "exam_schedule"
@@ -129,10 +153,12 @@ ActiveRecord::Schema.define(:version => 20120606124624) do
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
 
   create_table "courses_field_course_types", :force => true do |t|
-    t.integer "course_id"
-    t.integer "field_course_type_id"
-    t.string  "semester_recommended"
-    t.boolean "optional"
+    t.integer  "course_id"
+    t.integer  "field_course_type_id"
+    t.string   "semester_recommended"
+    t.boolean  "optional"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
   end
 
   add_index "courses_field_course_types", ["course_id"], :name => "index_courses_field_course_types_on_course_id"
@@ -180,22 +206,23 @@ ActiveRecord::Schema.define(:version => 20120606124624) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
-  create_table "field_of_studies", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "field_of_study_translations", :force => true do |t|
+  create_table "field_course_types", :force => true do |t|
     t.integer  "field_of_study_id"
-    t.string   "locale"
-    t.string   "title"
+    t.integer  "course_type_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
   end
 
-  add_index "field_of_study_translations", ["field_of_study_id"], :name => "index_27bda481b67c1e3f5247a78db908a9591977c7ff"
-  add_index "field_of_study_translations", ["locale"], :name => "index_field_of_study_translations_on_locale"
-  add_index "field_of_study_translations", ["title"], :name => "index_field_of_study_translations_on_title"
+  add_index "field_course_types", ["course_type_id"], :name => "index_field_course_types_on_course_type_id"
+  add_index "field_course_types", ["field_of_study_id"], :name => "index_field_course_types_on_field_of_study_id"
+
+  create_table "field_of_studies", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "field_of_studies", ["title"], :name => "index_field_of_studies_on_title"
 
   create_table "flag_model_types", :force => true do |t|
     t.string   "title"

@@ -150,9 +150,28 @@ class Course < ActiveRecord::Base
   
   def self.search_params(query)
     if query =~ /((E|F)([0-9])(A|B)?|efterår|forår|spring|autumn|fall|january|januar|june|juni)/i
-      # TODO: self.active.where(:schedule => $1).search(query)
+      match = $1
+      query.gsub(query, "")
+      if match =~ /((E|F)([0-9])(A|B)?)/i
+        puts "#{$1}"
+        Course.joins{schedules}.where{schedules.block =~ "#{$1}%"}
+      elsif match =~ /(forår|spring)(\d{4})?/
+        puts "SEARCHING FOR: F#{$2}%"
+        # Course.select()
+        Course.joins{schedules}.where{schedules.block =~ "F#{$2}%"}
+      elsif match =~ /efterår|fall|autumn/
+        Course.joins{schedules}.where{schedules.block =~ "E%"}
+      elsif match =~ /januar|january/
+        Course.joins{schedules}.where{schedules.block == "januar"}
+      elsif match =~ /june|juni/
+        Course.joins{schedules}.where{schedules.block == "juni"}
+      else
+        
+      end
+      # result.active.search(query)
+    else
+      self.active.search(query)
     end
-    self.active.search(query)
   end
   
   # Instance methods 

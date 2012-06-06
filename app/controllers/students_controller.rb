@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
 	def show
-	  unless @student = current_student
+	  if @student = current_student
+      # @courses = @student.current_courses.map(&:schedules)
+    else
 	    @student = Student.new
 	    render "/home/index", layout: "home"
     end

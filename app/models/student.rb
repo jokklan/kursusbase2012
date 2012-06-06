@@ -45,14 +45,12 @@ class Student < ActiveRecord::Base
   def must_be_authenticated
     if !(student_number =~ /^s\d{6}$/)
       errors.add(:base, "Student number must be of format s######")
-    elsif !authenticate(password) || cn_access_key.blank?
-      errors.add(:base, "Student number or password is invalid")
     elsif get_info.empty?
       errors.add(:base, "No student with given student no.")
     end
   end
   
-  def authenticate(pass)
+  def authenticate(pass = password)
     require "net/http"
     require "uri"
     
@@ -71,6 +69,7 @@ class Student < ActiveRecord::Base
       self.cn_access_key = key[1]
       true
     else
+      errors.add(:base, "Student number or password is invalid")
       false
     end
   end

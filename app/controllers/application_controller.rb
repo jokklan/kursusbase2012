@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
   end
   
   def set_locale
-    I18n.locale = params[:locale] || I18n.default_locale
+    I18n.locale = params[:locale] || cookies[:locale] || I18n.default_locale
+    cookies[:locale] = I18n.locale
   end
 
 	def call_rake(task, options = {})
@@ -34,7 +35,7 @@ class ApplicationController < ActionController::Base
         @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
       else
         @student.save
-      end )
+      end ) && @student.authenticate
       
       session[:student_id] = @student.id
       @student.update_courses
