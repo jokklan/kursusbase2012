@@ -115,6 +115,22 @@ class Course < ActiveRecord::Base
                
   # Scopes
   scope :active, where(:active => true)
+
+	def is_basic_course(student)
+		student.basic_courses.include? self
+	end
+	
+	def is_main_course(student)
+		student.main_courses.include? self
+	end
+	
+	def is_project_course(student)
+		student.project_courses.include? self
+	end
+	
+	def is_optional_course(student)
+		not self.is_basic_course(student) and not self.is_project_course(student) and not self.is_main_course(student)
+	end
                
   def self.is_numeric?(obj) 
     obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true

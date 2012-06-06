@@ -16,20 +16,28 @@ class Student < ActiveRecord::Base
   has_many :course_students
   has_many :courses, :through => :course_students
 	has_many :course_recommendations
-	
-	has_many :main_courses, 		:through => :field_of_study
-	has_many :project_courses, :through => :field_of_study
-	has_many :basic_courses, 	:through => :field_of_study
   
   attr_accessor :password
   
-  attr_accessible :student_number, :password, :firstname, :lastname, :email
+  attr_accessible :student_number, :password, :firstname, :lastname, :email, :field_of_study
   
   validates :student_number, :presence => true, :uniqueness => true
   validate :must_be_authenticated
-  
+
   after_create :update_courses
   
+	def main_courses
+		self.field_of_study.main_courses
+	end
+	
+	def projet_courses
+		self.field_of_study.main_courses
+	end
+	
+	def basic_courses
+		self.field_of_study.main_courses
+	end
+	
   def fullname
     "#{firstname} #{lastname}"
   end
