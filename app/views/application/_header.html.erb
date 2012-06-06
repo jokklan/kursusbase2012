@@ -1,5 +1,5 @@
 <% you = current_student %>
-<div id="head"><div>
+<div id="head"><div><div>
 	<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
 	<%= render_navigation %>
 	<%= form_tag courses_path, :method => :get do %>
@@ -10,4 +10,4 @@
 <% else %>
 	<a href="/login"><%= t('you.login') %></a>
 <% end %></div>
-</div></div>
+</div></div></div>

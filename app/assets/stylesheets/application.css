@@ -3,8 +3,12 @@
  * Site-wide CSS
  */
 
-body {
+html {
 	background: #eee url(noise.gif);
+}
+
+body {
+	background: transparent url(contentshadow.png) no-repeat center top;
 	text-align: center;
 	margin: 0;
 	font-family: "Helvetica Neue", Helvetica, sans-serif;
@@ -62,6 +66,7 @@ html, body, #container {
 	overflow: hidden;
 	background-color: #bf2f38;
 	/* bf2f38 9b232a */
+	background-image: gradient(linear, left top, left bottom, from(#bf2f38), to(#9b232a)); 
 	background-image: -moz-linear-gradient(top, #bf2f38, #9b232a); 
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#bf2f38), to(#9b232a)); 
 	filter: progid:DXImageTransform.Microsoft.gradient(StartColorstr='#bf2f38', EndColorstr='#9b232a', GradientType=0); /* old IE */
@@ -69,7 +74,11 @@ html, body, #container {
 	zoom: 1;
 }
 
-#head > div, #home #searchform > div {
+#head > div {
+	background: transparent url(headshadow.png) no-repeat right top;
+}
+
+#head > div > div, #home #searchform > div {
 	background: transparent url(headertexture.png) repeat;
 	overflow: hidden;
 }
