@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  student: 
+  course: 
+  schedule: 
+  semester: 1
+
+two:
+  student: 
+  course: 
+  schedule: 
+  semester: 1

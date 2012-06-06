@@ -278,9 +278,12 @@ namespace :scrape do
 						current_course[:schedule] = schedule if not schedule.nil?
 						
 						string = att_column[1].text.strip.chomp
-						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Februar|januar|februar)}).to_a	
+						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Juni|januar|juni)}).to_a	
 						schedules.each do |s|
-							current_course_schedules << s
+							sch = s.first
+							sch.gsub!('januar','Januar')
+							sch.gsub!('juni','Juni')
+							current_course_schedules << sch
 						end
 					end
         
