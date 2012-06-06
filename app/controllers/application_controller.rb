@@ -24,6 +24,27 @@ class ApplicationController < ActionController::Base
 	  args = options.map { |n, v| "#{n.to_s.upcase}='#{v}'" }
 	  system "/usr/bin/rake #{task} #{args.join(' ')} --trace 2>&1 >> #{Rails.root}/log/rake.log &"
 	end
+	
+	def login
+    @student = Student.find_or_initialize_by_student_number(params[:student][:student_number])
+    
+    @student.password = params[:student][:password]
+    if (
+      if @student.new_record? || @student.firstname.nil?
+        @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
+      else
+        @student.save
+      end )
+      
+      session[:student_id] = @student.id
+      @student.update_courses
+      
+      redirect_to root_url, notice: "Logged in!"
+    else
+      flash[:alerts] = @student.errors[:base]
+      redirect_to flash[:return_url] || root_url
+    end
+  end
   
   private
 
@@ -44,4 +65,5 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :alt_language
+  
 end

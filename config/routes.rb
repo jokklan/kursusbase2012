@@ -10,8 +10,8 @@ Kursusbase2012::Application.routes.draw do
     
     # get 'signup', to: 'students#new', as: 'signup'
     get 'login', to: 'sessions#new', as: 'login'
-    post 'login', to: 'sessions#create', as: 'sessions'
-    put 'login', to: 'sessions#create', as: 'sessions'
+    post 'login', to: 'application#login', as: 'sessions'
+    put 'login', to: 'application#login', as: 'sessions'
     get 'logout', to: 'sessions#destroy', as: 'logout'
     
     resources :courses

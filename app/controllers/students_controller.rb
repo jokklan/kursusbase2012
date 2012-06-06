@@ -5,4 +5,5 @@ class StudentsController < ApplicationController
 	    render "/home/index", layout: "home"
     end
 	end
+	
 end

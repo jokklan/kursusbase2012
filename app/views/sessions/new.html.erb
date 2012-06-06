@@ -1,14 +1,7 @@
 <h1><%= t('login.login') %></h1>
 
 <div id="login">
-	<%= simple_form_for @student, :style => 'display:none', :url => sessions_path do |f| %>
-		<%= puts @student.errors.to_yaml %>
-		<%= f.error_notification %>
-		<%= f.error :base %>
-		<%= f.input :student_number, :label => 'DTU Login', :tabindex => 2 %>
-		<%= f.input :password, :label => t('login.password') %>
-		<p class="buttons"><%= f.button :submit, t('login.login') %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
-	<% end %>
+	<%= render "login_form" %>
 	<div id="promo">
 		<h2><%= t('login.promo') %></h2>
 		<p><%= t('login.intro') %>:</p>

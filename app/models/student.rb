@@ -26,7 +26,6 @@ class Student < ActiveRecord::Base
   attr_accessible :student_number, :password, :firstname, :lastname, :email
   
   validates :student_number, :presence => true, :uniqueness => true
-  validate :must_exists
   validate :must_be_authenticated
   
   after_create :update_courses
@@ -36,16 +35,12 @@ class Student < ActiveRecord::Base
   end
   
   def must_be_authenticated
-    if cn_access_key.blank? || !authenticate(password)
-      errors[:base] << "student number or password is invalid"
-    end
-  end
-  
-  def must_exists
     if !(student_number =~ /^s\d{6}$/)
-      errors.add(:student_number, "student number must be of format s######")
+      errors.add(:base, "student number must be of format s######")
+    elsif !authenticate(password) || cn_access_key.blank?
+      errors.add(:base, "student number or password is invalid")
     elsif get_info.empty?
-      errors.add(:student_number, "no student with given student nr.")
+      errors.add(:base, "no student with given student nr.")
     end
   end
   
