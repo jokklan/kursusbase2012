@@ -13,12 +13,12 @@
 	<%= csrf_meta_tags %>
 </head>
 <body>
-	<div id="container">
+	<div id="container"><div id="inner">
 		<%= render :partial => "lhbar" %>
 		<%= render :partial => "header" %>
 		<div id="content">
 			<%= yield %>
 		</div>
-	</div>
+	</div></div>
 </body>
 </html>

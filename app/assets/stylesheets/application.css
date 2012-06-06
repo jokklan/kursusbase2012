@@ -39,11 +39,19 @@ a:hover {
 }
 
 #container {
-	background-color: #fff;
 	width: 1000px;
 	margin: 0 auto;
 	text-align: left;
-	overflow: hidden;
+	/*overflow: hidden;*/
+}
+
+html, body, #container {
+	height: 100%;
+}
+
+#inner {
+	min-height: 100%;
+	background-color: #fff;
 }
 
 /* Head
@@ -185,11 +193,12 @@ a:hover {
 
 body#home {
 	background: #fff url(homegradient.png) repeat-x;
-	margin: 0 0 40px;
+	height: auto;
 }
 
 #home #content {
 	padding: 150px 0 0;
+	margin: 0 0 50px;
 }
 
 #home #container {
@@ -204,6 +213,7 @@ body#home {
 	bottom: 0;
 	left: 0;
 	right: 0;
+	z-index: 20;
 }
 
 #home #searchform {
@@ -322,14 +332,14 @@ body#home {
 }
 
 #login {
-	margin: 0 0 40px;
+	margin: 0;
+	overflow: hidden;
 }
 
 #home #login {
 	width: 600px;
 	margin: 24px auto 0;
 	text-align: left;
-	overflow: hidden;
 }
 
 #login form {
