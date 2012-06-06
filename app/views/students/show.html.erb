@@ -28,6 +28,7 @@
 </table>
 
 <p>Dine kurser: </p>
+<%#= "is project course: #{Course.find_by_course_number(02122).is_project_course(@student)}" %>
 <% @student.courses.each do |c| %>
 	<% if c.is_basic_course(@student) %>
 		<p style="color: red">
@@ -38,6 +39,6 @@
 	<% else %>
 		<p style="color: gray">
 	<% end %>
-	<%= c.title %></p>
+	<%= "#{c.course_no} - #{c.title}" %></p>
 <% end %>
 <% if false %><p><%= @student.courses.map(&:title).join("</p><p>").html_safe %></p><% end %>

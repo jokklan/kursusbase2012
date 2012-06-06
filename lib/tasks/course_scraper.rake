@@ -47,7 +47,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_inform
+      url = url_civil
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -684,8 +684,8 @@ namespace :scrape do
 		
 		# Set up project courses
 		project_courses = {
-			'Softwareteknologi' => { 02101 => 1, 02121 => 1, 02122 => 1, 42610 => 1},
-			'Matematik og Teknologi' => { 02525 => 1, 42610 => 0, 01543 => 0, 01666 => 0, 02101 => 0 }
+			'Softwareteknologi' => { 2101 => 1, 2121 => 1, 2122 => 1, 42610 => 1},
+			'Matematik og Teknologi' => { 2525 => 1, 42610 => 0, 1543 => 0, 1666 => 0, 2101 => 0 }
 		}
 		
 		# Flag model
@@ -709,8 +709,10 @@ namespace :scrape do
 			
 			c_hash.each do |c, optional|
 				# Course
-				course = Course.find_by_course_number(c)
-				course = Course.create(:course_number => c) if course.nil?
+				course_number = Integer(c)
+				course = Course.find_by_course_number(course_number)
+				course = Course.create(:course_number => course_number) if course.nil?
+				puts "Added new course for project - #{course.course_number}"
 				spec = course.course_specializations.build(:spec_course_type => ct, :optional => optional)
 				course.save
 			end

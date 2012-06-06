@@ -30,12 +30,12 @@ class Student < ActiveRecord::Base
 		self.field_of_study.main_courses
 	end
 	
-	def projet_courses
-		self.field_of_study.main_courses
+	def project_courses
+		self.field_of_study.project_courses
 	end
 	
 	def basic_courses
-		self.field_of_study.main_courses
+		self.field_of_study.basic_courses
 	end
 	
   def fullname
