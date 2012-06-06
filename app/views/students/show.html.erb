@@ -29,7 +29,7 @@
 
 <p>Dine kurser: </p>
 <%#= "is project course: #{Course.find_by_course_number(02122).is_project_course(@student)}" %>
-<% if @student.field_of_study.nil? %>
+<% if not @student.field_of_study.nil? %>
 <% @student.courses.each do |c| %>
 	<% if c.is_basic_course(@student) %>
 		<p style="color: red">
