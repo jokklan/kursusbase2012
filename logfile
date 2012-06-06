@@ -1,0 +1,7 @@
+LOG:  database system was shut down at 2012-06-06 12:15:34 CEST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/var/postgres"?
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/var/postgres"?
