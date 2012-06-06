@@ -1,9 +1,5 @@
 class NewCourseTypeStructure < ActiveRecord::Migration
   def up
-		drop_table :course_types
-    drop_table :course_types_courses
-    CourseType.drop_translation_table!
-
 		create_table :spec_course_types do |t|
 			t.references :course_type_type
       t.references :field_of_study
@@ -44,25 +40,6 @@ class NewCourseTypeStructure < ActiveRecord::Migration
   end
 
   def down
-		create_table :course_types do |t|
-      t.string :course_type_type
-
-      t.timestamps
-    end
-    
-    CourseType.create_translation_table!({
-      :title => :string
-    })
-    
-    create_table :course_types_courses do |t|
-      t.integer :course_type_id
-      t.integer :course_id
-      
-    end
-    
-    add_index :course_types_courses, :course_type_id
-    add_index :course_types_courses, :course_id
-
 		drop_table :spec_course_types
 		drop_table :main_course_types
 		drop_table :course_specializations
