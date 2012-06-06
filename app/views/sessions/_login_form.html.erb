@@ -2,7 +2,17 @@
 	<% flash[:alerts].each do |error| %>
 		<div class="error"><%= error %></div>
 	<% end if flash[:alerts] %>
-	<%= f.input :student_number, :label => 'DTU Login', :tabindex => 2 %>
+	<%= f.input :student_number, :label => 'DTU Login', :html_options => {:tabindex => 2} %>
 	<%= f.input :password, :label => t('login.password') %>
 	<p class="buttons"><%= f.button :submit, t('login.login') %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
 <% end %>
+<div id="promo">
+	<h2><%= t('login.promo') %></h2>
+	<p><%= t('login.intro') %>:</p>
+	<ul>
+		<li><%= t('login.reason1') %></li>
+		<li><%= t('login.reason2') %></li>
+		<li><%= t('login.reason3') %></li>
+	</ul>
+	<p>&#8230;<%= t('login.outro') %></p>
+</div>
