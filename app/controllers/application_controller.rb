@@ -39,10 +39,16 @@ class ApplicationController < ActionController::Base
       session[:student_id] = @student.id
       @student.update_courses
       
-      redirect_to root_url, notice: "Logged in!"
+      respond_to do |format|
+        format.html { redirect_to root_url, notice: "Logged in!" }
+        format.js   { redirect_to root_url, notice: "Logged in!" }
+      end
     else
-      flash[:alerts] = @student.errors[:base]
-      redirect_to flash[:return_url] || root_url
+      flash[:alert] = @student.errors[:base]
+      respond_to do |format|
+        format.html { redirect_to flash[:return_url] || root_url }
+        format.js   { render :nothing => true, :json => { :error => @student.errors[:base].first }, :status => :unprocessable_entity }
+      end
     end
   end
   

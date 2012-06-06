@@ -1,10 +1,10 @@
-<%= simple_form_for @student, :style => 'display:none', :url => sessions_path, :remote => true, method: "POST" do |f| %>
-	<% flash[:alerts].each do |error| %>
-		<div class="error"><%= error %></div>
-	<% end if flash[:alerts] %>
+<%= simple_form_for @student, :style => 'display:none', :url => sessions_path, :remote => true, method: "POST", :html => {:id => "login_form"} do |f| %>
+	<div class="validation-error">
+		<%= flash[:alert].first if flash[:alert] %>
+	</div>
 	<%= f.input :student_number, :label => 'DTU Login', :input_html => { :tabindex => 2 } %>
 	<%= f.input :password, :label => t('login.password'), :input_html => { :tabindex => 3 } %>
-	<p class="buttons"><%= f.button :submit, t('login.login') %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
+	<p class="buttons"><%= f.button :submit, t('login.login'), :id => "submit_button" %> <%= t('or') %> <a class="cancel" href="javascript://"><%= t('cancel') %></a></p>
 <% end %>
 <div id="promo">
 	<h2><%= t('login.promo') %></h2>
