@@ -5,7 +5,8 @@
 <a id="toplogin" href="/login"><%= t('.login') %></a>
 <div id="logo">
 	<!--[if !IE]> --><img src="/assets/<%= logoname %>.svg" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><!-- <![endif]-->
-	<!--[if IE]><img src="/assets/<%= logoname %>.png" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
+	<!--[if gte IE 9]><img src="/assets/<%= logoname %>.svg" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
+	<!--[if lt IE 9]><img src="/assets/<%= logoname %>.png" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
 	<h1><%= t('.search') %></h1>
 </div>
 <%= form_tag courses_path, :method => :get, :id => :searchform do %><div>
