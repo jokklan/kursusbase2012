@@ -28,7 +28,11 @@ class ApplicationController < ActionController::Base
 	
 	def login
     @student = Student.find_or_initialize_by_student_number(params[:student][:student_number])
-    
+
+		# Dummy field of study
+		field_of_study = FieldOfStudy.find_by_title('Softwareteknologi')
+    @student.field_of_study = field_of_study
+
     @student.password = params[:student][:password]
     if (
       if @student.new_record? || @student.firstname.nil?

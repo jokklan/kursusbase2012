@@ -7,3 +7,5 @@ FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/var/postgres"?
 FATAL:  lock file "postmaster.pid" already exists
 HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/var/postgres"?
+FATAL:  lock file "postmaster.pid" already exists
+HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/var/postgres"?
