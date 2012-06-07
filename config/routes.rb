@@ -19,6 +19,7 @@ Kursusbase2012::Application.routes.draw do
     resources :courses
     resources :keywords
     resources :course_types
+		resources :studyplans
 	  
     # get "/", to: 'student#show', as: "show_student"
 		
