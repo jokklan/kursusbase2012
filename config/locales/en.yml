@@ -14,9 +14,9 @@ en:
     courses: Courses
     plan: Study Plan
   languages:
-    dansk: Danish
+    danish: Danish
     da: Danish
-    engelsk: English
+    english: English
     en: English
   days:
     mon: Monday

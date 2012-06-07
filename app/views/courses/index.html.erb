@@ -16,7 +16,7 @@
 	</thead>
 	<tbody>
 		
-<% if current_user %>
+<% if !current_user.nil? %>
 	<!-- COURSE RECOMMENDATIONS -->
 	<% if not current_user.recommended_courses.empty? %>
 		<% current_user.recommended_courses.each do |course| %>

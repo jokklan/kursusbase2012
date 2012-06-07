@@ -14,9 +14,9 @@ da:
     courses: Kurser
     plan: Studieplan
   languages:
-    dansk: dansk
+    danish: dansk
     da: dansk
-    engelsk: engelsk
+    english: engelsk
     en: engelsk
   days:
     mon: mandag

@@ -59,7 +59,7 @@
 <dl class="section">
 
 	<dt><%= t('.schedule') %></dt>
-		<dd><% if @course.schedule.nil? %><%= @course.schedule_note %><% else %><%= @course.schedule %><% end %></dd>
+		<dd><% if @course.schedule.nil? %><%= @course.schedule_note %><% else %><%= @course.schedule %><br><%= @course.schedule_note %><% end %></dd>
 	<dt><%= t('.form') %></dt>
 		<dd><%= @course.teaching_form %></dd>
 	<% if @course.blocked_courses.count > 0 %>
