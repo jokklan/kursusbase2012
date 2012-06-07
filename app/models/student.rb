@@ -102,7 +102,8 @@ class Student < ActiveRecord::Base
   
   def update_current_courses
     call = CampusNet.api_call(self, "Elements")
-    cn_courses = ['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
+    puts "CAMPUS NET API CALL FAILED: #{call.to_yaml}"
+    cn_courses = call['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
 		
 		if cn_courses.nil?
 		  puts "CAMBUS NET API CALL FAILED: #{call.inspect}"
