@@ -168,9 +168,9 @@
 <div id="courserec">
 	
 	<p class="top">
-		<% simple_form_for(StudyplanItem.new) do |f| %>
-			<%= f.input :course_id, :as => :hidden %>
-			<%= f.button :submit, t('.addto')%>
+		<%= simple_form_for(StudyplanItem.new) do |f| %>
+			<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+			<%= f.button :submit, t('.addto') %>
 		<% end %>
 	</p>
 	

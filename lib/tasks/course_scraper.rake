@@ -753,8 +753,25 @@ namespace :scrape do
 			end
 		end
 		
-		# Fixing course type names
+		# Setting 26027 as Naturvidenskabelig grundfag
+		basic_course_numbers = [26027, 26000]
+		basic_course_numbers.each do |cn|
+			course = Course.find_by_course_number(cn)
+			math1 = Course.find_by_course_number(1005)
+			basic_spec_course_types_all = math1.course_specializations if not math1.nil?
+			if not basic_spec_course_types_all.empty? and not course.nil?
+				basic_spec_course_types_all.each do |ct|
+					course.course_specializations.build(:spec_course_type => ct)
+				end
+				course.save
+			end
+		end
 		
+		# Setting semester span (if the semester lasts more than one semester)
+		courses_with_span = { 1005 => 2, 10020 => 2, 10022 => 2 }
+		courses_with_span.each do |c, span|
+			c.semester_span = span
+		end
   end
   
   task :teachers => :environment do

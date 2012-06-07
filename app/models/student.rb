@@ -30,12 +30,34 @@ class Student < ActiveRecord::Base
 		self.field_of_study.main_courses
 	end
 	
+	def main_points
+		sum_ects_points(self.main_courses.select {|c| self.courses.include? c })
+	end
+	
 	def project_courses
 		self.field_of_study.project_courses
 	end
 	
+	def project_points
+		sum_ects_points(self.project_courses.select {|c| self.courses.include? c })
+	end
+	
 	def basic_courses
 		self.field_of_study.basic_courses
+	end
+	
+	def basic_points
+		sum_ects_points(self.basic_courses.select {|c| self.courses.include? c })
+	end
+	
+	def optional_points
+		self.courses.sum("ects_points") - basic_points - project_points - main_points
+	end
+	
+	def sum_ects_points(courses)
+		sum = 0.0
+		courses.each {|c| sum += c.ects_points }
+		sum
 	end
 	
   def fullname

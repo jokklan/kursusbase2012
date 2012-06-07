@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120607101425) do
+ActiveRecord::Schema.define(:version => 20120607134834) do
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 20120607101425) do
     t.integer "course_id"
     t.string  "semester"
     t.boolean "passed"
+    t.integer "semester_span"
   end
 
   add_index "course_students", ["course_id"], :name => "index_course_users_on_course_id"
@@ -123,8 +124,9 @@ ActiveRecord::Schema.define(:version => 20120607101425) do
     t.string   "optional_prereq"
     t.string   "mandatory_prereq"
     t.boolean  "active"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "semester_span",    :default => 1
   end
 
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
