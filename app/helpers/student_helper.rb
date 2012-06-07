@@ -18,9 +18,16 @@ module StudentHelper
 					schedules = course.schedules
 				end
 				schedules.each do |schedule|
+					
 					if schedule.block == block
+						rowspan = ''
+						if block == "#{season}5A" and schedules.include? Schedule.find_by_block("#{season}5B")
+							rowspan = ' rowspan="2"' 
+						elsif block == "#{season}5B" and schedules.include? Schedule.find_by_block("#{season}5A")
+							return ''
+						end 
 						course_class = get_course_class(course)
-						return "<td#{course_class}><a href=\"#{course_path(course)}\">#{course.course_no} <strong>#{course.title}</strong></a></td>".html_safe
+						return "<td#{course_class}#{rowspan}><a href=\"#{course_path(course)}\">#{course.course_no} <strong>#{course.title}</strong></a></td>".html_safe
 					end
 				end
 	    end
