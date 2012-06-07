@@ -28,14 +28,18 @@ class ApplicationController < ActionController::Base
 	
 	def login
     @student = Student.find_or_initialize_by_student_number(params[:student][:student_number])
-    
+
+		# Dummy field of study
+		field_of_study = FieldOfStudy.find_by_title('Softwareteknologi')
+    @student.field_of_study = field_of_study
+
     @student.password = params[:student][:password]
-    if (
+    if @student.authenticate && (
       if @student.new_record? || @student.firstname.nil?
         @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
       else
         @student.save
-      end ) && @student.authenticate
+      end ) 
       
       session[:student_id] = @student.id
       @student.update_courses
