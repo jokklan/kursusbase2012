@@ -125,7 +125,7 @@ class Student < ActiveRecord::Base
         course_number = cn_course['CourseCode']
         course = Course.find_by_course_number(course_number)
         semester_number = semester(cn_course['Year'], cn_course['Period'] == "Winter" ? 1 : 0 )
-        passed = cn_course['EctsGiven'] == 'true' ? true ; false
+        passed = (cn_course['EctsGiven'] == 'true')
         course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number, :passed => passed) unless course.nil?
       end
     end
