@@ -23,12 +23,14 @@ module StudentHelper
     	"<td class=\"empty\">#{schedule}</td>".html_safe
 	end
 	def get_course_class(course)
-		if course.is_basic_course(@student)
-			return ' class="course basic"'
-		elsif course.is_main_course(@student)
-			return ' class="course main"'
-		elsif course.is_project_course(@student)
-			return ' class="course project"'
+		if not @student.field_of_study.nil?
+			if course.is_basic_course(@student)
+				return ' class="course basic"'
+			elsif course.is_main_course(@student)
+				return ' class="course main"'
+			elsif course.is_project_course(@student)
+				return ' class="course project"'
+			end
 		end
 		' class="course"'
 	end

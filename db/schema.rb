@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120607074208) do
+ActiveRecord::Schema.define(:version => 20120607092959) do
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
@@ -128,16 +128,6 @@ ActiveRecord::Schema.define(:version => 20120607074208) do
   end
 
   add_index "courses", ["course_number"], :name => "index_courses_on_course_number"
-
-  create_table "courses_field_course_types", :force => true do |t|
-    t.integer "course_id"
-    t.integer "field_course_type_id"
-    t.string  "semester_recommended"
-    t.boolean "optional"
-  end
-
-  add_index "courses_field_course_types", ["course_id"], :name => "index_courses_field_course_types_on_course_id"
-  add_index "courses_field_course_types", ["field_course_type_id"], :name => "index_courses_field_course_types_on_field_course_type_id"
 
   create_table "courses_keywords", :force => true do |t|
     t.integer "keyword_id"

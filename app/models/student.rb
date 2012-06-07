@@ -26,17 +26,17 @@ class Student < ActiveRecord::Base
 
   after_create :update_courses
   
-	def main_courses
-		self.field_of_study.main_courses
-	end
-	
-	def project_courses
-		self.field_of_study.project_courses
-	end
-	
-	def basic_courses
-		self.field_of_study.basic_courses
-	end
+	# def main_courses
+	# 	self.field_of_study.main_courses
+	# end
+	# 
+	# def project_courses
+	# 	self.field_of_study.project_courses
+	# end
+	# 
+	# def basic_courses
+	# 	self.field_of_study.basic_courses
+	# end
 	
   def fullname
     "#{firstname} #{lastname}"
