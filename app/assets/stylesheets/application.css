@@ -79,7 +79,7 @@ html, body, #container {
 }
 
 #head > div > div, #home #searchform > div {
-	background: transparent url(headertexture.png) repeat;
+	background: transparent url(headertexture.svg) repeat;
 	overflow: hidden;
 }
 
