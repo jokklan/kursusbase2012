@@ -285,12 +285,17 @@ namespace :scrape do
 						string = att_column[1].text.strip.chomp
 						
 						# Scraping schedule notes
+						
 						if string.nil? or schedule == string
 							schedule_note = nil
 						elsif schedule.nil?
 							schedule_note = string
 						else
-							schedule_note = string[schedule.length, string.length].gsub(/^[:;,.\s]+/,'')
+							if string[schedule.length..string.length].nil?
+								schedule_note = nil
+							else
+								schedule_note = string[schedule.length..string.length].gsub(/^[:;,.\s]+/,'')
+							end
 						end
 						current_course[:schedule_note] = schedule_note
 						
