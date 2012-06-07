@@ -10,7 +10,7 @@ module StudentHelper
 
 	    # Find a match
 	    schs = []
-	    @student.current_courses.each do |course|
+	    @student.courses_by_semester(semester).each do |course|
 				#schs.add s.schedules.select { |s| s.block == block }
 				course.schedules.each do |schedule|
 					if schedule.block == block

@@ -110,11 +110,13 @@ class Student < ActiveRecord::Base
     update_old_courses
     update_current_courses
   end
+
+	def courses_by_semester(semester)
+		self.course_students.where('semester = ?', semester.to_s).map(&:course)
+	end
   
   def current_courses
-    courses = []
-    self.course_students.where('semester = ?', self.semester.to_s).each {|cs| courses << cs.course}
-    courses
+    self.courses_by_semester(self.semester.to_s)
   end
   
   def semester(year = Time.now.year, semester = Time.now.month === 2...7 ? 1 : 0)
