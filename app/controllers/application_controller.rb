@@ -34,12 +34,12 @@ class ApplicationController < ActionController::Base
     @student.field_of_study = field_of_study
 
     @student.password = params[:student][:password]
-    if (
+    if @student.authenticate && (
       if @student.new_record? || @student.firstname.nil?
         @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
       else
         @student.save
-      end ) && @student.authenticate
+      end ) 
       
       session[:student_id] = @student.id
       @student.update_courses
