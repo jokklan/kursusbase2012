@@ -1,6 +1,6 @@
 <% you = current_student %>
 <div id="head"><div><div>
-	<h1><a href="/"><span>DTU Kursusbase</span></a></h1>
+	<h1><a href="<%= root_path %>"><span><%= t('sitename') %></span></a></h1>
 	<%= render_navigation %>
 	<%= form_tag courses_path, :method => :get do %>
 		<%= text_field_tag :search, params[:search], :tabindex => 1, :placeholder => t('splaceholder') %>

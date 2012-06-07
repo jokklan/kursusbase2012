@@ -1,11 +1,11 @@
 <%
-	site_title = "DTU Kursusbasen"
+	site_title = t('sitename')
 	page_title = yield(:title)
 	
 	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
 %>
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<html lang="<%= I18n.locale %>" class="lang-<%= I18n.locale %>">
 <head>
 	<title><%= title %></title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>

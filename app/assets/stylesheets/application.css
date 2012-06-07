@@ -86,7 +86,7 @@ html, body, #container {
 #head ul {
 	position: relative;
 	list-style-type: none;
-	margin: -20px 0 0 75px;
+	margin: -20px 0 0 77px;
 	padding: 0;
 	overflow: hidden;
 	z-index: 40;
@@ -154,15 +154,19 @@ html, body, #container {
 }
 
 #head h1, #head h1 a {
-	width: 174px;
+	width: 179px;
 	height: 52px;
 }
 
 #head h1 a {
 	display: block;
 	color: #fff;
-	background: transparent url(logo.png) no-repeat;
+	background: transparent url(headlogo.svg) no-repeat;
 	overflow: hidden;
+}
+
+html.lang-en #head h1 a {
+	background-image: url(headlogo-en.svg);
 }
 
 #head h1 span {

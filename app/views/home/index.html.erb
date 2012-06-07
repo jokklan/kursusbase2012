@@ -1,6 +1,11 @@
+<%
+	logoname  = I18n.locale.to_s == "en" ? "homelogo-en" : "homelogo"
+	logowidth = I18n.locale.to_s == "en" ? 315 : 325
+%>
 <a id="toplogin" href="/login"><%= t('.login') %></a>
 <div id="logo">
-	<img src="/assets/homelogo.svg" width="325" height="70" alt="">
+	<!--[if !IE]> --><img src="/assets/<%= logoname %>.svg" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><!-- <![endif]-->
+	<!--[if IE]><img src="/assets/<%= logoname %>.png" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
 	<h1><%= t('.search') %></h1>
 </div>
 <%= form_tag courses_path, :method => :get, :id => :searchform do %><div>
