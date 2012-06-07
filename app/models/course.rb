@@ -27,74 +27,36 @@ class Course < ActiveRecord::Base
   serialize :learn_objectives, Array
   include PgSearch
   
-  pg_search_scope :number_search, against: :course_number, using: { tsearch: {dictionary: "simple"} }
-  
-  pg_search_scope :danish_search, 
-    using: {
-      tsearch: {
-        dictionary: "danish"
-      }
-    },
-    associated_against: {
-      translations: {
-        :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
-      }
-    }
-  
-  pg_search_scope :english_search, 
-    using: {
-      tsearch: {
-        dictionary: "english"
-      }
-    },
-    associated_against: {
-      translations: {
-        :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
-      }
-    }
-    
-  pg_search_scope :institute_search, 
-    using: {
-      tsearch: {
-        dictionary: "danish"
-      }
-    },
-    associated_against: {
-      institute_translations: {
-        :title => 'A'
-      }
-    }
-    
-  pg_search_scope :teacher_search, 
-    using: {
-      tsearch: {
-        dictionary: "danish"
-      }
-    },
-    associated_against: {
-      teachers: {
-        :name => 'A'
-      }
-    }
-    
-  pg_search_scope :course_type_search, 
-    using: {
-      tsearch: {
-        dictionary: "danish"
-      }
-    },
-    associated_against: {
-      main_course_types_translations: {
-        :title => 'A'
+  pg_search_scope :association_search, lambda{ |locale, query, models|
+    {
+      query: query,
+      using: {
+        tsearch: {
+          dictionary: locale == :da ? "danish" : "english"
+        }
       },
-      field_of_study_translations: {
-        :title => 'A'
-      },
-      flag_model_type: {
-        :title => 'A'
-      }
+      associated_against: models
     }
-    
+  }
+  # 
+  # pg_search_scope :number_search, against: :course_number, using: { tsearch: {dictionary: "simple"} }
+  #  
+  # pg_search_scope :regular_search, lambda{ |locale, query|
+  #   {
+  #     query: query,
+  #     using: {
+  #       tsearch: {
+  #         dictionary: locale == :da ? "danish" : "english"
+  #       }
+  #    },
+  #     associated_against: {
+  #       # translations: {
+  #       #   :title => 'A', :course_objectives => 'D', :learn_objectives => 'D', :content => 'D'
+  #       # }
+  #       translations: [:title, :course_objectives, :learn_objectives, :content]
+  #     }
+  #   }
+  # }
     
   # Relations
   has_and_belongs_to_many :teachers
@@ -192,21 +154,62 @@ class Course < ActiveRecord::Base
     if is_numeric? query
       puts "NUMERIC"
       Course.number_search(query.to_i)
-    elsif locale == :en
-      Course.english_search(query)
     else
-      Course.danish_search(query)
+      pg_search(query, :courses)
     end
+  end
+  
+  MODEL_ASSOCIATION = {
+    institutes: :institute_translations, 
+    main_course_types: :main_course_types_translations, 
+    field_of_study: :field_of_study_translations,
+    flag_model_type: :flag_model_type,
+    teachers: :teachers,
+    courses: :translations
+  }
+  
+  MODEL_ATTRIBUTE = {
+    institutes: :title, 
+    teachers: :name, 
+    field_of_study: :title,
+    flag_model_type: :title,
+    main_course_types: :title,
+    courses: [:title, :course_objectives, :learn_objectives, :content]
+  }
+  
+  
+  def self.pg_search(query, *models)
+    model_hash = {} 
+    models.each do |m|
+      array = "#{MODEL_ATTRIBUTE[m]}".gsub(/[\[\]:\s]/,"").split(",").map{|v| v.to_sym}
+      hash = { "#{MODEL_ASSOCIATION[m]}".to_sym => array }
+      puts hash.inspect
+      model_hash.merge!(hash)
+    end
+
+    association_search(I18n.locale, query, model_hash)
   end
   
   def self.search_params(param_string)
     search_string = param_string.dup
     result_query = Course.active.uniq
     
-    result_query = if search_string =~ /((?:point:|ects:)([\d\,\.]*))/i
-      match = $2
+    result_query = if search_string =~ /((?:point|ects)[_-]?((?:gt|lt|eq)e?)?:([\d\,\.]*))/i
+      operator = $2
+      match = $3
       search_string.gsub!($1, "")
-      result_query.where(:ects_points => match.gsub(",","."))
+      
+      if operator =~ /gte/
+        result_query.where{ects_points >= match.gsub(",",".")}
+      elsif operator =~ /gt/
+        result_query.where{ects_points > match.gsub(",",".")}
+      elsif operator =~ /lte/
+        result_query.where{ects_points <= match.gsub(",",".")}
+      elsif operator =~ /lt/
+        result_query.where{ects_points < match.gsub(",",".")}
+      else
+        result_query.where{ects_points == match.gsub(",",".")}
+      end
     else
       result_query
     end
@@ -214,7 +217,7 @@ class Course < ActiveRecord::Base
     result_query = if search_string =~ /((?:institute?:)([\w-]*))/i
       match = $2
       search_string.gsub!($1, "")
-      result_query.institute_search(match.gsub("-"," "))
+      result_query.pg_search(match.gsub("-"," "), :institutes)
     else
       result_query
     end
@@ -222,7 +225,7 @@ class Course < ActiveRecord::Base
     result_query = if search_string =~ /((?:coursetype:|kursustype:|type:)([\w-]*))/i
       match = $2
       search_string.gsub!($1, "")
-      result_query.course_type_search(match.gsub("-"," "))
+      result_query.pg_search(match.gsub("-"," "), :main_course_types, :flag_model_type, :field_of_study)
     else
       result_query
     end
@@ -230,7 +233,7 @@ class Course < ActiveRecord::Base
     result_query = if search_string =~ /((?:teacher:|lærer:)([\w-]*))/i
       match = $2
       search_string.gsub!($1, "")
-      result_query.teacher_search(match.gsub("-"," "))
+      result_query.pg_search(match.gsub("-"," "), :teachers)
     else
       result_query
     end
@@ -247,7 +250,6 @@ class Course < ActiveRecord::Base
         result_query
       end
     else
-      
       result_query
     end
     
@@ -273,7 +275,7 @@ class Course < ActiveRecord::Base
     end
     
     puts (search_string.blank? ? "SQL FOR BLANK: "+result_query.to_sql : "SQL FOR '#{search_string}': "+result_query.search(search_string).to_sql)
-    search_string.blank? ? result_query : result_query.search(search_string)
+    search_string.blank? ? result_query : result_query.pg_search(search_string, :courses)
   end
   
   # Instance methods 
