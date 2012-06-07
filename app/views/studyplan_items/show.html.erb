@@ -26,7 +26,7 @@
 <% @studyplans.each_with_index do |studyplan, i| %>
 
 <% 
-		semester = params[:semester].nil? ? @student.studyplan_items.maximum("semester") - i : @semester
+		semester = params[:semester].nil? ? @max_semester - i : @semester
 		season   = semester % 2 == 0 ? t('seasons.spring') : t('seasons.autumn')
 %>
 	<h2><%= semester%>. semester <em class="subtle">(<%= season %>)</em></h2>
