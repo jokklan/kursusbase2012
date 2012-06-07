@@ -22,6 +22,7 @@ var strings = {
 }
 
 d.ready(function(){
+	$("body").addClass("js")
 	if($("body").is("#home")){
 		// HOME
 		var loggingin = false
@@ -57,6 +58,12 @@ d.ready(function(){
 				}
 			})
 		}
+		$("table.schedule td.course").click(function(i){
+			var a = $("a", this)
+			if(a.length > 0){
+				location.href = a[0].href
+			}
+		})
 	}
 	
 	

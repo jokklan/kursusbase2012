@@ -1,5 +1,5 @@
-<h1><%= t('.welcome') %> <%= @student.fullname %>, <%= t('.hereisyour') %>:</h1>
-<table id="schedule">
+<h1 id="intro"><%= t('.welcome') %> <strong><%= @student.fullname %></strong>, <%= t('.hereisyour') %>:</h1>
+<table class="schedule yourschedule hyphenate">
 	<thead>
 		<tr>
 			<th scope="col" title="<%= t('days.mon') %>">M</th>
@@ -27,27 +27,4 @@
 	</tbody>
 </table>
 
-<p>Dine kurser: </p>
-<%#= "is project course: #{Course.find_by_course_number(02122).is_project_course(@student)}" %>
-
-<ul>
-<% @student.current_courses.each do |c| %>
-	<li><%= c.title%></li>
-<% end %>
-</ul>
-<% if not @student.field_of_study.nil? %>
-<% @student.courses.each do |c| %>
-	<% if c.is_basic_course(@student) %>
-		<p style="color: red">
-	<% elsif c.is_main_course(@student) %>
-		<p style="color: blue">
-	<% elsif c.is_project_course(@student) %>
-		<p style="color: yellow">
-	<% else %>
-		<p style="color: gray">
-	<% end %>
-	<%= "#{c.course_no} - #{c.title}" %></p>
-<% end %>
-<% else %>
-<p><%= @student.courses.map(&:title).join("</p><p>").html_safe %></p>
-<% end %>
+<p id="introend">Se <a href="/studyplan">din studieplan</a> for at se dine tidligere skemaer og planlægge dine fremtidige.</p>

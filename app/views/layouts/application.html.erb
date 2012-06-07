@@ -3,9 +3,13 @@
 	page_title = yield(:title)
 	
 	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
+	
+	
+	default_lang = "da"
+	lang = params[:locale].blank? ? default_lang : params[:locale]
 %>
 <!DOCTYPE html>
-<html>
+<html lang="<%= lang %>">
 <head>
 	<title><%= title %></title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>

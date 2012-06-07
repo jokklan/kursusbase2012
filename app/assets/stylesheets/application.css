@@ -524,21 +524,21 @@ body#home {
 	width: 168px;
 }
 
-#content #coursehead #courseschedule table, table#schedule {
+#content #coursehead #courseschedule table, table.schedule {
 	border-spacing: 3px;
 	line-height: normal;
 	margin: 0 0 0 -3px;
 }
 
-#content #coursehead #courseschedule th, #content #coursehead #courseschedule td, table#schedule th, table#schedule td {
+#content #coursehead #courseschedule th, #content #coursehead #courseschedule td, table.schedule th, table.schedule td {
 	text-align: center;
 }
 
-#content #coursehead #courseschedule th, table#schedule th {
+#content #coursehead #courseschedule th, table.schedule th {
 	line-height: 0.9em;
 }
 
-#content #coursehead #courseschedule td, table#schedule td {
+#content #coursehead #courseschedule td, table.schedule td.empty {
 	background-color: #eee;
 	color: #ddd;
 	padding: 2px 7px;
@@ -722,17 +722,66 @@ table tr.odd {
 	width: 10em;
 }
 
-table#schedule {
-	font-size: 300%;
+table.schedule {
+	font-size: 138.5%;
 	width: 80%;
 	margin: 0 auto;
 }
 
+table.schedule td {
+	padding: 2px 7px;
+	width: 20%;
+}
+
+table.schedule td.course {
+	background-color: #ccc;
+	color: #999;
+}
+
+body.js table.schedule td.course:hover {
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+table.schedule td.course a {
+	display: block;
+	color: #999;
+	font-weight: normal;
+	/*background-color: #ff0;*/
+}
+
+body.js table.schedule td.course a:hover {
+	text-decoration: none;
+}
 
 
+table.schedule td.basic { background-color: #e27474; } /* Red */
+table.schedule td.basic a { color: #a95757; }
+table.schedule td.basic a strong { color: #391d1d; }
+body.js table.schedule td.basic:hover { background-color: #eca2a2; }
+table.schedule td.main { background-color: #a1a6c1; } /* Blue */
+table.schedule td.main a { color: #797c91; }
+table.schedule td.main a strong { color: #282a30; }
+body.js table.schedule td.main:hover { background-color: #c0c3d5; }
+table.schedule td.project { background-color: #e6e768; } /* Yellow */
+table.schedule td.project a { color: #acad4e; }
+table.schedule td.project a strong { color: #3a3a1a; }
+body.js table.schedule td.project:hover { background-color: #eeef9a; }
 
 
+#content h1#intro {
+	text-align: center;
+	font-weight: normal;
+	font-size: 250%;
+	color: #666;
+	margin: 0 0 30px;
+}
 
+#content p#introend {
+	margin: 50px 0 0;
+	text-align: center;
+	font-size: 138.5%;
+}
 
 
 
