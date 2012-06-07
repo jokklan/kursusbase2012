@@ -34,14 +34,14 @@ group :test, :development do
   
   gem 'debugger'
   
-  gem 'guard-cucumber'
+  # gem 'guard-cucumber'
   gem 'guard-rspec'
   gem 'growl'
   
 end
 
 group :test do
-  gem "cucumber-rails"
+  # gem "cucumber-rails"
   gem 'rspec-rails'
   #gem 'cucumber_factory'
   
@@ -51,7 +51,7 @@ group :test do
 	gem 'factory_girl_rails'
 
 	gem 'capybara'
-	gem 'cucumber-websteps'
+  # gem 'cucumber-websteps'
 	#gem "capybara-webkit"
 	gem 'launchy'
   
