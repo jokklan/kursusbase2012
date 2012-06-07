@@ -164,7 +164,6 @@ namespace :scrape do
 				# :point_block, :qualified_prereq, :optional_prereq, :mandatory_prereq
         course_attributes = { :da => {
                                       :mandatory => {
-                                                    :schedule_note => "Skemaplacering:",
                                                     :teaching_form => "Undervisningsform:",
                                                     :duration => "Kursets varighed:",
                                                     :former_course => "Tidligere kursus:",
@@ -204,7 +203,10 @@ namespace :scrape do
                                                     },
                                       :keywords => {
                                                     :keywords => "Nøgleord:"
-                                                    }
+                                                    },
+																			:schedule => {
+																										:schedule => "Skemaplacering:"
+																			}
                                                   
                                     
                               },
@@ -251,7 +253,10 @@ namespace :scrape do
                                                     },
                                       :keywords => {
                                                     :keywords => "Keywords:"
-                                                    }
+                                                    },
+																			:schedule => {
+																										:schedule => "Schedule:"
+																			}
                                     
                                     
                                       }
@@ -273,13 +278,24 @@ namespace :scrape do
           end
 
 					# Schedule
-          if course_attributes[language][:mandatory][:schedule_note] == att_title
+          if course_attributes[language][:schedule][:schedule] == att_title
+						# Adding schedule from former scrape
 						schedule = course_schedules[current_course[:course_number]]
 						current_course[:schedule] = schedule if not schedule.nil?
-						
 						string = att_column[1].text.strip.chomp
-						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Juni|januar|juni)}).to_a	
 						
+						# Scraping schedule notes
+						if string.nil? or schedule == string
+							schedule_note = nil
+						elsif schedule.nil?
+							schedule_note = string
+						else
+							schedule_note = string[schedule.length, string.length].gsub(/^[:;,.\s]+/,'')
+						end
+						current_course[:schedule_note] = schedule_note
+						
+						# Scraping schedule blocks
+						schedules = string.scan(%r{([E|F]\d[A|B]?|Januar|Juni|januar|juni)}).to_a	
 						schedules.each do |s|
 							sch = s.first
 							sch.gsub!('januar','Januar')
@@ -530,6 +546,12 @@ namespace :scrape do
 
 						# Finding or adding course types
             current_course_types_head.each do |cth|
+							cthmap = {
+								"Civil- Grundlæggende kursus" => "Grundlæggende civilkursus",
+								"Civil- Videregående Kursus"	=> "Videregående civilkursus"
+							}
+							
+							cth = cthmap[cth] if cthmap.include? cth
 							course_type = MainCourseType.find_by_title(cth)
 							course_type = MainCourseType.create(:title => cth) if course_type.nil?
 							created_course.main_course_types << course_type
@@ -725,6 +747,9 @@ namespace :scrape do
 				course.save
 			end
 		end
+		
+		# Fixing course type names
+		
   end
   
   task :teachers => :environment do

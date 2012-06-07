@@ -107,7 +107,7 @@
 		<dt><%= t('.cobjectives') %></dt>
 		<dd><%= @course.course_objectives %></dd>
 	
-	
+	<% if @course.learn_objectives %>
 		<dt><%= t('.lobjectives') %></dt>
 		<dd>
 			<p>En studerende, der fuldt ud har opfyldt kursets mål, vil kunne:</p>
@@ -117,6 +117,7 @@
 				<% end %>
 			</ul>
 		</dd>
+	<% end %>
 	
 	
 		<dt><%= t('.content') %></dt>
