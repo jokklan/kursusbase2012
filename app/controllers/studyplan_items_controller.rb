@@ -2,7 +2,8 @@ class StudyplanItemsController < ApplicationController
 	def show
 		@student = current_student
 		@semester = params[:semester].to_i
-		@max_semester = [current_student.studyplan_items.maximum("semester"), @student.current_semester].max
+		max_studyplan_semester = current_student.studyplan_items.maximum("semester").nil? ? 0 : current_student.studyplan_items.maximum("semester")
+		@max_semester = [, @student.current_semester].max
 		redirect_to root_path if @student.nil? or (params[:semester] and (@semester < 0 or @semester > @max_semester))
 		if params[:semester]
 			if @semester.to_i <= @student.current_semester.to_i

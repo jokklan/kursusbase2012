@@ -1,5 +1,5 @@
 module StudentHelper
-	def student_schedule_table_cell(schedule, courses_input = @student.courses, semester_input = @student.current_semester)
+	def student_schedule_table_cell(schedule, courses_input = @student.find_courses_by_semester(@student.current_semester), semester_input = @student.current_semester)
 		# Determine current semester season
 	  semester = semester_input
     season   = semester % 2 == 0 ? 'F' : 'E'
