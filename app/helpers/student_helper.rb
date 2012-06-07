@@ -12,7 +12,12 @@ module StudentHelper
 	    schs = []
 	    @student.courses_by_semester(semester).each do |course|
 				#schs.add s.schedules.select { |s| s.block == block }
-				course.schedules.each do |schedule|
+				if course.course_no == "01005"
+					schedules = @student.field_of_study.math_schedules(semester)
+				else
+					schedules = course.schedules
+				end
+				schedules.each do |schedule|
 					if schedule.block == block
 						course_class = get_course_class(course)
 						return "<td#{course_class}><a href=\"#{course_path(course)}\">#{course.course_no} <strong>#{course.title}</strong></a></td>".html_safe

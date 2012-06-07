@@ -88,7 +88,7 @@ class Student < ActiveRecord::Base
     cn_courses = call['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
     
     if cn_courses.nil?
-		  puts "CAMBUS NET API CALL FAILED: #{call.inspect}"
+		  puts "CAMBUS NET API CALL FAILED, OLD COURSES: #{call.to_yaml}"
   	else
       cn_courses.each do |cn_course|
         course_number = cn_course['CourseCode']
@@ -102,10 +102,10 @@ class Student < ActiveRecord::Base
   
   def update_current_courses
     call = CampusNet.api_call(self, "Elements")
-    cn_courses = ['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
+    cn_courses = call['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
 		
 		if cn_courses.nil?
-		  puts "CAMBUS NET API CALL FAILED: #{call.inspect}"
+		  puts "CAMBUS NET API CALL FAILED, CURRENT COURSES: #{call.to_yaml}"
   	else
   		cn_courses.each do |course|
     	  course_number = course['Name'].match('(\d{5})')[0]

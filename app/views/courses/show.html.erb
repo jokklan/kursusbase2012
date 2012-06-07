@@ -167,7 +167,12 @@
 
 <div id="courserec">
 	
-	<p class="top"><a class="button" href="javascript://"><%= t('.addto') %></a></p>
+	<p class="top">
+		<% simple_form_for(StudyplanItem.new) do |f| %>
+			<%= f.input :course_id, :as => :hidden %>
+			<%= f.button :submit, t('.addto')%>
+		<% end %>
+	</p>
 	
 	<% if not @course.similar_courses.empty? %>
 	<h3>People who has taken this course has also taken these courses:</h3>
