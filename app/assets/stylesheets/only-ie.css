@@ -2,3 +2,12 @@
  * KURSUSBASE 2012
  * IE styles
  */
+
+/* Replacing SVG with PNG */
+#head h1 a {
+	background-image: url(headlogo.png);
+}
+
+html.lang-en #head h1 a {
+	background-image: url(headlogo-en.png);
+}
