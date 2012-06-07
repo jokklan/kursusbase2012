@@ -83,6 +83,15 @@ class Student < ActiveRecord::Base
     end
   end
   
+  def get_grades
+    info = CampusNet.api_call(self, "Grades")['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
+    if info.nil?
+      {}
+    else
+       {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]} 
+    end
+  end
+  
   def update_old_courses
     call = CampusNet.api_call(self, "Grades")
     cn_courses = call['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
@@ -94,7 +103,8 @@ class Student < ActiveRecord::Base
         course_number = cn_course['CourseCode']
         course = Course.find_by_course_number(course_number)
         semester_number = semester(cn_course['Year'], cn_course['Period'] == "Winter" ? 1 : 0 )
-        course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number) unless course.nil?
+        passed = cn_course['EctsGiven'] == 'true' ? true ; false
+        course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number, :passed => passed) unless course.nil?
       end
     end
     self.save

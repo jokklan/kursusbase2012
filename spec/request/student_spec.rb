@@ -4,6 +4,6 @@ require "spec_helper"
 
 describe "students" do
   it "logins when i go to frontpage, click login, and write my credentials" do
-    
+    visit("/login")
   end
 end
