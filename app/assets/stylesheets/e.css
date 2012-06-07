@@ -1,0 +1,22 @@
+/* Kursusbasen 2012, CSS for error pages */
+body {
+	margin: 80px;
+	background-color: #fff;
+	color: #666;
+	text-align: center;
+	font-family: "Helvetica Neue", Helvetica, arial, sans-serif;
+}
+
+h1 {
+	font-size: 300%;
+	color: #333;
+	line-height: 1.2em;
+}
+
+h2, h2 a {
+	color: #666;
+}
+
+h2 {
+	font-weight: 200;
+}
