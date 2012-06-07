@@ -11,4 +11,6 @@
 class CourseStudent < ActiveRecord::Base
   belongs_to :course
   belongs_to :student
+
+	# NEED FIELD TO SEE IF COURSE HAS BEEN PASSED
 end
