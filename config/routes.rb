@@ -20,7 +20,7 @@ Kursusbase2012::Application.routes.draw do
     resources :keywords
     resources :course_types
 		resources :studyplans do
-			resources :studyplan_items, :only => [:create, :index]
+			resources :studyplan_items, :only => [:create, :index, :show]
 		end
 	  
     # get "/", to: 'student#show', as: "show_student"
