@@ -91,7 +91,7 @@ class Student < ActiveRecord::Base
       course = Course.find_by_course_number(course_number)
       semester_number = semester(cn_course['Year'], cn_course['Period'] == "Winter" ? 1 : 0 )
       course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester_number) unless course.nil?
-    end
+    end if cn_courses
     self.save
   end
   
@@ -102,7 +102,7 @@ class Student < ActiveRecord::Base
   	  course_number = course['Name'].match('(\d{5})')[0]
   	  course = Course.find_by_course_number(course_number)
   	  course_students.find_or_create_by_course_id(:course_id => course.id, :semester => semester) unless course.nil?
-  	end
+  	end if cn_courses
     self.save
   end
   
