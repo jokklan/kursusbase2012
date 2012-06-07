@@ -20,6 +20,14 @@ html.lang-en #head h1 a {
 	background-image: url(headertexture.png);
 }
 
+/*#content ul {
+	list-style-image: url(bullet.png);
+}*/
+
+#content ul li {
+	background-image: url(bullet.png);
+}
+
 /* ... or GIF for IE lte 6 */
 
 * html #head h1 a {
@@ -32,4 +40,8 @@ html.lang-en #head h1 a {
 
 * html #head form input, * html #home #searchform input {
 	background-image: url(loupe.gif);
+}
+
+* html #content ul li {
+	background-image: url(bullet.gif);
 }

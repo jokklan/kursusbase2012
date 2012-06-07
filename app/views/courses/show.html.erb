@@ -181,7 +181,7 @@
 		<% if not current_student or current_student.should_be_recommended sim_course %>
 			<li>
 				<% if sim_course.active %>
-					<%= link_to sim_course.course_no, sim_course %> - <%= "#{key} has taken this course" %>
+					<%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><br><%= "#{key} has taken this course" %>
 				<% else %>
 					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
 				<% end %>
@@ -198,7 +198,7 @@
 		<% if not current_student or current_student.should_be_recommended rec_course %>
 			<li>
 			<% if rec_course.active %>
-				<%= link_to rec_course.course_no, rec_course %>
+				<%= link_to "#{rec_course.course_no} #{rec_course.title}", rec_course %>
 			<% else %>
 				<%= rec_course.course_no %>
 			<% end %>

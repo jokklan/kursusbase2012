@@ -64,6 +64,10 @@ d.ready(function(){
 				location.href = a[0].href
 			}
 		})
+		if("Hyphenator" in window){
+			Hyphenator.config({ displaytogglebox : true })
+			Hyphenator.run()
+		}
 	}
 	
 	

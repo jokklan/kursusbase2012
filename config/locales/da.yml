@@ -43,6 +43,7 @@ da:
       points: Point
     show:
       points: point
+      ects: ECTS-point
       weeks: uger
       openedu: Udbydes under åben uddannelse
       examdate: Eksamensplacering
@@ -104,6 +105,11 @@ da:
       youhaveto: Du skal
       login: logge ind
       inorderto: for at se din studieplan og planlægge dit studie.
+      progress: Din fremgang indtil videre
+      points: point
+      ects: ECTS point
+      atotal: Det er altså et total på
+      outof: ud af
   you:
     are: Du er
     login: Log ind

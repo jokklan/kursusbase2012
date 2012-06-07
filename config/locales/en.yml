@@ -43,6 +43,7 @@ en:
       points: Points
     show:
       points: points
+      ects: ECTS points
       weeks: weeks
       openedu: Taught under open university
       examdate: Date of examination
@@ -104,6 +105,11 @@ en:
       youhaveto: You have to
       login: log in
       inorderto: in order to view your Study Plan and plan your study.
+      progress: Your progress so far
+      points: points
+      ects: ECTS points
+      atotal: That’s a total of
+      outof: out of
   you:
     are: You are
     login: Log in

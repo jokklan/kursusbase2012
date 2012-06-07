@@ -447,7 +447,25 @@ body#home {
 }
 
 #content ul {
-	list-style-image: url(bullet.png);
+	/*list-style-image: url(bullet.svg);*/
+	list-style-type: none;
+	padding-left: 2px;
+	margin-left: 0;
+}
+
+#content ul li {
+	background: transparent url(bullet.svg) no-repeat 0 1.1ex;
+	padding-left: 20px;
+}
+
+#content h1 .subtle, #content h2 .subtle, #content h3 .subtle {
+	font-weight: 200;
+	color: #666;
+	font-style: normal;
+}
+
+#content h2 .subtle, #content h3 .subtle {
+	font-weight: normal;
 }
 
 #content dt {
@@ -597,6 +615,10 @@ body#home {
 	border-radius: 5px;
 	padding: 5px 20px;
 	margin: 30px 0 -15px;
+}
+
+#content #courseinfo ul li {
+	margin-bottom: .3em;
 }
 
 #content #courserec {
@@ -759,17 +781,17 @@ body.js table.schedule td.course a:hover {
 }
 
 
-table.schedule td.basic { background-color: #e27474; } /* Red */
+table.schedule td.basic, .pointsprogress .basic { background-color: #e27474; } /* Red */
 table.schedule td.basic a { color: #a95757; }
-table.schedule td.basic a strong { color: #391d1d; }
+table.schedule td.basic a strong, .pointsprogress .basic { color: #391d1d; }
 body.js table.schedule td.basic:hover { background-color: #eca2a2; }
-table.schedule td.main { background-color: #a1a6c1; } /* Blue */
+table.schedule td.main, .pointsprogress .main { background-color: #a1a6c1; } /* Blue */
 table.schedule td.main a { color: #797c91; }
-table.schedule td.main a strong { color: #282a30; }
+table.schedule td.main a strong, .pointsprogress .main { color: #282a30; }
 body.js table.schedule td.main:hover { background-color: #c0c3d5; }
-table.schedule td.project { background-color: #e6e768; } /* Yellow */
+table.schedule td.project, .pointsprogress .project { background-color: #e6e768; } /* Yellow */
 table.schedule td.project a { color: #acad4e; }
-table.schedule td.project a strong { color: #3a3a1a; }
+table.schedule td.project a strong, .pointsprogress .project { color: #3a3a1a; }
 body.js table.schedule td.project:hover { background-color: #eeef9a; }
 
 
@@ -781,10 +803,37 @@ body.js table.schedule td.project:hover { background-color: #eeef9a; }
 	margin: 0 0 30px;
 }
 
-#content p#uninotice {
+#content p#uninotice, #content .extreme p {
 	margin: 50px 0 0;
 	text-align: center;
 	font-size: 138.5%;
+}
+
+.pointsprogress {
+	position: relative;
+	overflow: hidden;
+	background-color: #eee;
+	width: 79%;
+	font-size: 138.5%;
+	margin: 1em auto;
+}
+
+.pointsprogress div {
+	position: relative;
+	text-align: right;
+	background-color: #ccc;
+	color: #333;
+	font-weight: bold;
+	padding: 4px 7px 4px 0;
+	z-index: 10;
+}
+
+.pointsprogress span {
+	position: absolute;
+	top: 4px;
+	right: 7px;
+	color: #bbb;
+	z-index: 5;
 }
 
 
