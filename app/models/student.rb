@@ -16,6 +16,7 @@ class Student < ActiveRecord::Base
   has_many :course_students
   has_many :courses, :through => :course_students
 	has_many :course_recommendations
+	has_many :studyplan_items
   
   attr_accessor :password
   
@@ -152,16 +153,53 @@ class Student < ActiveRecord::Base
     update_old_courses
     update_current_courses
   end
+	
+	def find_studyplan_items_by_semester(semester)
+		self.studyplan_items.where('semester = ?', semester)
+	end
+	
+	def find_studyplan_courses_by_semester(semester)
+		if self.find_studyplan_items_by_semester(semester).empty?
+			[]
+		else
+			self.find_studyplan_items_by_semester(semester).map(&:course)
+		end
+	end
+	
+	def has_planned_or_participated_in(course)
+		if self.courses.include? course or self.studyplan_items.map(&:course).include? course
+			true
+		else
+			false
+		end
+	end
 
-	def courses_by_semester(semester)
+	# def find_studyplan_by_semester(semester)
+	# 	self.studyplans.find(:first, :conditions => ['semester = ?', semester])
+	# end
+	# 
+	# def find_studyplan_courses_by_semester(semester)
+	# 	studyplan = self.find_studyplan_by_semester(semester)
+	# 	if studyplan.nil?
+	# 		[]
+	# 	else
+	# 		studyplan.studyplan_items.map(&:course)
+	# 	end
+	# end
+
+	def find_courses_by_semester(semester)
 		courses = self.course_students.where('semester = ?', semester.to_s).map(&:course)
-		courses += self.course_students.where('semester = ?', (semester + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }.map(&:course)
+		courses += self.course_students.where('semester = ?', (semester.to_i + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }.map(&:course)
 		courses
 	end
   
   def current_courses
-    self.courses_by_semester(self.semester.to_s)
+    self.find_courses_by_semester(self.semester)
   end
+
+	def current_semester
+		self.semester
+	end
   
   def semester(year = Time.now.year, semester = Time.now.month === 2...7 ? 1 : 0)
     semester = semester > 1 ? 1 : semester

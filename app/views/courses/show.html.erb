@@ -168,9 +168,13 @@
 <div id="courserec">
 	
 	<p class="top">
-		<%= simple_form_for(StudyplanItem.new) do |f| %>
-			<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-			<%= f.button :submit, t('.addto') %>
+		<% if current_student.nil? or current_student.has_planned_or_participated_in(@course)%>
+			<%= link_to 'Allerede tilføjet', 'javascript://', :class => 'button' %>
+		<% else%>
+			<%= simple_form_for(StudyplanItem.new) do |f| %>
+				<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+				<%= f.button :submit, t('.addto') %>
+			<% end %>
 		<% end %>
 	</p>
 	

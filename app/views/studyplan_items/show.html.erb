@@ -13,12 +13,21 @@
 <h1><%= t('.studyplan') %></h1>
 <% if !current_student.nil? %>
 <p><%= t('.intro1') %> 
-	<select><option>Lol semester</option></select> <%= t('.intro2') %>:</p>
+	<% selected = params[:semester].nil? ? "All semesters" : "#{params[:semester]}. semester" %>
+	<%= select_tag "semester", options_for_select(@max_semester.times.map {|i| "#{i + 1}. semester"}.push("All semesters"), :selected => selected) %>
+	<%= t('.intro2') %>:
+</p>
+<h2>Kursuskurv</h2>
+<ul>
+<% @student.studyplan_items.each do |s| %>
+	<li><%= s.course.title %></li>
+<% end %>
+</ul>
 <% @studyplans.each_with_index do |studyplan, i| %>
 
 <% 
-		semester = params[:semester] #.nil ? @semester : @student.studyplan_items.maximum("semester")
-		season   = asd semester % 2 == 0 ? t('seasons.spring') : t('seasons.autumn')
+		semester = params[:semester].nil? ? @student.studyplan_items.maximum("semester") - i : @semester
+		season   = semester % 2 == 0 ? t('seasons.spring') : t('seasons.autumn')
 %>
 	<h2><%= semester%>. semester <em class="subtle">(<%= season %>)</em></h2>
 	<table class="schedule yourschedule hyphenate">
@@ -50,7 +59,6 @@
 	</table>
 	<h3>January: <%= student_schedule_week_course(semester)%></h3>
 <% end %>
-
 <h2><%= t('.progress') %></h2>
 <div class="pointsprogress">
 	<span>Naturvidenskabelige grundfag</span>

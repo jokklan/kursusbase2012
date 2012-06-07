@@ -70,6 +70,13 @@ d.ready(function(){
 		}
 	}
 	
+	// Semester dropdown
+	$("select#semester").change(function() {
+		var semester 		= $(this).val().substring(0,1)
+		var url_suffix	= semester == 'A' ? '' : '/' + semester
+		document.location = "/studyplan" + url_suffix
+	})
+	
 	
 	// LOGIN XHR FORM
 	var submitText = "";

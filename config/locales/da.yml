@@ -97,7 +97,7 @@ da:
     reason2: Planlægge dit fremtidige studie ved at kombinere kurser
     reason3: Modtage personlige kursusanbefalinger
     outro: og meget mere!
-  studyplan:
+  studyplan_items:
     show:
       studyplan: Studieplan
       intro1: For dit

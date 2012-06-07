@@ -14,13 +14,16 @@ Kursusbase2012::Application.routes.draw do
     put 'login', to: 'application#login', as: 'sessions'
     get 'logout', to: 'sessions#destroy', as: 'logout'
 
-		match "/studyplan" => "studyplan#show"
+		#match "/studyplan" => "studyplan#show"
     
     resources :courses
     resources :keywords
     resources :course_types
-		resources :studyplans 
-		resources :studyplan_items, :only => [:create, :index, :show]
+		resources :studyplan_items, :path => '/studyplan', :only => [:create] do
+			get 'show', :path => '(/:semester)', :as => 'studyplan', :on => :collection
+		end
+		
+		resources :studyplan_items, :only => [:create, :destroy, :edit]
 	  
     # get "/", to: 'student#show', as: "show_student"
 		

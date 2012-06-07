@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120607134834) do
+ActiveRecord::Schema.define(:version => 20120607194953) do
 
   create_table "course_recommendations", :force => true do |t|
     t.integer  "student_id"
@@ -260,14 +260,6 @@ ActiveRecord::Schema.define(:version => 20120607134834) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "schedules_studyplan_items", :force => true do |t|
-    t.integer "schedule_id"
-    t.integer "studyplan_item_id"
-  end
-
-  add_index "schedules_studyplan_items", ["schedule_id"], :name => "index_schedules_studyplan_items_on_schedule_id"
-  add_index "schedules_studyplan_items", ["studyplan_item_id"], :name => "index_schedules_studyplan_items_on_studyplan_item_id"
-
   create_table "spec_course_types", :force => true do |t|
     t.integer  "course_type_type_id"
     t.integer  "field_of_study_id"
@@ -308,17 +300,13 @@ ActiveRecord::Schema.define(:version => 20120607134834) do
   create_table "studyplan_items", :force => true do |t|
     t.integer "studyplan_id"
     t.integer "course_id"
-  end
-
-  add_index "studyplan_items", ["course_id"], :name => "index_studyplan_items_on_course_id"
-  add_index "studyplan_items", ["studyplan_id"], :name => "index_studyplan_items_on_studyplan_id"
-
-  create_table "studyplans", :force => true do |t|
     t.integer "student_id"
     t.integer "semester"
   end
 
-  add_index "studyplans", ["student_id"], :name => "index_studyplans_on_student_id"
+  add_index "studyplan_items", ["course_id"], :name => "index_studyplan_items_on_course_id"
+  add_index "studyplan_items", ["student_id"], :name => "index_studyplan_items_on_student_id"
+  add_index "studyplan_items", ["studyplan_id"], :name => "index_studyplan_items_on_studyplan_id"
 
   create_table "teachers", :force => true do |t|
     t.string   "name"
