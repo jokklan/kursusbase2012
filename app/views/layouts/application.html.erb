@@ -10,7 +10,7 @@
 	<title><%= title %></title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>
 	<%= javascript_include_tag "application" %>
-	<!--[if IE lt 9]><%= stylesheet_link_tag "only-ie", :media => "all" %><![endif]-->
+	<!--[if lt IE 9]><%= stylesheet_link_tag "only-ie", :media => "all" %><![endif]-->
 	<%= csrf_meta_tags %>
 </head>
 <body>
