@@ -5,7 +5,7 @@
 	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
 %>
 <!DOCTYPE html>
-<html class="home">
+<html lang="<%= I18n.locale %>" class="home">
 <head>
 	<title><%= title %></title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>

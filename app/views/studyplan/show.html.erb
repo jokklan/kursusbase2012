@@ -1,5 +1,6 @@
 <% title t('.studyplan') %>
 <h1><%= t('.studyplan') %></h1>
+<% if !current_student.nil? %>
 <p><%= t('.intro1') %> <select><option>Lol semester</option></select> <%= t('.intro2') %>:</p>
 
 <!-- <p>Dine kurser: </p>
@@ -25,4 +26,7 @@
 <% end %>
 <% else %>
 <p><%= @student.courses.map(&:title).join("</p><p>").html_safe %></p>
+<% end %>
+<% else %>
+<p id="uninotice"><%= t('.youhaveto') %> <a href="/login"><%= t('.login') %></a> <%= t('.inorderto') %></p>
 <% end %>

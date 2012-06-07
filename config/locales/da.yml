@@ -15,8 +15,10 @@ da:
     plan: Studieplan
   languages:
     danish: dansk
+    dansk: dansk
     da: dansk
     english: engelsk
+    engelsk: engelsk
     en: engelsk
   days:
     mon: mandag
@@ -72,6 +74,9 @@ da:
     show:
       welcome: Velkommen
       hereisyour: her er dit skema
+      see: Se
+      yourplan: din studieplan
+      inorderto: for at se dine tidligere skemaer og planlægge dine fremtidige.
   home:
     index:
       search: Søgning
@@ -95,6 +100,9 @@ da:
       studyplan: Studieplan
       intro1: For dit
       intro2: ser dit skema sådan ud
+      youhaveto: Du skal
+      login: logge ind
+      inorderto: for at se din studieplan og planlægge dit studie.
   you:
     are: Du er
     login: Log ind

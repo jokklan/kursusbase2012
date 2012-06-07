@@ -3,14 +3,9 @@
 	page_title = yield(:title)
 	
 	title = (!page_title.blank? ? page_title + " | " + site_title : site_title)	
-	
-	
-	default_lang = "da"
-	lang = params[:locale].blank? ? default_lang : params[:locale]
-	# TODO: Default lang is now per cookie, so what's going on here
 %>
 <!DOCTYPE html>
-<html lang="<%= lang %>">
+<html lang="<%= I18n.locale %>">
 <head>
 	<title><%= title %></title>
 	<%= stylesheet_link_tag    "application", :media => "all" %>

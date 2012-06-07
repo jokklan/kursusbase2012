@@ -15,8 +15,10 @@ en:
     plan: Study Plan
   languages:
     danish: Danish
+    dansk: Danish
     da: Danish
     english: English
+    engelsk: English
     en: English
   days:
     mon: Monday
@@ -72,6 +74,9 @@ en:
     home:
       welcome: Welcome
       hereisyour: here is your schedule
+      see: See
+      yourplan: your Study Plan
+      inorderto: to see your previous schedules and plan your future ones.
   home:
     index:
       search: Search
@@ -95,6 +100,9 @@ en:
       studyplan: Study Plan
       intro1: For your
       intro2: your schedule looks like
+      youhaveto: You have to
+      login: log in
+      inorderto: in order to view your Study Plan and plan your study.
   you:
     are: You are
     login: Log in
