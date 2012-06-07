@@ -155,7 +155,7 @@ class Student < ActiveRecord::Base
 
 	def courses_by_semester(semester)
 		courses = self.course_students.where('semester = ?', semester.to_s).map(&:course)
-		courses += self.course_students.where('semester = ?', (semester + 1).to_s).select { |cs| cs.course.semester_span > 1 }.map(&:course)
+		courses += self.course_students.where('semester = ?', (semester + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }.map(&:course)
 		courses
 	end
   
