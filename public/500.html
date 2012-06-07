@@ -3,15 +3,21 @@
 <head>
   <title>We&#8217;re sorry, but something went wrong (500)</title>
   <style type="text/css">
-    body { margin: 100px; background-color: #fff; color: #666; text-align: center; font-family: Helvetica, arial, sans-serif; }
+    body { margin: 80px; background-color: #fff; color: #666; text-align: center; font-family: "Helvetica Neue", Helvetica, arial, sans-serif; }
     h1 { font-size: 300%; color: #333; line-height: 1.2em; }
+	h2, h2 a { color: #666; }
+	h2 { font-weight: 200; }
   </style>
 </head>
 
 <body>
   <!-- This file lives in public/500.html -->
   <div class="dialog">
+	<!--[if !IE]> --><img src="/assets/crash-and-burn.svg" width="381" height="400" alt=""><!-- <![endif]-->
+	<!--[if gte IE 9]><img src="/assets/crash-and-burn.svg" width="381" height="400" alt=""><![endif]-->
+	<!--[if lt IE 9]><img src="/assets/crash-and-burn.png" width="381" height="400" alt=""><![endif]-->
     <h1>We&#8217;re sorry, but something went wrong.</h1>
+	<h2>Maybe try <a href="/logout">logging out</a>?</h2>
   </div>
 </body>
 </html>
