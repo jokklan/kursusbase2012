@@ -6,17 +6,6 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Schedule.create('block' => 'E1')
-Schedule.create('block' => 'E2')
-Schedule.create('block' => 'E3')
-Schedule.create('block' => 'E4')
-Schedule.create('block' => 'E5')
-Schedule.create('block' => 'F1')
-Schedule.create('block' => 'F2')
-Schedule.create('block' => 'F3')
-Schedule.create('block' => 'F4')
-Schedule.create('block' => 'F5')
-
 Schedule.create('block' => 'E1A')
 Schedule.create('block' => 'E2A')
 Schedule.create('block' => 'E3A')

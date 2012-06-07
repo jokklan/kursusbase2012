@@ -57,8 +57,6 @@ class Course < ActiveRecord::Base
   # Relations
   has_and_belongs_to_many :teachers
   has_and_belongs_to_many :keywords
-  #has_and_belongs_to_many :main_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Main" ]
-  #has_and_belongs_to_many :spec_course_types, :class_name => "CourseType", :conditions => [ "course_type_type = ?", "Spec" ]
 	has_and_belongs_to_many :main_course_types
 	
   
