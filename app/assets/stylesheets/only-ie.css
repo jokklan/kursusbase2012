@@ -11,3 +11,21 @@
 html.lang-en #head h1 a {
 	background-image: url(headlogo-en.png);
 }
+
+#head form input, #home #searchform input {
+	background-image: url(loupe.png);
+}
+
+/* ... or GIF for IE lte 6 */
+
+* html #head h1 a {
+	background-image: url(headlogo.gif);
+}
+
+* html.lang-en #head h1 a {
+	background-image: url(headlogo-en.gif);
+}
+
+* html #head form input, * html #home #searchform input {
+	background-image: url(loupe.gif);
+}

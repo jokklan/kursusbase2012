@@ -127,9 +127,9 @@ html, body, #container {
 	box-shadow: 0 -1px rgba(0,0,0,.2);
 	font: 100% "Helvetica Neue", Helvetica, sans-serif;
 	color: #333;
-	background: #f7f7f7 url(loupe.png) no-repeat 7px 5px;
-	background: url(loupe.png) 7px 5px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
-	background: url(loupe.png) 7px 5px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: #f7f7f7 url(loupe.svg) no-repeat 7px 5px;
+	background: url(loupe.svg) 7px 5px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: url(loupe.svg) 7px 5px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
 }
 
 #head form input:active, #head form input:focus,
@@ -249,12 +249,12 @@ body#home {
 #home #searchform input {
 	width: 480px;
 	margin: 22px 0 0;
-	background: #f7f7f7 url(loupe.png) no-repeat 7px 6px;
-	background: url(loupe.png) 7px 6px no-repeat, gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
-	background: url(loupe.png) 7px 6px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
-	background: url(loupe.png) 7px 6px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
-	background: url(loupe.png) 7px 6px no-repeat, -o-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
-	background: url(loupe.png) 7px 6px no-repeat, -ms-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: #f7f7f7 url(loupe.svg) no-repeat 7px 6px;
+	background: url(loupe.svg) 7px 6px no-repeat, gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: url(loupe.svg) 7px 6px no-repeat, -webkit-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: url(loupe.svg) 7px 6px no-repeat, -moz-linear-gradient(top, #eee, #f7f7f7);
+	background: url(loupe.svg) 7px 6px no-repeat, -o-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
+	background: url(loupe.svg) 7px 6px no-repeat, -ms-gradient(linear, left top, left bottom, from(#eee), to(#f7f7f7));
 }
 
 #home #searchform p {
