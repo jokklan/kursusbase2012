@@ -32,6 +32,7 @@ class Course < ActiveRecord::Base
       query: query,
       using: {
         tsearch: {
+          prefix: true,
           dictionary: locale == :da ? "danish" : "english"
         }
       },
