@@ -168,10 +168,7 @@
 <div id="courserec">
 	
 	<p class="top">
-		<% simple_form_for(StudyplanItem.new) do |f| %>
-			<%= f.input :course_id, :as => :hidden %>
-			<%= f.button :submit, t('.addto')%>
-		<% end %>
+
 	</p>
 	
 	<% if not @course.similar_courses.empty? %>
