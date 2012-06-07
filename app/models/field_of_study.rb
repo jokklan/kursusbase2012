@@ -23,4 +23,12 @@ class FieldOfStudy < ActiveRecord::Base
 	has_many :basic_courses, :through => :basic_course_type, :source => :courses
 	
 	translates :title
+	
+	def math_schedules(semester)
+		if semester % 2 == 0 # forår
+			[Schedule.find_by_block('F3B'), Schedule.find_by_block('F5A'), Schedule.find_by_block('F5B')]
+		else # efterår
+			[Schedule.find_by_block('E3B'), Schedule.find_by_block('E5A'), Schedule.find_by_block('E5B')]
+		end	
+	end
 end

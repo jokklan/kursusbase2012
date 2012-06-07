@@ -18,16 +18,17 @@
 		
 <% if !current_student.nil? %>
 	<!-- COURSE RECOMMENDATIONS -->
-	<% if not current_student.recommended_courses.empty? %>
-		<% current_student.recommended_courses.each do |course| %>
+	<% if not current_student.course_recommendations.empty? %>
+		<% current_student.course_recommendations.each do |course_rec| %>
 			<tr class="<%= cycle("odd", "even") %>">
-				<td class="no"><%= course.course_no %></td>
-				<td class="title"><%= link_to course.title, course %></td>
-				<td class="points"><%= "%g" % course.ects_points %></td>
+				<td class="no"><%= course_rec.course.course_no %></td>
+				<td class="title"><%= link_to course_rec.course.title, course_rec.course %></td>
+				<td class="points"><%= course_rec.priority_value %></td>
 			</tr>
 		<% end %>
 	<% end %>
 <% else %>
+<!--<td class="points"><%= "%g" % course_rec.course.ects_points %></td>-->
 
 <% @courses.each do |course| %>
 		<tr class="<%= cycle("odd", "even") %>">
