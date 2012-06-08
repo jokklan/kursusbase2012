@@ -13,6 +13,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+/coverage
 
 # Sensitive data
 dtu_access_test.rb

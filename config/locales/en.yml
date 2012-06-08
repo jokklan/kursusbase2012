@@ -39,6 +39,7 @@ en:
     index:
       courses: Courses
       allcourses: All courses
+      no_results: Sorry, there was no results
       nonono: No.
       title: Title
       points: Points

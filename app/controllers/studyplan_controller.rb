@@ -1,5 +1,6 @@
 class StudyplanController < ApplicationController
 	def show
+	  puts "studyplan show"
 		@student = current_student
 		redirect_to root_path if @student.nil?
 		if params[:semester]

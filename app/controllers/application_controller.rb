@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
     @student.password = params[:student][:password]
     if @student.authenticate && (
       if @student.new_record? || @student.firstname.nil?
-        @student.update_attributes(@student.get_info.select{|k,v| [:firstname, :lastname, :email].include? k}, password: params[:student][:password])
+        @student.update_info
       else
         @student.save
       end ) 
@@ -53,7 +53,8 @@ class ApplicationController < ActionController::Base
   private
 
   def current_student
-    @current_student ||= Student.find(session[:student_id]) if session[:student_id]
+    puts "HEJ"
+    @current_student ||= Student.find(session[:student_id]) if session[:student_id] && Student.exists?(session[:student_id])
   end
   helper_method :current_student
 
