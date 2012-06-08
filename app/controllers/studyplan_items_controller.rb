@@ -40,7 +40,7 @@ class StudyplanItemsController < ApplicationController
 			@course = Course.find(params[:studyplan_item][:course_id])
 			@studyplan_item = params[:studyplan_item]
 		elsif params[:search]
-			@course = Course.search_params(params[:search]).first
+			@course = Course.search_params(params[:search]).select { |c| not @student.has_planned_or_participated_in(c) }.first
 			@studyplan_item = { :course_id => @course.id, :student_id => @student.id } if not @course.nil?
 		end
 		
