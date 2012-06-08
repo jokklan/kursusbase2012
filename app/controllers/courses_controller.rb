@@ -15,6 +15,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find_by_course_number(params[:id])
+    raise ActionController::RoutingError.new('Course not found') if @course.nil? || !@course.active?
 		@studyplan_item = StudyplanItem.find_by_student_id_and_course_id(current_student.id, @course.id) if current_student.present?
     @blocked_courses = CourseRelation.where(:related_course_id => @course.id, :related_course_type => "Blocked")
   end
