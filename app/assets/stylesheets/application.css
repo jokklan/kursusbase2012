@@ -495,14 +495,8 @@ body#home {
 	overflow: hidden;
 }
 
-#content #coursehead:after {
-	content: "";
-	background-color: rgba(0,0,0,.09);
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	height: 1px;
+#content #coursehead.with-ysb {
+	padding-bottom: 50px;
 }
 
 #content #coursehead > * {
@@ -511,6 +505,20 @@ body#home {
 
 #content #coursehead.completehead > * {
 	width: 490px;
+}
+
+#content #coursehead:after {
+	content: "";
+	height: 1px;
+}
+
+#content #coursehead:after, #content #coursehead #yourcoursestatus {
+	background-color: rgba(0,0,0,.09);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: auto;
 }
 
 #content #coursehead h1 {
@@ -549,6 +557,10 @@ body#home {
 	bottom: 30px;
 	right: 260px;
 	width: 168px;
+}
+
+#content #coursehead.with-ysb #courseschedule {
+	bottom: 50px;
 }
 
 #content #coursehead #courseschedule table, table.schedule {
@@ -612,6 +624,10 @@ body#home {
 
 #content #coursehead p {
 	margin: 0;
+}
+
+#content #coursehead #yourcoursestatus {
+	padding: 5px 30px 5px 160px;
 }
 
 #content #courseinfo {

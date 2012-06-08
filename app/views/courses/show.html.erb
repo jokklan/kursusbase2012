@@ -2,18 +2,45 @@
 
 	# Value preparations
 	@course.serialize_objectives
-	schedule_details  = determine_unusual_schedule(@course)
-	display_schedule  = has_schedule(@course, schedule_details)
-	course_seasons    = season_text(@course, schedule_details)
-	
-	has_right_panel   = display_schedule || @course.exam_schedule
+	schedule_details    = determine_unusual_schedule(@course)
+	display_schedule    = has_schedule(@course, schedule_details)
+	course_seasons      = season_text(@course, schedule_details)
 	
 	# Page title
-	title "#{@course.course_no} #{@course.title}" 
+	title "#{@course.course_no} #{@course.title}"
+	
+	# Right panel
+	has_right_panel     = display_schedule || @course.exam_schedule
+	
+	# Your status bar
+	your_status_bar     = ""
+	ysb_intro           = "<div id=\"yourcoursestatus\">"
+	ysb_outro           = "</div>"
+	
+	if !current_student.nil? 
+		if current_student.has_planned @course 
+			delete_btn = link_to 'Delete', @studyplan_item, confirm: "Are you sure you want to remove #{@course.title} from your Kursuskurv?" , method: :delete, :class => 'button'
+			your_status_bar = ysb_intro + t('.inbasket') + " " + delete_btn + ysb_outro
+		elsif false # bestået kurset 
+			your_status_bar = ysb_intro + t('.passedcourse') + ysb_outro
+		elsif current_student.has_participated @course 
+			your_status_bar = ysb_intro + t('.inhistory') + ysb_outro
+		end 
+	end
+	
+	# Coursehead class name
+	ch_class = ""
+	if !has_right_panel
+		ch_class += " completehead"
+	end
+	if your_status_bar
+		ch_class += " with-ysb"
+	end
+	ch_class.strip!
 	
 %>
 <% if notice %><p id="notice"><%= notice %></p><% end %>
-<div id="coursehead"<% if !has_right_panel %> class="completehead"<% end %>>
+<div id="coursehead"<% if ch_class %> class="<%= ch_class %>"<% end %>>
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang"><%= @course.title alt_language %></h2>
 	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %><% if course_seasons.present? %>, <%= course_seasons %><% end %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
@@ -60,6 +87,8 @@
 <% end %>
 	</div>
 <% end %>
+<%# YOUR STATUS WITH THIS COURSE ---- %>
+	<%= your_status_bar.html_safe %>
 </div>
 
 <div id="courseinfo">
@@ -178,29 +207,12 @@
 </div>
 
 <div id="courserec">
-	
-	<div id="courseplan" class="top">
-		<% if not current_student.nil? %>
-			<h3><%= t('.you') %></h3>
-			<% if current_student.has_planned @course %>
-			<p><%= t('.inbasket') %>.</p>
-			<%= link_to 'Delete', @studyplan_item, confirm: "Are you sure you want to remove #{@course.title} from your Kursuskurv?" , method: :delete, :class => 'button' %> 
-			<% elsif false # bestået kurset %>
-			<p><%= t('.passedcourse')%>.</p>
-			<% elsif current_student.has_participated @course %>
-			<p><%= t('.inhistory')%>.</p>
-			<% else %>
-				<%= simple_form_for(StudyplanItem.new) do |f| %>
-					<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-					<%= f.button :submit, t('.addto') %>
-				<% end %>
-			<% end %>
-			
-			
-		<% else%>
-			
-		<% end %>
-	</div>
+	<% if your_status_bar.empty? %>
+	<%= simple_form_for(StudyplanItem.new) do |f| %>
+		<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+		<%= f.button :submit, t('.addto') %>
+	<% end %>
+	<% end %>
 	
 	<% if not @course.similar_courses.empty? %>
 	<h3><%= t('.rechead') %></h3>
