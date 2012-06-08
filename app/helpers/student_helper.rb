@@ -36,15 +36,14 @@ module StudentHelper
   	"<td class=\"empty\">#{schedule}</td>".html_safe  
 	end
 	
-	def student_schedule_week_course(semester_input = @student.current_semester)
+	def student_schedule_week_course(courses_input = @student.find_courses_by_semester(@student.current_semester), semester_input = @student.current_semester)
 		semester = semester_input
     block    = semester % 2 == 0 ? 'Juni' : 'Januar'
 
     thecourse = nil
-		puts "SHOULD BE #{block}"
-		@student.find_courses_by_semester(semester).each do |course|
+		courses = courses_input.nil? ? [] : courses_input
+    courses.each do |course|
 			course.schedules.each do |c|
-				puts "weekblck #{c.block}"
 				if c.block == block
 					return link_to "#{course.course_no} #{course.title}".html_safe, course, :class => "#{get_course_class(course)}"
 				end

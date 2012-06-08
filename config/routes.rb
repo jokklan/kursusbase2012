@@ -19,7 +19,7 @@ Kursusbase2012::Application.routes.draw do
     resources :courses
     resources :keywords
     resources :course_types
-		resources :studyplan_items, :path => '/studyplan', :only => [:create] do
+		resources :studyplan_items, :path => '/studyplan', :only => [:create, :update, :destroy] do
 			get 'show', :path => '(/:semester)', :as => 'studyplan', :on => :collection
 		end
 		

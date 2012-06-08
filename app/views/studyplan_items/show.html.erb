@@ -1,33 +1,32 @@
 <%
-	title t('.studyplan')
-
-	if !current_student.nil? then
-		goal_points  = 
-		total_points =	@student.basic_points + 
-						@student.main_points + 
-						@student.project_points + 
-						@student.optional_points
-	end
-	
+	title t('.studyplan')	
 %>
 <h1><%= t('.studyplan') %></h1>
 <% if !current_student.nil? %>
 <p><%= t('.intro1') %> 
 	<% selected = params[:semester].nil? ? "All semesters" : "#{params[:semester]}. semester" %>
-	<%= select_tag "semester", options_for_select(@max_semester.times.map {|i| "#{i + 1}. semester"}.push("All semesters"), :selected => selected) %>
+	<%= select_tag "semester", options_for_select(semester_select_options, :selected => selected) %>
 	<%= t('.intro2') %>:
 </p>
 <h2>Kursuskurv</h2>
 <ul>
-<% @student.studyplan_items.each do |s| %>
-	<li><%= s.course.title %></li>
+<% @course_basket.each do |s| %>
+	<li>
+	<%= link_to s.course.title, s.course%> 
+	<%= link_to 'Delete', s, confirm: "Are you sure you want to remove #{s.course.title} from your Kursuskurv?" , method: :delete, :style => ['color: red'] %> 
+	<%= simple_form_for(s) do |f| %>
+		<%= f.input :semester, :collection => studyplan_select_options(s.course), :prompt => "Add to semester", :input_html => { :onchange => "this.form.submit()" }, :label => false%>
+	<% end %>
+	</li>
+	<%#= link_to 'Edit', edit_course_type_path(@course_type) %>
+	<%#= link_to 'Destroy', @course_type, confirm: 'Are you sure?', method: :delete %>
 <% end %>
 </ul>
 <% @studyplans.each_with_index do |studyplan, i| %>
-
 <% 
 		semester = params[:semester].nil? ? @max_semester - i : @semester
 		season   = semester % 2 == 0 ? t('seasons.spring') : t('seasons.autumn')
+		week3		 = semester % 2 == 0 ? t('months.jun') : t('months.jan')
 %>
 	<h2><%= semester%>. semester <em class="subtle">(<%= season %>)</em></h2>
 	<table class="schedule yourschedule hyphenate">
@@ -57,7 +56,7 @@
 			</tr>
 		</tbody>
 	</table>
-	<h3>January: <%= student_schedule_week_course(semester)%></h3>
+	<h3><%= week3 %>: <%= student_schedule_week_course(studyplan, semester)%></h3>
 <% end %>
 <h2><%= t('.progress') %></h2>
 <div class="pointsprogress">
@@ -80,7 +79,7 @@
 	<div class="optional" style="width:<%= ects_points_block_percentage(@student.optional_points) %>%"><%= "%g" % @student.optional_points %> <%= t('.points') %></div>
 </div>
 
-<p style="font-size:125%"><%= t('.atotal') %> <strong><%= "%g" % total_points %> <%= t('.ects') %></strong> <%= t('.outof') %> <%= StudyplanHelper::TOTAL_ECTS_GOAL %>.</p>
+<p style="font-size:125%"><%= t('.atotal') %> <strong><%= "%g" % @student.total_points %> <%= t('.ects') %></strong> <%= t('.outof') %> <%= Student::TOTAL_ECTS_GOAL %>.</p>
 <% else %>
 <p id="uninotice"><%= t('.youhaveto') %> <a href="/login"><%= t('.login') %></a> <%= t('.inorderto') %></p>
 <% end %>

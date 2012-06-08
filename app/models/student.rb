@@ -25,6 +25,8 @@ class Student < ActiveRecord::Base
   validates :student_number, :presence => true, :uniqueness => true
 
   after_create :update_courses
+
+	TOTAL_ECTS_GOAL = 180	
   
 	def main_courses
 		self.field_of_study.main_courses
@@ -52,6 +54,10 @@ class Student < ActiveRecord::Base
 	
 	def optional_points
 		self.courses.sum("ects_points") - basic_points - project_points - main_points
+	end
+	
+	def total_points
+		self.sum_ects_points(self.courses)
 	end
 	
 	def sum_ects_points(courses)
@@ -158,12 +164,23 @@ class Student < ActiveRecord::Base
 		end
 	end
 	
-	def has_planned_or_participated_in(course)
-		if self.courses.include? course or self.studyplan_items.map(&:course).include? course
-			true
-		else
-			false
+	def has_course_on_schedule(schedule, semester)
+		self.find_courses_by_semester(semester).each do |c|
+			return true if not c.find_schedules_by_semster(semester).empty?
 		end
+		false
+	end
+	
+	def has_planned(course)
+		self.courses.include? course
+	end
+	
+	def has_participated_in(course)
+		self.studyplan_items.map(&:course).include? course
+	end
+	
+	def has_planned_or_participated_in(course)
+		self.has_planned(course) or self.has_participated_in(course)
 	end
 
 	# def find_studyplan_by_semester(semester)

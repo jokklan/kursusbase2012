@@ -1,9 +1,9 @@
 class StudyplanItemsController < ApplicationController
 	def show
 		@student = current_student
+		@course_basket = @student.studyplan_items.where(:semester => nil)
 		@semester = params[:semester].to_i
-		max_studyplan_semester = current_student.studyplan_items.maximum("semester").nil? ? 0 : current_student.studyplan_items.maximum("semester")
-		@max_semester = [max_studyplan_semester, @student.current_semester].max
+		@max_semester = @student.current_semester + ((Student::TOTAL_ECTS_GOAL - @student.total_points) / (Student::TOTAL_ECTS_GOAL / 6)).ceil 
 		redirect_to root_path if @student.nil? or (params[:semester] and (@semester < 0 or @semester > @max_semester))
 		if params[:semester]
 			if @semester.to_i <= @student.current_semester.to_i
@@ -13,7 +13,6 @@ class StudyplanItemsController < ApplicationController
 			end
 		else
 			@studyplans = []
-			#@studyplan_debug = { :max_studyplan_semester => max_studyplan_semester}
 			@max_semester.times do |i|
 				semester = @max_semester - i
 				if semester <= @student.current_semester.to_i
@@ -23,12 +22,13 @@ class StudyplanItemsController < ApplicationController
 				end
 			end
 		end
-		
 	end
 	
-	def index
-		
-		
+	def destroy
+		@studyplan_item = StudyplanItem.find(params[:id])
+		course = @studyplan_item.course
+		@studyplan_item.destroy
+		redirect_to studyplan_items_path, notice: "#{course.title} has been removed from your kursuskurv"
 	end
 	
 	def create
@@ -42,7 +42,13 @@ class StudyplanItemsController < ApplicationController
 		end
 	end
 	
-	def index
-		
+	def update
+		@student = current_student
+		@studyplan_item = StudyplanItem.find(params[:id])
+		if @studyplan_item.update_attributes(params[:studyplan_item])
+			redirect_to studyplan_items_path
+		else
+			redirect_to studyplan_items_path, notice: 'Failed to add course to your studyplan'
+		end
 	end
 end

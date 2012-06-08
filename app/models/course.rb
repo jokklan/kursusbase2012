@@ -146,8 +146,14 @@ class Course < ActiveRecord::Base
     obj.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
   end
 
-	def schedule_by_semester(semester)
-		return self.schedules.first if schedule.count <= 1
+	def find_schedules_by_semester(semester)
+		season = semester % 2 == 0 ? 'F' : 'E'
+		week3	 = semester % 2 == 0 ? 'Juni' : 'Januar'
+		self.schedules.select { |s| s.block[0,1] == season or s.block == week3}
+	end
+	
+	def has_schedule_on_semester(semester)
+		not self.find_schedules_by_semester(semester).empty?
 	end
   
   # Class methods

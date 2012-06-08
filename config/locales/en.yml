@@ -22,6 +22,9 @@ en:
     english: English
     engelsk: English
     en: English
+  months:
+    jan: January
+    jun: June
   days:
     mon: Monday
     tue: Tuesday

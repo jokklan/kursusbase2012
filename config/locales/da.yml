@@ -22,6 +22,9 @@ da:
     english: engelsk
     engelsk: engelsk
     en: engelsk
+  months:
+    jan: Januar
+    jun: Juni
   days:
     mon: mandag
     tue: tirsdag
