@@ -1,22 +1,28 @@
 <% # encoding: utf-8 
 
 	# Value preparations
-	title "#{@course.course_no} #{@course.title}" 
-	has_schedule = ( @course.duration != "[Kurset følger ikke DTUs normale skemastruktur]" )
-	
 	@course.serialize_objectives
+	schedule_details  = determine_unusual_schedule(@course)
+	display_schedule  = has_schedule(@course, schedule_details)
+	course_seasons    = season_text(@course)
+	
+	
+	# Page title
+	title "#{@course.course_no} #{@course.title}" 
+	
 %>
 <% if notice %><p id="notice"><%= notice %></p><% end %>
 <div id="coursehead">
 	<h1><span class="coursenumber"><%= @course.course_no %> </span><%= @course.title %></h1>
 	<h2 class="altlang"><%= @course.title alt_language %></h2>
-	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %>, <%= season_text %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
+	<h2 class="pointdata"><strong><%= "%g" % @course.ects_points %> <%= t('.points') %><% if course_seasons.present? %>, <%= course_seasons %><% end %></strong> (<%= @course.duration %><%#= t('.weeks') %>)</h2>
 	<h3><% @course.main_course_types.each do |mct| %><%= mct.title %>, <% end %><%= t('languages.' + @course.language.downcase) %></h3>
 <% if @course.open_education %>
 	<p><%= t('.openedu') %></p>
 <% end %>
+<%= @schedule_details %>
 	<div id="courseschedule">
-<% if has_schedule %>
+<% if display_schedule %>
 		<table>
 			<thead>
 				<tr>
@@ -28,23 +34,26 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<%= schedule_table_cell('1A') %>
-					<%= schedule_table_cell('3A') %>
-					<%= schedule_table_cell('5A') %>
-					<%= schedule_table_cell('2B') %>
-					<%= schedule_table_cell('4B') %>
+				<%= schedule_outer_cells :top, schedule_details %>
+				<tr class="top">
+					<%= schedule_table_cell '1A', schedule_details %>
+					<%= schedule_table_cell '3A', schedule_details %>
+					<%= schedule_table_cell '5A', schedule_details %>
+					<%= schedule_table_cell '2B', schedule_details %>
+					<%= schedule_table_cell '4B', schedule_details %>
 				</tr>
-				<tr>
-					<%= schedule_table_cell('2A') %>
-					<%= schedule_table_cell('4A') %>
-					<%= schedule_table_cell('5B') %>
-					<%= schedule_table_cell('1B') %>
-					<%= schedule_table_cell('3B') %>
+				<tr class="bottom">
+					<%= schedule_table_cell '2A', schedule_details %>
+					<%= schedule_table_cell '4A', schedule_details %>
+					<%= schedule_table_cell '5B', schedule_details %>
+					<%= schedule_table_cell '1B', schedule_details %>
+					<%= schedule_table_cell '3B', schedule_details %>
 				</tr>
+				<%= schedule_outer_cells :bottom, schedule_details %>
 			</tbody>
 		</table>
 <% end %>
+<% #Process.exit #DEBUG %>
 <% if @course.exam_schedule %>
 		<p><%= t('.examdate') %> <strong><%= @course.exam_schedule %></strong></p>
 <% end %>

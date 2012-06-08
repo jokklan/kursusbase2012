@@ -478,7 +478,7 @@ body#home {
 }
 
 #content dd {
-	margin: 0 0 10px 135px;
+	margin: 0 0 10px 130px;
 }
 
 #content dl.section {
@@ -567,7 +567,11 @@ body#home {
 	padding: 2px 7px;
 }
 
-#content #coursehead #courseschedule td.spring {
+#content #coursehead #courseschedule tr.outer td {
+	background-color: transparent;
+}
+
+#content #coursehead #courseschedule td.spring, #content #coursehead #courseschedule tr.outer td.spring {
 	background-color: #a3f27a;
 }
 
@@ -576,7 +580,7 @@ body#home {
 	font-weight: normal;
 }
 
-#content #coursehead #courseschedule td.autumn {
+#content #coursehead #courseschedule td.autumn, #content #coursehead #courseschedule tr.outer td.autumn {
 	background-color: #fc3;
 }
 
@@ -585,13 +589,17 @@ body#home {
 	font-weight: normal;
 }
 
-#content #coursehead #courseschedule td.allyear {
+#content #coursehead #courseschedule td.allyear, #content #coursehead #courseschedule tr.outer td.allyear {
 	background-color: #a4efff;
 }
 
 #content #coursehead #courseschedule td.allyear strong {
 	color: #334c52;
 	font-weight: normal;
+}
+
+#content #coursehead #courseschedule tr.bottom td.outerspring {
+	border-bottom: 3px solid #a3f27a;
 }
 
 #content #coursehead #courseschedule p {
