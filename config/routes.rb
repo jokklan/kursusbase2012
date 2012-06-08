@@ -13,8 +13,6 @@ Kursusbase2012::Application.routes.draw do
 			get 'show', :path => '(/:semester)', :as => 'studyplan', :on => :collection
 		end
 		
-		resources :studyplan_items, :only => [:create, :destroy, :edit]
-		
 		post "search", to: "courses#index", as: "search"
 		
 		root :to => 'students#show'

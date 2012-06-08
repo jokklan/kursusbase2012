@@ -52,7 +52,7 @@ SimpleNavigation::Configuration.run do |navigation|
     
     home_tab = current_student.nil? ? t('menu.home') : t('menu.schedule')
 
-    primary.item :schema, 		home_tab, root_path, :highligts_on => '/'
+    primary.item :schema, 		home_tab, root_path
 		primary.item :courses, 		t('menu.courses'), courses_path, :highlights_on => :subpath
 		primary.item :study_plan, t('menu.plan'), studyplan_item_path, :highlights_on => :subpath
 
