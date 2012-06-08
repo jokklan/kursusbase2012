@@ -129,6 +129,11 @@ da:
     login: Log ind
     logout: Log ud
   splaceholder: Søg efter kurser…
+  helpers:
+      submit:
+        studyplan_item:
+          create: Tilføj til studieplanen
+          update: Save Changes
       
       
       
