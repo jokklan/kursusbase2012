@@ -58,7 +58,7 @@ group :test do
 
 	
   # gem 'cucumber-websteps'
-	#gem "capybara-webkit"
+  gem "capybara-webkit"
 	gem 'launchy'
   
 	#gem 'spork', '~> 1.0rc'

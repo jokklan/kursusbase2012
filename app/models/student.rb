@@ -20,7 +20,7 @@ class Student < ActiveRecord::Base
   
   attr_accessor :password
   
-  attr_accessible :student_number, :password, :firstname, :lastname, :email, :field_of_study
+  attr_accessible :student_number, :password, :firstname, :lastname, :email, :field_of_study, :user_id
   
   validates :student_number, :presence => true, :uniqueness => true
   validate :must_be_authenticated
@@ -68,7 +68,7 @@ class Student < ActiveRecord::Base
   def must_be_authenticated
     if !(student_number =~ /^s\d{6}$/)
       errors.add(:base, "Student number must be of format s######")
-    elsif get_info.empty?
+    elsif update_info.empty?
       errors.add(:base, "No student with given student no.")
     end
   end
@@ -97,21 +97,18 @@ class Student < ActiveRecord::Base
     end
   end
   
-  def get_info
-    info = CampusNet.api_call(self, "UserInfo")["User"]
-    if info.nil?
-      {}
-    else
-       {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]} 
-    end
+  def update_image
+    raise Exception, 'Student have no user id, and cannot connect to CampusNet' if user_id.blank? && update_info.blank?
+
+    image = CampusNet.api_call(self, "Users/#{user_id}/Picture")["User"]
   end
   
-  def get_grades
-    info = CampusNet.api_call(self, "Grades")['EducationProgrammes']['EducationProgramme']['ExamResults']['ExamResult']
+  def update_info
+    info = CampusNet.api_call(self, "UserInfo")["User"]
     if info.nil?
-      {}
+      puts "CAMBUS NET API CALL FAILED, OLD COURSES: #{info.to_yaml}"
     else
-       {firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"], closed: info["Closed"], email: info["Email"], language: info["PreferredLanguage"]} 
+      self.update_attributes(firstname: info["GivenName"], lastname: info["FamilyName"], user_id: info["UserId"],  email: info["Email"])
     end
   end
   
@@ -137,7 +134,7 @@ class Student < ActiveRecord::Base
     call = CampusNet.api_call(self, "Elements")
     cn_courses = call['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
 		
-		if cn_courses.nil?
+		if cn_courses.empty?
 		  puts "CAMBUS NET API CALL FAILED, CURRENT COURSES: #{call.to_yaml}"
   	else
   		cn_courses.each do |course|
