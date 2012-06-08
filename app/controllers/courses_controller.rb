@@ -5,7 +5,7 @@ class CoursesController < ApplicationController
     elsif current_student.present?
 			@courses = current_student.course_recommendations
 		else
-		  @courses = []
+		  redirect_to root_path and return
 		end
     
     if @courses.count == 1

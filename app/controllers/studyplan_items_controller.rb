@@ -25,7 +25,7 @@ class StudyplanItemsController < ApplicationController
     		end
     	end
   	else
-  	  redirect_to root_path
+  	  redirect_to login_path
 	  end
 	end
 	
