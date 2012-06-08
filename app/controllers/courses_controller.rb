@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
     if params[:search]
       @courses = Course.search_params(params[:search])
     elsif current_student.present?
-			@courses = current_student.course_recommendations
+			@courses = current_student.course_recommendations.select { |c| c.course.active? and current_student.should_be_recommended(c.course) }[0,20]
 		else
 		  redirect_to root_path and return
 		end

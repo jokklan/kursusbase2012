@@ -2,9 +2,11 @@
 
 	# Value preparations
 	@course.serialize_objectives
-	schedule_details    = determine_unusual_schedule(@course)
-	display_schedule    = has_schedule(@course, schedule_details)
-	course_seasons      = season_text(@course, schedule_details)
+	schedule_details  = determine_unusual_schedule(@course)
+	display_schedule  = has_schedule(@course, schedule_details)
+	course_seasons    = season_text(@course, schedule_details)
+	
+	has_right_panel   = display_schedule || @course.exam_schedule
 	
 	# Page title
 	title "#{@course.course_no} #{@course.title}"

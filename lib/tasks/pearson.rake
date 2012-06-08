@@ -1,6 +1,6 @@
-namespace :pearson do
+namespace :analyse do
 	desc "Calculate the pearson coefficient for all students"
-	task :sim_coeff => :environment do |t,args|
+	task :recommendations => :environment do |t,args|
 		n = 100 	# top N are chosen to reccomend courses
 		sim = {} 	# Similarity hash
 		# Calculate pearson coefficient between all students

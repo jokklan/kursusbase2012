@@ -2,31 +2,29 @@
 	title t('.studyplan')	
 %>
 <h1><%= t('.studyplan') %></h1>
-<% if !current_student.nil? %>
-<p><%= t('.intro1') %> 
-	<% selected = params[:semester].nil? ? "All semesters" : "#{params[:semester]}. semester" %>
-	<%= select_tag "semester", options_for_select(semester_select_options, :selected => selected) %>
-	<%= t('.intro2') %>:
-</p>
-<h2>Kursuskurv</h2>
-<ul>
-<% @course_basket.each do |s| %>
-	<li>
-	<%= link_to s.course.title, s.course%> 
-	<%= link_to 'Delete', s, confirm: "Are you sure you want to remove #{s.course.title} from your Kursuskurv?" , method: :delete, :style => ['color: red'] %> 
-	<%= simple_form_for(s) do |f| %>
-		<%= f.input :semester, :collection => studyplan_select_options(s.course), :prompt => "Add to semester", :input_html => { :onchange => "this.form.submit()" }, :label => false%>
-	<% end %>
-	</li>
-	<%#= link_to 'Edit', edit_course_type_path(@course_type) %>
-	<%#= link_to 'Destroy', @course_type, confirm: 'Are you sure?', method: :delete %>
-<% end %>
 <% if not current_student.nil? %>
+	<p><%= t('.intro1') %> 
+		<% selected = params[:semester].nil? ? "All semesters" : "#{params[:semester]}. semester" %>
+		<%= select_tag "semester", options_for_select(semester_select_options, :selected => selected) %>
+		<%= t('.intro2') %>:
+	</p>
+	<h2>Kursuskurv</h2>
 	<%= simple_form_for(StudyplanItem.new) do |f| %>
-		<%= f.input :course_id, :as => :string, :placeholder => 'Kursusnummer', :label => false %>
+		<%= text_field_tag :search, params[:search], :tabindex => 1, :placeholder => t('splaceholder') %>
 		<%= f.button :submit %>
 	<% end %>
-<% end %>
+	
+	<ul>
+	<% @course_basket.each do |s| %>
+		<li>
+		<%= link_to "#{s.course.course_no} #{s.course.title} - #{s.course.schedule}", s.course%> 
+		<%= link_to 'Delete', s, confirm: "Are you sure you want to remove #{s.course.title} from your Kursuskurv?" , method: :delete, :style => ['color: red'] %> 
+		<%= simple_form_for(s) do |f| %>
+			<%= f.input :semester, :collection => studyplan_select_options(s.course), :prompt => "Add to semester", :input_html => { :onchange => "this.form.submit()" }, :label => false%>
+		<% end %>
+		
+		</li>
+	<% end %>
 </ul>
 <% @studyplans.each_with_index do |studyplan, i| %>
 <% 
