@@ -25,4 +25,31 @@ module CoursesHelper
       I18n.translate('seasons.autumn')
     end
   end
+
+	def display_course_list(courses)
+		courses.sort_by! { |course| course.course_no.to_i }
+		active_courses   = courses.select{|c| c.active?}
+		inactive_courses = courses.select{|c| !c.active?}
+		out = ""
+		
+		if !active_courses.empty?
+			out += "<ul>"
+			active_courses.each	do |course|
+				out += "<li>" + (link_to "#{course.course_no} #{course.title}", course) + "</li>"
+			end
+			out += "</ul>"
+		end
+		if !inactive_courses.empty?
+			out += "<div>"
+			if !active_courses.empty?
+				out += t('additionally') + ': '
+			end
+			inactive_courses.each do |course|
+				out += course.course_no.to_s
+				out += ', ' if course != inactive_courses.last
+			end
+			out += "</div>"
+		end
+		out.html_safe
+	end
 end

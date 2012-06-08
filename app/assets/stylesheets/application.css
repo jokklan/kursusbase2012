@@ -23,6 +23,7 @@ html>body { font-size: small; }
 
 p.top { margin-top: 0; }
 p.bottom { margin-bottom: 0; }
+.cb { clear: both; }
 
 h1, h2, h3, h4, h5, h6, strong {
 	color: #333;
@@ -617,6 +618,12 @@ body#home {
 	margin: 30px 0 -15px;
 }
 
+#content #courseinfo .maininfo {
+	font-size: 123.1%;
+	line-height: 1.6em;
+	margin-bottom: 2em;
+}
+
 #content #courseinfo ul li {
 	margin-bottom: .3em;
 }
@@ -624,6 +631,41 @@ body#home {
 #content #courserec {
 	margin-left: 700px;
 	padding: 30px 0 0;
+}
+
+#content #courserec h3 {
+	font-size: 100%;
+}
+
+#content #courserec #courseplan {
+	background-color: #eee;
+	padding: 10px 15px;
+	border-radius: 6px;
+}
+
+#content #courserec #courseplan h3 {
+	margin: 0 0 .5em;
+}
+
+#content #courserec #courseplan p {
+	margin: 0;
+}
+
+#content ul.persons li, #content #courseinfo ul.persons li {
+	position: relative;
+	line-height: 24px;
+	white-space: nowrap;
+	height: 24px;
+	overflow: hidden;
+	background: none;
+	padding: 0 0 0 30px;
+	margin: 0 0 1px;
+}
+
+#content ul.persons li img {
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #content table.courses {

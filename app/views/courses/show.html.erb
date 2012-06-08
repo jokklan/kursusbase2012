@@ -56,57 +56,11 @@
 	<div id="topcomment"><%= @course.top_comment %></div>
 <% end %>
 <dl class="section">
-
-	<dt><%= t('.schedule') %></dt>
-		<dd><% if @course.schedule.nil? %><%= @course.schedule_note %><% else %><%= @course.schedule %><br><%= @course.schedule_note %><% end %></dd>
-	<dt><%= t('.form') %></dt>
-		<dd><%= @course.teaching_form %></dd>
-	<% if @course.blocked_courses.count > 0 %>
-	<dt><%= t('.pointblock') %></dt>
-		<dd>
-		<% @course.blocked_courses.each do |bc| %>
-			<%= bc.course_no %><% if bc != @course.blocked_courses.last %>,<% end %>
-		<% end%>
-		</dd>
-	<% end %>
-	<% if @course.qualification_courses.count > 0 %>
-	<dt><%= t('.qprerequisites') %></dt>
-		<dd>
-		<% @course.qualification_courses.each do |bc| %>
-			<%= bc.course_no %><% if bc != @course.qualification_courses.last %>, <% end %>
-		<% end %>
-		</dd>
-	<% end %>
-
-
-	<% if @course.optional_courses.count > 0 %>
-		<dt><%= t('.oprerequisites') %></dt>
-		<dd>
-		<% @course.optional_courses.each do |bc| %>
-			<%= bc.course_no %><% if bc != @course.optional_courses.last %>,<% end %>
-		<% end %>
-		</dd>
-	<% end %>
-	<% if @course.mandatory_courses.count > 0 %>
-	
-	<dt><%= t('.mprerequisites') %></dt>
-		<dd>
-		<% @course.mandatory_courses.each do |bc| %>
-			<%= bc.course_no %>
-		<% end %>
-		</dd>
-	
-	<% end %>
-	<% if @course.participant_limit %>
-		
-			<dt><%= t('.limit') %></dt>
-			<dd><%= @course.participant_limit %></dd>
-		
-	<% end %>
-	
-		<dt><%= t('.cobjectives') %></dt>
-		<dd><%= @course.course_objectives %></dd>
-	
+	<%# COURSE TEXT ----------------------------------------------------------- %>
+	<dt><%= t('.cobjectives') %></dt>
+		<dd class="maininfo"><%= @course.course_objectives %></dd>
+	<dt><%= t('.content') %></dt>
+		<dd><%= @course.content %></dd>
 	<% if @course.learn_objectives %>
 		<dt><%= t('.lobjectives') %></dt>
 		<dd>
@@ -118,77 +72,123 @@
 			</ul>
 		</dd>
 	<% end %>
-	
-	
-		<dt><%= t('.content') %></dt>
-		<dd><%= @course.content %></dd>
-	
-	<% if @course.litteratur %>
-		
-			<dt><%= t('.literature') %></dt>
-			<dd><%= @course.litteratur %></dd>
-		
-	<% end %>
-	
-	<dt><%= t('.responsible') %></dt>
-		<dd>
-			<% @course.teachers.each do |t| %>
-				<%= link_to (image_tag(t.image(70), :width => 70, :height => 93)), t.link, :target => '_blank' %><%= ', ' if t != @course.teachers.last %>
-			<% end %>
-		</dd>
-	
-	
-	<dt><%= t('.institute') %></dt>
-		<dd><%= @course.institute.display %></dd>
-	
-	
-	<dt><%= t('.registration') %></dt>
-		<dd><%= @course.registration %></dd>
-	
-	<% if @course.homepage %>
-		
-	<dt><%= t('.homepage') %></dt>
-			<dd><%= link_to @course.homepage, @course.homepage %></dd>
-		
-	<% end %>
+	<dt><%= t('.form') %></dt>
+		<dd><%= @course.teaching_form %></dd>
 	<% if !@course.keywords.empty? %>
 	<dt><%= t('.keywords') %></dt>
-			<dd>
-					<% @course.keywords.each do |k| 
-						if k.respond_to? :title %>
-							<%= k.title %><%= ', ' if k != @course.keywords.last%>
-					<% 	end
-					end %>
-			</dd>
-		
+		<dd>
+			<% @course.keywords.each do |k| 
+				if k.respond_to? :title %>
+			<%= k.title %><%= ', ' if k != @course.keywords.last%>
+			<% 	end
+			end %>
+		</dd>
 	<% end %>
+	<% if @course.homepage %>
+	<dt><%= t('.homepage') %></dt>
+		<dd><%= link_to @course.homepage, @course.homepage %></dd>
+	<% end %>
+</dl>
+<dl class="section">
+	<%# COURSE DATA ----------------------------------------------------------- %>
+	<dt><%= t('.schedule') %></dt>
+		<dd><% 
+		
+		if @course.schedule.blank? %><%= 
+			@course.schedule_note 
+		%><% 
+		else %><%= @course.schedule %><% 
+			if @course.schedule_note.present? %><br><%= 
+				@course.schedule_note.strip %><% 
+			end %><% end %></dd>
+	<dt><%= t('.responsible') %></dt>
+		<dd>
+			<ul class="persons">
+			<% @course.teachers.each do |t| %>
+				<li>
+					<a href="<%= t.link %>"><%= t.name %><%= image_tag(t.image(24), :width => 24, :height => 32) %></a>
+				<% if !t.location.nil? %>
+					<%= t.location %>
+				<% end %>
+				<% if !t.phone.nil? %>
+					<%= t.phone %>
+				<% end %>
+				<% if !t.email.nil? %>
+					<%= t.email %>
+				<% end %>
+				</li>
+			<% end %>
+			</ul>
+		</dd>
+		
+	<% if @course.qualification_courses.present? %>
+	<dt><%= t('.qprerequisites') %></dt>
+		<dd>
+		<%= display_course_list(@course.qualification_courses) %>
+		</dd>
+	<% end %>
+	<% if @course.optional_courses.present? %>
+	<dt><%= t('.oprerequisites') %></dt>
+		<dd>
+		<%= display_course_list(@course.optional_courses) %>
+		</dd>
+	<% end %>
+	<% if @course.mandatory_courses.present? %>
+	<dt><%= t('.mprerequisites') %></dt>
+		<dd>
+		<%= display_course_list(@course.mandatory_courses) %>
+		</dd>
+	<% end %>
+	<% if @course.participant_limit %>
+	<dt><%= t('.limit') %></dt>
+		<dd><%= @course.participant_limit %></dd>
+	<% end %>
+	<% if @course.blocked_courses.present? %>
+	<dt><%= t('.pointblock') %></dt>
+		<dd>
+			<%= display_course_list(@course.blocked_courses) %>
+		</dd>
+	<% end %>
+	
+	<%# COURSE RESOURCES ------------------------------------------------------ %>
+	<% if @course.litteratur %>
+	<dt><%= t('.literature') %></dt>
+		<dd><%= @course.litteratur %></dd>
+	<% end %>
+	<dt><%= t('.institute') %></dt>
+		<dd><%= @course.institute.display %></dd>
+	<dt><%= t('.registration') %></dt>
+		<dd><%= @course.registration %></dd>
+</dl>
+<dl>
+	<dt>&nbsp;</dt>
+		<dd><a href="http://www.kurser.dtu.dk/<%= @course.course_no %>.aspx?menulanguage=<%= I18n.locale %>"><%= t('.oldpage') %> &rarr;</a></dd>
 </dl>
 </div>
 
 <div id="courserec">
 	
-	<p class="top">
+	<div id="courseplan" class="top">
 		<% if current_student.nil? or current_student.has_planned_or_participated_in(@course)%>
-			<%= link_to 'Allerede tilføjet', 'javascript://', :class => 'button' %>
+			<%#= link_to 'Allerede tilføjet', 'javascript://', :class => 'button' %>
+			<h3><%= t('.you') %></h3>
+			<p><%= t('.inbasket') %>.</p>
 		<% else%>
 			<%= simple_form_for(StudyplanItem.new) do |f| %>
 				<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
 				<%= f.button :submit, t('.addto') %>
 			<% end %>
 		<% end %>
-	</p>
+	</div>
 	
 	<% if not @course.similar_courses.empty? %>
-	<h3>People who has taken this course has also taken these courses:</h3>
+	<h3><%= t('.rechead') %></h3>
 	<ul>
 	<% @course.similar_courses.each do |key, sim_course| %>
 		<% if not current_student or current_student.should_be_recommended sim_course %>
 			<li>
-				<% if sim_course.active %>
-					<%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><br><%= "#{key} has taken this course" %>
-				<% else %>
-					<%= sim_course.course_no %> - <%= "#{key} has taken this course" %>
-				<% end %>
+				<% if sim_course.active %><%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><% else %><%= sim_course.course_no %><% end %>
+				<br><%= key %> <%= t('.havealsotaken') %>
 			</li>
 		<% end %>
 	<% end %>
@@ -196,7 +196,7 @@
 	<% end %>
 	
 	<% if not @course.prereq_for.empty? %>
-	<h3>This course is a prerequisite for these courses:</h3>
+	<h3><%= t('.prereqhead') %></h3>
 	<ul>
 	<% @course.prereq_for.each do |rec_course| %>
 		<% if not current_student or current_student.should_be_recommended rec_course %>
@@ -212,5 +212,4 @@
 	</ul>
 	<% end %>	
 </div>
-
-<h3 style="clear:both"><%= link_to "... på kurser.dtu.dk", "http://www.kurser.dtu.dk/#{@course.course_no}.aspx?menulanguage=da", :target => "_blank" %></h3>
+<div class="cb"></div>

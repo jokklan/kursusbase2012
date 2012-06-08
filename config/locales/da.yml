@@ -7,6 +7,7 @@ da:
   or: eller
   ok: OK
   cancel: Annuller
+  additionally: Desuden
   internal:
     onheroku: Denne side på Heroku
   menu:
@@ -72,6 +73,13 @@ da:
       registration: Tilmelding
       keywords: Nøgleord
       addto: Tilføj til studieplan
+      rechead: Studerende der tog dette kursus tog også
+      prereqhead: Kurser der kræver dette kursus
+      havealsotaken: har også taget dette
+      inbasket: Dette kursus er i din kursuskurv
+      inhistory: Du har taget dette kursus
+      oldpage: Dette kursus på den gamle kursusbase
+      you: Dig og dette kursus
   students:
     show:
       welcome: Velkommen
