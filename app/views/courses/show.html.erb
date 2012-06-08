@@ -184,9 +184,9 @@
 			<p><%= t('.inbasket') %>.</p>
 			<%= link_to 'Delete', @studyplan_item, confirm: "Are you sure you want to remove #{@course.title} from your Kursuskurv?" , method: :delete, :class => 'button' %> 
 			<% elsif false # bestået kurset %>
-			<p><%= t('.passedcourse')%></p>
+			<p><%= t('.passedcourse')%>.</p>
 			<% elsif current_student.has_participated @course %>
-			<p><%= t('.enrolledcourse')%></p>
+			<p><%= t('.inhistory')%>.</p>
 			<% else %>
 				<%= simple_form_for(StudyplanItem.new) do |f| %>
 					<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
