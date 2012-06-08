@@ -29,7 +29,7 @@ module StudentHelper
 						return ''
 					end
 					html_class += get_course_class(course)
-					html_class += ' passed' if course.passed?
+					#html_class += ' passed' if course.passed?
 					return "<td class=\"#{html_class}\"#{rowspan}><a href=\"#{course_path(course)}\">#{course.course_no} <strong>#{course.title}</strong></a></td>".html_safe
 				end
 			end
