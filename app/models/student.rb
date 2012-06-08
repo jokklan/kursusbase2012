@@ -33,7 +33,6 @@ class Student < ActiveRecord::Base
 	TOTAL_ECTS_GOAL = 180	
 	
 	def main_points
-		studyplan_courses = 
 		sum_ects_points(self.main_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
 	end
 	
@@ -66,7 +65,11 @@ class Student < ActiveRecord::Base
 	end
 	
 	def total_points
-		self.sum_ects_points(self.courses)
+		self.courses.sum("ects_points")
+	end
+	
+	def total_points_passed
+		self.passed_courses.sum("ects_points")
 	end
 	
 	def sum_ects_points(courses)
@@ -174,11 +177,11 @@ class Student < ActiveRecord::Base
 	end
 	
 	def course_basket
-		self.find_
+		self.studyplan_items.where('semester IS NULL', nil).map(&:course)
 	end
 	
 	def studyplan_courses
-		self.find_studyplan_items_by_semester(semester).map(&:course)
+		self.studyplan_items.where('semester IS NOT NULL').map(&:course)
 	end
 	
 	def has_course_on_schedule(schedule, semester)
