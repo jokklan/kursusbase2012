@@ -2,22 +2,15 @@ class CoursesController < ApplicationController
   def index
     if params[:search]
       @courses = Course.search_params(params[:search])
-    else
-			@courses = Course.active
+    elsif current_student.present?
+			@courses = current_student.course_recommendations
+		else
+		  @courses = []
 		end
     
     if @courses.count == 1
       redirect_to @courses.first
     end
-		
-		if current_student.nil? and not current_student.course_recommendations.empty?
-			@recommendations = []
-		else
-			@recommendations = current_student.course_recommendations
-			@courses = [] if not params[:search]
-    end
-
-    @page_title = "All courses"
   end
 
   def show

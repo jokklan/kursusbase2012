@@ -40,9 +40,10 @@ en:
     autumn: autumn
   courses:
     index:
-      courses: Courses
-      allcourses: All courses
-      no_results: Sorry, there was no results
+      search_results: "Searchresults for “%{query}”"
+      course_recommandations: Course recommandations
+      no_results: "Sorry, there was no results for “%{query}”"
+      no_recommandations: You have no recommended courses
       nonono: No.
       title: Title
       points: Points

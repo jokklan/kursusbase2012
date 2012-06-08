@@ -40,9 +40,10 @@ da:
     autumn: efterår
   courses:
     index:
-      courses: Kurser
-      allcourses: Alle kurser
-      no_results: Der blev ikke fundet nogen resultater
+      search_results: "Søgeresultat for “%{query}”"
+      course_recommandations: Kursusanbefalinger
+      no_results: "Der blev ikke fundet nogen resultater for “%{query}”"
+      no_recommandations: Du har ingen anbefalede kurser
       nonono: Nr.
       title: Titel
       points: Point

@@ -1,53 +1,57 @@
 <% if params[:search] %>
-	<% title t('.courses') %>
-	<h1><%= t('.courses') %></h1>
-<% else %>
-	<% title t('.allcourses') %>
-	<h1><%= t('.allcourses') %></h1>
-<% end %>
+	<% if @courses.present? %>
+		<% title t('.search_results', :query => params[:search]) %>
+		<h1><%= t('.search_results', :query => params[:search]) %></h1>
+		<table class="courses">
+			<thead>
+				<tr>
+					<th scope="col" class="no"><%= t('.nonono') %></th>
+					<th scope="col" class="title"><%= t('.title') %></th>
+					<th scope="col" class="points"><%= t('.points') %></th>
+				</tr>
+			</thead>
+			<tbody>
 
-<% if not @courses.empty? %>
-<table class="courses">
-	<thead>
-		<tr>
-			<th scope="col" class="no"><%= t('.nonono') %></th>
-			<th scope="col" class="title"><%= t('.title') %></th>
-			<th scope="col" class="points"><%= t('.points') %></th>
-		</tr>
-	</thead>
-	<tbody>
-
-<% @courses.limit(10).each do |course| %>
-		<tr class="<%= cycle("odd", "even") %>">
-			<td class="no"><%= course.course_no %></td>
-			<td class="title"><%= link_to course.title, course %></td>
-			<td class="points"><%= "%g" % course.ects_points %></td>
-		</tr>
-<% end %>
-	</tbody>
-</table>
-<% end %>
-
-
-<% if not @recommendations.nil?%>
-<table class="courses">
-	<thead>
-		<tr>
-			<th scope="col" class="no"><%= t('.nonono') %></th>
-			<th scope="col" class="title"><%= t('.title') %></th>
-			<th scope="col" class="points"><%= t('.points') %></th>
-		</tr>
-	</thead>
-	<tbody>
-		
-	<h1>Course recommendations</h1>
-	<% @recommendations.each do |course_rec| %>
-		<tr class="<%= cycle("odd", "even") %>">
-			<td class="no"><%= course_rec.course.course_no %></td>
-			<td class="title"><%= link_to course_rec.course.title, course_rec.course %></td>
-			<td class="points"><%= course_rec.priority_value %></td>
-		</tr>
+			<% @courses.limit(10).each do |course| %>
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="no"><%= course.course_no %></td>
+					<td class="title"><%= link_to course.title, course %></td>
+					<td class="points"><%= "%g" % course.ects_points %></td>
+				</tr>
+			<% end %>
+			</tbody>
+		</table>
+	<% else %>
+		<% title t('.no_results', :query => params[:search]) %>
+		<h1><%= t('.no_results', :query => params[:search]) %></h1>
 	<% end %>
+	
+<% else %>
+	<% if @courses.present? %>
+		<% title t('.course_recommandations') %>
+		<h1><%= t('.course_recommandations') %></h1>
+		<table class="courses">
+			<thead>
+				<tr>
+					<th scope="col" class="no"><%= t('.nonono') %></th>
+					<th scope="col" class="title"><%= t('.title') %></th>
+					<th scope="col" class="points"><%= t('.points') %></th>
+				</tr>
+			</thead>
+			<tbody>
+		
+			<% @courses.each do |course_rec| %>
+				<tr class="<%= cycle("odd", "even") %>">
+					<td class="no"><%= course_rec.course.course_no %></td>
+					<td class="title"><%= link_to course_rec.course.title, course_rec.course %></td>
+					<td class="points"><%= course_rec.priority_value %></td>
+				</tr>
+			<% end %>
+	<% else %>
+		<% title t('.no_recommandations') %>
+		<h1><%= t('.no_recommandations') %></h1>
+	<% end %>
+	
 <% end %>
 
 <br />
