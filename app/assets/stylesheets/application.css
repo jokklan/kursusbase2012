@@ -509,6 +509,10 @@ body#home {
 	width: 390px;
 }
 
+#content #coursehead.completehead > * {
+	width: 490px;
+}
+
 #content #coursehead h1 {
 	font-size: 276.9%;
 	margin: .3em 0 0;

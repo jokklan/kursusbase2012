@@ -20,14 +20,15 @@ module CoursesHelper
 		# Does this course have schedule details belonging to either spring or autumn?
 		has_sched_details = !schedule_details.empty? && 
 				(schedule_details['is_spring'] || schedule_details['is_autumn'])
+		sched = real_schedules(course)
 		 
 		if course.duration == "[Kurset følger ikke DTUs normale skemastruktur]" && !has_sched_details
 			return false
 		end
-		if course.schedules.empty? && !has_sched_details
+		if sched.empty? && !has_sched_details
 			return false
 		end
-		if course.schedules.count > 6
+		if sched.count > 6
 			return false
 		end
 		true
@@ -63,13 +64,18 @@ module CoursesHelper
 		end
 	end
 	
+	# Count the amount of schedules in 13-week periods only
+	def real_schedules(course)
+		course.schedules.select{ |s| ["E", "F"].include? s.block[0] }
+	end
+	
 	# Displaying a schedule table cell
 	def schedule_table_cell(sch, schedule_details)
 		# Defined schedules
 		schs = @course.schedules.select {|s| s.block[1,2] == sch}
 		
 		# Time
-		#time = convert_schedule_code(sch)
+		time = convert_schedule_code(sch)
 		
 		# Seasons
 		is_spring = schs.map {|s| s.block[0]}.include? "F"
@@ -88,13 +94,18 @@ module CoursesHelper
 		end
 		
 		# Cell title
+		seasontitle = t("seasons.#{css_class}")
+		title = t("days.day_#{time[0].to_s}") + 
+			" " + t('times.' + (time[1] == :top ? 'beforenoon' : 'afternoon')) + ", #{seasontitle}"
+			
 		
 		# HTML output
-		cssout = css_class.blank? ? "" : " class=\"#{css_class.strip}\""
+		cssout   = css_class.blank? ? "" : " class=\"#{css_class.strip}\""
+		titleout = css_class.blank? ? "" : " title=\"#{title}\""
 		if has_main_cell
-			"<td#{cssout}><strong>#{sch}</strong></td>".html_safe
+			"<td#{titleout}#{cssout}><strong>#{sch}</strong></td>".html_safe
 		else
-			"<td#{cssout}>#{sch}</td>".html_safe
+			"<td#{titleout}#{cssout}>#{sch}</td>".html_safe
 		end
 	end
 	
@@ -127,25 +138,35 @@ module CoursesHelper
 	end
 	
 	# Displaying the season
-	def season_text(course)
+	def season_text(course, schedule_details)
 		# First: Look at schedules to determine season text
 		is_spring = course.schedules.map {|s| s.block[0]}.include?("F")
 		is_autumn = course.schedules.map {|s| s.block[0]}.include?("E")
 		
 		if !is_spring && !is_autumn
 			# Second: Try to look at the string to determine
-			is_spring = !!course.schedule.downcase.match(/forår|spring/)
-			is_autumn = !!course.schedule.downcase.match(/efterår|autumn|fall/)
+			schedule  = course.schedule.downcase
+			is_spring = !!schedule.match(/forår|spring/)
+			is_autumn = !!schedule.match(/efterår|autumn|fall/)
+			is_jan    = !!schedule.match(/january?/)
+			is_june   = !!schedule.match(/jun(e|i)/)
 		end
 		
+		# Spring or autumn
 		if is_spring && is_autumn
-			return I18n.translate('seasons.spring') + " " + 
-			I18n.translate('and') + " " + 
-			I18n.translate('seasons.autumn')
+			return t('seasons.spring') + " " + t('and') + " " + 
+				t('seasons.autumn')
 		elsif is_spring
-			return I18n.translate('seasons.spring')
+			return t('seasons.spring')
 		elsif is_autumn
-			return I18n.translate('seasons.autumn')
+			return t('seasons.autumn')
+		elsif is_jan && is_june
+			return t('months.jan') + " " + t('and') + " " + 
+				t('months.jun')
+		elsif is_jan
+			return t('months.jan')
+		elsif is_june
+			return t('months.jun')
 		end
 	end
 	

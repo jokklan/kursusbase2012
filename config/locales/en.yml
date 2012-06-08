@@ -33,11 +33,22 @@ en:
     fri: Friday
     sat: Saturday
     sun: Sunday
+    day_0: Monday
+    day_1: Tuesday
+    day_2: Wednesday
+    day_3: Thursday
+    day_4: Friday
+    day_5: Saturday
+    day_6: Sunday
     o: W
     l: S
+  times:
+    beforenoon: morning
+    afternoon: afternoon
   seasons:
     spring: spring
     autumn: autumn
+    allyear: hele året
   courses:
     index:
       search_results: "Searchresults for “%{query}”"

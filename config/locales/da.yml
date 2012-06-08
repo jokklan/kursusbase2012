@@ -23,8 +23,8 @@ da:
     engelsk: engelsk
     en: engelsk
   months:
-    jan: Januar
-    jun: Juni
+    jan: januar
+    jun: juni
   days:
     mon: mandag
     tue: tirsdag
@@ -33,11 +33,22 @@ da:
     fri: fredag
     sat: lørdag
     sun: søndag
+    day_0: mandag
+    day_1: tirsdag
+    day_2: onsdag
+    day_3: torsdag
+    day_4: fredag
+    day_5: lørdag
+    day_6: søndag
     o: O
     l: L
+  times:
+    beforenoon: formiddag
+    afternoon: eftermiddag
   seasons:
     spring: forår
     autumn: efterår
+    allyear: hele året
   courses:
     index:
       search_results: "Søgeresultat for “%{query}”"
