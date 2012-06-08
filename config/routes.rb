@@ -2,37 +2,23 @@ Kursusbase2012::Application.routes.draw do
 
 
   scope "(:locale)", :locale => /en|da/ do
-    # match "/students/login_dtu" => redirect("https://auth.dtu.dk/dtu/index.jsp?service=http://localhost:3000/")
-    # match "/students/login" => "students#login"
-    # match "/students/logged_in" => "students#logged_in", :as => "logged_in_student"
-    # match "/students/get_courses" => "students#get_courses", :as => "get_courses_student"
-    # resources :students
     
-    # get 'signup', to: 'students#new', as: 'signup'
     get 'login', to: 'sessions#new', as: 'login'
     post 'login', to: 'application#login', as: 'sessions'
     put 'login', to: 'application#login', as: 'sessions'
     get 'logout', to: 'sessions#destroy', as: 'logout'
-
-		#match "/studyplan" => "studyplan#show"
     
-    resources :courses
-    resources :keywords
-    resources :course_types
+    resources :courses, only: [:index, :show]
 		resources :studyplan_items, :path => '/studyplan', :only => [:create, :update, :destroy] do
 			get 'show', :path => '(/:semester)', :as => 'studyplan', :on => :collection
 		end
 		
 		resources :studyplan_items, :only => [:create, :destroy, :edit]
-	  
-    # get "/", to: 'student#show', as: "show_student"
 		
 		post "search", to: "courses#index", as: "search"
 		
 		root :to => 'students#show'
-  end
-  
-  
+  end  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

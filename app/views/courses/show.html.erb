@@ -178,15 +178,25 @@
 <div id="courserec">
 	
 	<div id="courseplan" class="top">
-		<% if current_student.nil? or current_student.has_planned_or_participated_in(@course)%>
-			<%#= link_to 'Allerede tilføjet', 'javascript://', :class => 'button' %>
+		<% if not current_student.nil? %>
 			<h3><%= t('.you') %></h3>
+			<% if current_student.has_planned @course %>
 			<p><%= t('.inbasket') %>.</p>
-		<% else%>
-			<%= simple_form_for(StudyplanItem.new) do |f| %>
-				<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
-				<%= f.button :submit, t('.addto') %>
+			<%= link_to 'Delete', @studyplan_item, confirm: "Are you sure you want to remove #{@course.title} from your Kursuskurv?" , method: :delete, :class => 'button' %> 
+			<% elsif false # bestået kurset %>
+			<p><%= t('.passedcourse')%></p>
+			<% elsif current_student.has_participated @course %>
+			<p><%= t('.enrolledcourse')%></p>
+			<% else %>
+				<%= simple_form_for(StudyplanItem.new) do |f| %>
+					<%= f.input :course_id, :as => :hidden, :input_html => { :value => @course.id } %>
+					<%= f.button :submit, t('.addto') %>
+				<% end %>
 			<% end %>
+			
+			
+		<% else%>
+			
 		<% end %>
 	</div>
 	

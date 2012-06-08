@@ -40,9 +40,10 @@ en:
     autumn: autumn
   courses:
     index:
-      courses: Courses
-      allcourses: All courses
-      no_results: Sorry, there was no results
+      search_results: "Searchresults for “%{query}”"
+      course_recommandations: Course recommandations
+      no_results: "Sorry, there was no results for “%{query}”"
+      no_recommandations: You have no recommended courses
       nonono: No.
       title: Title
       points: Points
@@ -81,6 +82,7 @@ en:
       prereqhead: Courses that require taking this course
       havealsotaken: have also taken this
       inbasket: This course is in your course basket
+      passedcourse: You've passed this course
       inhistory: You have previously taken this course
       oldpage: This course on the old Course Base
       you: You and this course

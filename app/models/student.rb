@@ -172,15 +172,15 @@ class Student < ActiveRecord::Base
 	end
 	
 	def has_planned(course)
-		self.courses.include? course
-	end
-	
-	def has_participated_in(course)
 		self.studyplan_items.map(&:course).include? course
 	end
 	
+	def has_participated(course)
+		self.courses.include? course
+	end
+	
 	def has_planned_or_participated_in(course)
-		self.has_planned(course) or self.has_participated_in(course)
+		self.has_planned(course) or self.has_participated(course)
 	end
 
 	# def find_studyplan_by_semester(semester)

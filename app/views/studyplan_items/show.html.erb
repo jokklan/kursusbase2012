@@ -21,6 +21,12 @@
 	<%#= link_to 'Edit', edit_course_type_path(@course_type) %>
 	<%#= link_to 'Destroy', @course_type, confirm: 'Are you sure?', method: :delete %>
 <% end %>
+<% if not current_student.nil? %>
+	<%= simple_form_for(StudyplanItem.new) do |f| %>
+		<%= f.input :course_id, :as => :string, :placeholder => 'Kursusnummer', :label => false %>
+		<%= f.button :submit %>
+	<% end %>
+<% end %>
 </ul>
 <% @studyplans.each_with_index do |studyplan, i| %>
 <% 

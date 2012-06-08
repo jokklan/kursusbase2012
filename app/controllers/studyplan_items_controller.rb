@@ -1,27 +1,32 @@
 class StudyplanItemsController < ApplicationController
 	def show
 		@student = current_student
-		@course_basket = @student.studyplan_items.where(:semester => nil)
-		@semester = params[:semester].to_i
-		@max_semester = @student.current_semester + ((Student::TOTAL_ECTS_GOAL - @student.total_points) / (Student::TOTAL_ECTS_GOAL / 6)).ceil 
-		redirect_to root_path if @student.nil? or (params[:semester] and (@semester < 0 or @semester > @max_semester))
-		if params[:semester]
-			if @semester.to_i <= @student.current_semester.to_i
-				@studyplans = [ @student.find_courses_by_semester(@semester) ]
-			else
-				@studyplans = [ @student.find_studyplan_courses_by_semester(@semester) ]
-			end
-		else
-			@studyplans = []
-			@max_semester.times do |i|
-				semester = @max_semester - i
-				if semester <= @student.current_semester.to_i
-					@studyplans << @student.find_courses_by_semester(semester)
-				else
-					@studyplans << @student.find_studyplan_courses_by_semester(semester)
-				end
-			end
-		end
+		if @student.present?
+		
+    	@course_basket = @student.studyplan_items.where(:semester => nil)
+    	@semester = params[:semester].to_i
+    	@max_semester = @student.current_semester + ((Student::TOTAL_ECTS_GOAL - @student.total_points) / (Student::TOTAL_ECTS_GOAL / 6)).ceil 
+      params[:semester] = nil if (params[:semester] and (@semester < 0 or @semester > @max_semester))
+    	if params[:semester]
+    		if @semester.to_i <= @student.current_semester.to_i
+    			@studyplans = [ @student.find_courses_by_semester(@semester) ]
+    		else
+    			@studyplans = [ @student.find_studyplan_courses_by_semester(@semester) ]
+    		end
+    	else
+    		@studyplans = []
+    		@max_semester.times do |i|
+    			semester = @max_semester - i
+    			if semester <= @student.current_semester.to_i
+    				@studyplans << @student.find_courses_by_semester(semester)
+    			else
+    				@studyplans << @student.find_studyplan_courses_by_semester(semester)
+    			end
+    		end
+    	end
+  	else
+  	  redirect_to login_path
+	  end
 	end
 	
 	def destroy

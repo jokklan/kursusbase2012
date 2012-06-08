@@ -40,9 +40,10 @@ da:
     autumn: efterår
   courses:
     index:
-      courses: Kurser
-      allcourses: Alle kurser
-      no_results: Der blev ikke fundet nogen resultater
+      search_results: "Søgeresultat for “%{query}”"
+      course_recommandations: Kursusanbefalinger
+      no_results: "Der blev ikke fundet nogen resultater for “%{query}”"
+      no_recommandations: Du har ingen anbefalede kurser
       nonono: Nr.
       title: Titel
       points: Point
@@ -81,6 +82,7 @@ da:
       prereqhead: Kurser der kræver dette kursus
       havealsotaken: har også taget dette
       inbasket: Dette kursus er i din kursuskurv
+      passedcourse: Du har bestået dette kursus
       inhistory: Du har taget dette kursus
       oldpage: Dette kursus på den gamle kursusbase
       you: Dig og dette kursus
@@ -127,6 +129,11 @@ da:
     login: Log ind
     logout: Log ud
   splaceholder: Søg efter kurser…
+  helpers:
+      submit:
+        studyplan_item:
+          create: Tilføj til studieplanen
+          update: Save Changes
       
       
       
