@@ -158,12 +158,7 @@ class Course < ActiveRecord::Base
   
   # Class methods
   def self.search(query, locale = I18n.locale)
-    if is_numeric? query
-      puts "NUMERIC"
-      Course.number_search(query.to_i)
-    else
-      pg_search(query, :courses)
-    end
+    pg_search(query, :courses)
   end
   
   MODEL_ASSOCIATION = {
@@ -201,7 +196,15 @@ class Course < ActiveRecord::Base
     search_string = param_string.dup
     result_query = Course.active.uniq
     
-    result_query = if search_string =~ /((?:point|ects)[_-]?((?:gt|lt|eq)e?)?:([\d\,\.]*))/i
+    result_query = if search_string =~ /((?:(?:course|kursus)?[_-]?(?:number|nummer):|^)([\d]+))/i
+      match = $2.to_i
+      search_string.gsub!($1, "")
+      result_query.where("CAST(course_number AS TEXT) LIKE ?", "#{match}%")
+    else
+      result_query
+    end
+    
+    result_query = if search_string =~ /((?:point|ects)[_-]?((?:gt|lt|eq)e?)?:([\d\,\.]+))/i
       operator = $2
       match = $3
       search_string.gsub!($1, "")
@@ -221,7 +224,7 @@ class Course < ActiveRecord::Base
       result_query
     end
     
-    result_query = if search_string =~ /((?:institute?:)([\w-]*))/i
+    result_query = if search_string =~ /((?:institute?:)([\w-]+))/i
       match = $2
       search_string.gsub!($1, "")
       result_query.pg_search(match.gsub("-"," "), :institutes)
@@ -229,7 +232,7 @@ class Course < ActiveRecord::Base
       result_query
     end
     
-    result_query = if search_string =~ /((?:coursetype:|kursustype:|type:)([\w-]*))/i
+    result_query = if search_string =~ /((?:coursetype:|kursustype:|type:)([\w-]+))/i
       match = $2
       search_string.gsub!($1, "")
       result_query.pg_search(match.gsub("-"," "), :main_course_types, :flag_model_type, :field_of_study)
@@ -237,7 +240,7 @@ class Course < ActiveRecord::Base
       result_query
     end
     
-    result_query = if search_string =~ /((?:teacher:|lærer:)([\w-]*))/i
+    result_query = if search_string =~ /((?:teacher:|lærer:)([\w-]+))/i
       match = $2
       search_string.gsub!($1, "")
       result_query.pg_search(match.gsub("-"," "), :teachers)
