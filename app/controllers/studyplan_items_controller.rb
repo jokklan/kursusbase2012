@@ -9,7 +9,7 @@ class StudyplanItemsController < ApplicationController
       params[:semester] = nil if (params[:semester] and (@semester < 0 or @semester > @max_semester))
     	if params[:semester]
     		if @semester.to_i <= @student.current_semester.to_i
-    			@studyplans = [ @student.find_courses_by_semester(@semester) ]
+    			@studyplans = [ @student.find_course_students_by_semester(@semester) ]
     		else
     			@studyplans = [ @student.find_studyplan_courses_by_semester(@semester) ]
     		end
@@ -18,7 +18,7 @@ class StudyplanItemsController < ApplicationController
     		@max_semester.times do |i|
     			semester = @max_semester - i
     			if semester <= @student.current_semester.to_i
-    				@studyplans << @student.find_courses_by_semester(semester)
+    				@studyplans << @student.find_course_students_by_semester(semester)
     			else
     				@studyplans << @student.find_studyplan_courses_by_semester(semester)
     			end

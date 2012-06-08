@@ -15,8 +15,12 @@ class Student < ActiveRecord::Base
   belongs_to :field_of_study
   has_many :course_students
   has_many :courses, :through => :course_students
+	has_many :passed_courses, :through => :course_students, :class_name => 'Course', :source => :course, :conditions => ['passed = ?', true]
 	has_many :course_recommendations
 	has_many :studyplan_items
+	has_many :main_courses, :through => :field_of_study, :class_name => 'Course', :source => :main_courses
+	has_many :project_courses, :through => :field_of_study, :class_name => 'Course', :source => :project_courses
+	has_many :basic_courses, :through => :field_of_study, :class_name => 'Course', :source => :basic_courses
   
   attr_accessor :password
   
@@ -27,33 +31,38 @@ class Student < ActiveRecord::Base
   after_create :update_courses
 
 	TOTAL_ECTS_GOAL = 180	
-  
-	def main_courses
-		self.field_of_study.main_courses
-	end
 	
 	def main_points
-		sum_ects_points(self.main_courses.select {|c| self.courses.include? c })
+		studyplan_courses = 
+		sum_ects_points(self.main_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
 	end
 	
-	def project_courses
-		self.field_of_study.project_courses
+	def main_points_passed
+		sum_ects_points(self.main_courses.select {|c| self.passed_courses.include? c  })
 	end
 	
 	def project_points
-		sum_ects_points(self.project_courses.select {|c| self.courses.include? c })
+		self.sum_ects_points(self.project_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
 	end
 	
-	def basic_courses
-		self.field_of_study.basic_courses
+	def project_points_passed
+		self.sum_ects_points(self.project_courses.select {|c| self.passed_courses.include? c })
 	end
 	
 	def basic_points
-		sum_ects_points(self.basic_courses.select {|c| self.courses.include? c })
+		sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+	end
+	
+	def basic_points_passed
+		sum_ects_points(self.basic_courses.select {|c| self.passed_courses.include? c })
 	end
 	
 	def optional_points
-		self.courses.sum("ects_points") - basic_points - project_points - main_points
+		self.courses.sum("ects_points") + self.sum_ects_points(self.studyplan_courses) - basic_points - project_points - main_points
+	end
+	
+	def optional_points_passed
+		self.passed_courses.sum("ects_points") - basic_points_passed - project_points_passed - main_points_passed
 	end
 	
 	def total_points
@@ -164,6 +173,14 @@ class Student < ActiveRecord::Base
 		end
 	end
 	
+	def course_basket
+		self.find_
+	end
+	
+	def studyplan_courses
+		self.find_studyplan_items_by_semester(semester).map(&:course)
+	end
+	
 	def has_course_on_schedule(schedule, semester)
 		self.find_courses_by_semester(semester).each do |c|
 			return true if not c.find_schedules_by_semster(semester).empty?
@@ -183,23 +200,14 @@ class Student < ActiveRecord::Base
 		self.has_planned(course) or self.has_participated(course)
 	end
 
-	# def find_studyplan_by_semester(semester)
-	# 	self.studyplans.find(:first, :conditions => ['semester = ?', semester])
-	# end
-	# 
-	# def find_studyplan_courses_by_semester(semester)
-	# 	studyplan = self.find_studyplan_by_semester(semester)
-	# 	if studyplan.nil?
-	# 		[]
-	# 	else
-	# 		studyplan.studyplan_items.map(&:course)
-	# 	end
-	# end
-
 	def find_courses_by_semester(semester)
-		courses = self.course_students.where('semester = ?', semester.to_s).map(&:course)
-		courses += self.course_students.where('semester = ?', (semester.to_i + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }.map(&:course)
-		courses
+		self.find_course_students_by_semester(semester).map(&:course)
+	end
+	
+	def find_course_students_by_semester(semester)
+		course_students = self.course_students.where('semester = ?', semester.to_s)
+		course_students += self.course_students.where('semester = ?', (semester.to_i + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }
+		course_students
 	end
   
   def current_courses
