@@ -14,10 +14,12 @@ gem 'delayed_job_active_record'
 gem 'pg_search'
 gem 'pg'
 gem 'squeel'
+gem 'capybara', '1.1.2'
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
+  
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
@@ -30,6 +32,10 @@ end
 gem 'jquery-rails'
 
 group :test, :development do
+  
+  gem 'rspec-rails', '2.9.0'
+
+  # gem 'steak'
   gem 'sqlite3'
   
   gem 'debugger'
@@ -42,7 +48,7 @@ end
 
 group :test do
   # gem "cucumber-rails"
-  gem 'rspec-rails'
+  gem 'simplecov'
   #gem 'cucumber_factory'
   
   gem 'database_cleaner'
@@ -50,7 +56,7 @@ group :test do
 
 	gem 'factory_girl_rails'
 
-	gem 'capybara'
+	
   # gem 'cucumber-websteps'
 	#gem "capybara-webkit"
 	gem 'launchy'

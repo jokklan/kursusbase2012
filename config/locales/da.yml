@@ -38,6 +38,7 @@ da:
     index:
       courses: Kurser
       allcourses: Alle kurser
+      no_results: Der blev ikke fundet nogen resultater
       nonono: Nr.
       title: Titel
       points: Point
