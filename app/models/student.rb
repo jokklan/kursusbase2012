@@ -23,7 +23,6 @@ class Student < ActiveRecord::Base
   attr_accessible :student_number, :password, :firstname, :lastname, :email, :field_of_study, :user_id
   
   validates :student_number, :presence => true, :uniqueness => true
-  validate :must_be_authenticated
 
   after_create :update_courses
   
@@ -63,14 +62,6 @@ class Student < ActiveRecord::Base
 	
   def fullname
     "#{firstname} #{lastname}"
-  end
-  
-  def must_be_authenticated
-    if !(student_number =~ /^s\d{6}$/)
-      errors.add(:base, "Student number must be of format s######")
-    elsif update_info.empty?
-      errors.add(:base, "No student with given student no.")
-    end
   end
   
   def authenticate(pass = password)
@@ -132,10 +123,14 @@ class Student < ActiveRecord::Base
   
   def update_current_courses
     call = CampusNet.api_call(self, "Elements")
-    cn_courses = call['ElementGroupings']['Grouping'][0]['Element'].select! {|c| c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'}
+    cn_courses = call['ElementGroupings']['Grouping'][0]['Element'].select do |c| 
+      c['UserElementRelation']['ACL'] == 'User' && c['IsArchived'] == 'false'
+    end
+    
+    puts cn_courses.to_yaml
 		
-		if cn_courses.empty?
-		  puts "CAMBUS NET API CALL FAILED, CURRENT COURSES: #{call.to_yaml}"
+		if cn_courses.blank?
+		  puts "CAMBUS NET API CALL FAILED, CURRENT COURSES: "		  
   	else
   		cn_courses.each do |course|
     	  course_number = course['Name'].match('(\d{5})')[0]

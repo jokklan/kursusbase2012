@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
     @student.password = params[:student][:password]
     if @student.authenticate && (
-      if @student.new_record? || @student.firstname.nil?
+      if @student.new_record? || @student.user_id.nil?
         @student.update_info
       else
         @student.save
