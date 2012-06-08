@@ -81,6 +81,7 @@ da:
       prereqhead: Kurser der kræver dette kursus
       havealsotaken: har også taget dette
       inbasket: Dette kursus er i din kursuskurv
+      passedcourse: Du har bestået dette kursus
       inhistory: Du har taget dette kursus
       oldpage: Dette kursus på den gamle kursusbase
       you: Dig og dette kursus
