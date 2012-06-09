@@ -35,7 +35,7 @@
 	if !has_right_panel
 		ch_class += " completehead"
 	end
-	if your_status_bar
+	if !your_status_bar.empty?
 		ch_class += " with-ysb"
 	end
 	ch_class.strip!
