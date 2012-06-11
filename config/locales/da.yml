@@ -98,6 +98,9 @@ da:
       oldpage: Dette kursus på den gamle kursusbase
       you: Dig og dette kursus
   students:
+    errors:
+      wrong_username_or_password: Studienummer eller kodeord er ugyldigt
+      wrong_username_or_password_try_again: Du har angivet et ugyldigt login. Prøv igen om %{time} sekunder.
     show:
       welcome: Velkommen
       hereisyour: her er dit skema

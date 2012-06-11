@@ -101,7 +101,12 @@ class Student < ActiveRecord::Base
       self.cn_access_key = key[1]
       true
     else
-      errors.add(:base, "Student number or password is invalid")
+      time = /TryAgainIn=\"00:00:([\d\.]+)"/.match(response.body)
+      if time[1].to_f < 5
+        errors.add(:base, I18n.translate('students.errors.wrong_username_or_password_try_again', :time => time[1].to_i))
+      else
+        errors.add(:base, I18n.translate('students.errors.wrong_username_or_password'))
+      end
       false
     end
   end

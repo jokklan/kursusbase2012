@@ -98,6 +98,9 @@ en:
       oldpage: This course on the old Course Base
       you: You and this course
   students:
+    errors:
+      wrong_username_or_password: Student number or password is invalid
+      wrong_username_or_password_try_again: You have given an invalid login. Prøv igen om %{time} sekunder.
     home:
       welcome: Welcome
       hereisyour: here is your schedule
