@@ -16,7 +16,7 @@ class Institute < ActiveRecord::Base
     if dtu_institute_id < 10
       "0#{dtu_institute_id} #{title}"
     else 
-      "dtu_institude_id #{title}"
+      "#{dtu_institute_id} #{title}"
     end
   end
 end

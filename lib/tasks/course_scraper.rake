@@ -47,7 +47,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_civil
+      url = url_math
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -101,7 +101,7 @@ namespace :scrape do
 				end
         
         # The table with content
-        table = page.search("div.CourseViewer table")[1]
+        table = page.search("div.CourseViewer table")[0]
         table_rows = table.search("tr")
       
         # First row (title and course number)
@@ -114,6 +114,7 @@ namespace :scrape do
 				current_course[:active] = true
 				
 				# Top Comment
+				#puts table
         if table.search("tr:nth-child(2) .normal").length == 2
           current_course[:top_comment] = table_rows[2].search("p").text
         end      
@@ -318,6 +319,7 @@ namespace :scrape do
           course_attributes[language][:evaluation].each do |key, att|
             if att_title == att
               current_course[key] = att_column[1].text.chomp.strip
+							puts current_course[key] if key == :exam_schedule
             end
           end
         
@@ -758,7 +760,7 @@ namespace :scrape do
 		basic_course_numbers.each do |cn|
 			course = Course.find_by_course_number(cn)
 			math1 = Course.find_by_course_number(1005)
-			basic_spec_course_types_all = math1.course_specializations if not math1.nil?
+			basic_spec_course_types_all = math1.course_specializations.map(&:spec_course_type) if not math1.nil?
 			if not basic_spec_course_types_all.empty? and not course.nil?
 				basic_spec_course_types_all.each do |ct|
 					course.course_specializations.build(:spec_course_type => ct)
@@ -770,7 +772,7 @@ namespace :scrape do
 		# Setting semester span (if the semester lasts more than one semester)
 		courses_with_span = { 1005 => 2, 10020 => 2, 10022 => 2 }
 		courses_with_span.each do |c, span|
-			c.semester_span = span
+			Course.find_by_course_number(c).semester_span = span
 		end
   end
   
