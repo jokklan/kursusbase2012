@@ -1,6 +1,7 @@
 # encoding: utf-8
 namespace :scrape do
 	require 'rails'
+	require 'pp'
   desc "Import courses from kurser.dtu.dk"
   task :courses, [:seed] => :environment do |t,args|
     args.with_defaults(:seed => 'true')
@@ -47,7 +48,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_math
+      url = url_inform
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -319,7 +320,7 @@ namespace :scrape do
           course_attributes[language][:evaluation].each do |key, att|
             if att_title == att
               current_course[key] = att_column[1].text.chomp.strip
-							puts current_course[key] if key == :exam_schedule
+							#puts current_course[key] if key == :exam_schedule
             end
           end
         
@@ -419,6 +420,14 @@ namespace :scrape do
                   current_course_teachers << { :name => t_name, :dtu_teacher_id => t_id }
                 end
               end
+							puts
+							text = content_rows[row_i + 1].search("td").text
+							regex = text.scan(/([A-Z][^\d]+), ([\d|\s|[a-zA-Z]]+, [\d|\s|[a-zA-Z]]+, )?(\(\+\d*\).\d*.\d*), (.*@.*)/)
+							teachers = []
+							regex.each do |teacher|		
+								teachers << { :name => teacher[0], :location => teacher[1], :phone => teacher[2], :email => teacher[3] }
+							end
+							pp teachers
             end
           end
         
