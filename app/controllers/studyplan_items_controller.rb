@@ -45,7 +45,7 @@ class StudyplanItemsController < ApplicationController
 		end
 		
 		if not @course.nil?
-			redirection = params[:studyplan_item] ? @course : studyplan_item_path
+			redirection = params[:studyplan_item] ? @course : studyplan_items_path
 			if not @student.has_planned_or_participated_in(@course)
 				@student.studyplan_items.build(@studyplan_item)
 				if @student.save
