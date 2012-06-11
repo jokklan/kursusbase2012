@@ -52,9 +52,9 @@ SimpleNavigation::Configuration.run do |navigation|
     
     home_tab = current_student.nil? ? t('menu.home') : t('menu.schedule')
 
-    primary.item :schema, 		home_tab, root_path
-		primary.item :courses, 		t('menu.courses'), courses_path, :highlights_on => :subpath
-		primary.item :study_plan, t('menu.plan'), studyplan_item_path, :highlights_on => :subpath
+    primary.item :schema, 		home_tab, root_path, :highlights_on => /\/(da|en)?$/
+		primary.item :courses, 		t('menu.courses'), courses_path, :highlights_on => /\/((da|en)\/)?courses(\/.+)?/
+		primary.item :study_plan, t('menu.plan'), studyplan_item_path, :highlights_on => /\/((da|en)\/)?studyplan(\/.+)?/
 
     # Add an item which has a sub navigation (same params, but with block)
     # primary.item :key_2, 'name', url, options do |sub_nav|
