@@ -166,7 +166,10 @@
 	<% if @course.qualification_courses.present? %>
 	<dt><%= t('.qprerequisites') %></dt>
 		<dd>
-		<%= display_course_list(@course.qualification_courses) %>
+		<%#= display_course_list(@course.qualification_courses) %>
+		<% @course.qualification_courses.each do |c| %>
+				<%= c.title %>
+		<% end %>
 		</dd>
 	<% end %>
 	<% if @course.optional_courses.present? %>

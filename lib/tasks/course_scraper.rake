@@ -424,7 +424,7 @@ namespace :scrape do
 							teachers = []
 							regex.each do |teacher|	
 								name = teacher[0].strip.gsub("The course is taught by professor ","").gsub("Kursusleder ","")
-								teachers << { :name => name, :location => teacher[2], :phone => teacher[3], :email => teacher[4], :dtu_teacher_id => ids[name] }
+								current_course_teachers << { :name => name, :location => teacher[2], :phone => teacher[3], :email => teacher[4], :dtu_teacher_id => ids[name] }
 							end
             end
           end
@@ -537,8 +537,8 @@ namespace :scrape do
 					
 					# Finding or creating teachers
           current_course_teachers.each do |t|
-						teacher = Teacher.find_by_dtu_teacher_id(t)
-						teacher = Teacher.find_by_name(t) if teacher.nil?
+						teacher = Teacher.find_by_dtu_teacher_id(t[:dtu_teacher_id])
+						teacher = Teacher.find_by_name(t[:name]) if teacher.nil?
 						teacher = Teacher.create(t) if teacher.nil?
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end

@@ -67,7 +67,7 @@ class Course < ActiveRecord::Base
 	
   
   has_many :point_blocks, :class_name => "CourseRelation", :foreign_key => "course_id", 
-            :conditions => [ "related_course_type = ?", "Blocked" ], :after_add => lambda{|data, record| record.set_related_course_type("Blocked")}
+            :conditions => [ "related_course_type = ?", "Blocked" ],:order => :group_no, :after_add => lambda{|data, record| record.set_related_course_type("Blocked")}
   has_many :blocked_courses, :through => :point_blocks, :source => :related_course
   
   has_many :mandatory_qualifications, :class_name => "CourseRelation", :foreign_key => "course_id", 
