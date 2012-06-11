@@ -48,7 +48,7 @@ namespace :scrape do
     
       # Fetching the URL
       agent = Mechanize.new
-      url = url_inform
+      url = url_civil
       page = agent.get(url)
     
       # Saving each link of the course in the array
@@ -413,21 +413,26 @@ namespace :scrape do
           # The responsible teachers
           course_attributes[language][:responsible].each do |key, att|
             if att_title == att
+							ids = {}
               content_rows[row_i + 1].search("td a.menulink").each do |link|
                 if !%r(mailto:.*).match(link[:href])
                   t_id = %r(http:\/\/www.dtu.dk\/Service\/Telefonbog\.aspx\?id=(.*)&type=person&lg=showcommon).match(link[:href].chomp.strip)[1]
                   t_name = link.text.chomp.strip
-                  current_course_teachers << { :name => t_name, :dtu_teacher_id => t_id }
+									ids[t_name] = t_id
+									#puts "#{current_course[:course_number]} - #{t_name}"
+                  #current_course_teachers << { :name => t_name, :dtu_teacher_id => t_id }
                 end
               end
-							puts
 							text = content_rows[row_i + 1].search("td").text
-							regex = text.scan(/([A-Z][^\d]+), ([\d|\s|[a-zA-Z]]+, [\d|\s|[a-zA-Z]]+, )?(\(\+\d*\).\d*.\d*), (.*@.*)/)
+							regex = text.scan(/([A-Z][^\d@,]+), (([\d|\s|[a-zA-Z]]+, [\d|\s|[a-zA-Z]]+), )?(\(\+\d*\).\d*.\d*)?[, ]?(.*@.*)/)
 							teachers = []
-							regex.each do |teacher|		
-								teachers << { :name => teacher[0], :location => teacher[1], :phone => teacher[2], :email => teacher[3] }
+							regex.each do |teacher|	
+								name = teacher[0].strip.gsub("The course is taught by professor ","")
+								#puts "#{name} - #{teacher[2]} - #{teacher[3]} - #{teacher[4]} - #{ids[teacher[0].strip]}"
+								puts "#{name}" if ids[teacher[0].strip].nil?
+								teachers << { :name => name, :location => teacher[2], :phone => teacher[3], :email => teacher[4], :dtu_teacher_id => ids[teacher[0].strip] }
 							end
-							pp teachers
+							#pp teachers
             end
           end
         
