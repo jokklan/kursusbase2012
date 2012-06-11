@@ -121,7 +121,7 @@ class Course < ActiveRecord::Base
                :teaching_form, :duration, :participant_limit,  
                :course_objectives, :learn_objectives, :content, :schedule_note,
                :litteratur, :remarks, :registration, :top_comment, :former_course,
-               :exam_form, :exam_aid, :evaluation_form
+               :exam_form, :exam_aid, :exam_schedule, :evaluation_form
                
   # Scopes
   scope :active, where(:active => true)

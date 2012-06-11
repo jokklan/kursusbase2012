@@ -12,7 +12,7 @@
 			</thead>
 			<tbody>
 
-			<% @courses.limit(10).each do |course| %>
+			<% @courses.each do |course| %>
 				<tr class="<%= cycle("odd", "even") %>">
 					<td class="no"><%= course.course_no %></td>
 					<td class="title"><%= link_to course.title, course %></td>

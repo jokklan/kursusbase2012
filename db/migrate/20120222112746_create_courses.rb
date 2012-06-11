@@ -8,8 +8,7 @@ class CreateCourses < ActiveRecord::Migration
 			t.string :schedule
       t.integer :institute_id
       t.string :homepage
-      t.text :exam_schedule
-      t.string  :exam_duration
+      t.string :exam_duration
       t.string :point_block
       t.string :qualified_prereq
       t.string :optional_prereq
@@ -29,6 +28,7 @@ class CreateCourses < ActiveRecord::Migration
       :registration =>  :string,
       :course_objectives => :text,
 			:schedule_note => :text,
+			:exam_schedule => :text,
       :learn_objectives => :text,
       :content => :text,
       :litteratur => :text,

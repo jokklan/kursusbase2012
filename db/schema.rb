@@ -59,9 +59,8 @@ ActiveRecord::Schema.define(:version => 20120608084734) do
   create_table "course_students", :force => true do |t|
     t.integer "student_id"
     t.integer "course_id"
-    t.string  "semester"
+    t.integer "semester"
     t.boolean "passed"
-    t.integer "semester_span"
   end
 
   add_index "course_students", ["course_id"], :name => "index_course_users_on_course_id"
@@ -77,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20120608084734) do
     t.string   "registration"
     t.text     "course_objectives"
     t.text     "schedule_note"
+    t.text     "exam_schedule"
     t.text     "learn_objectives"
     t.text     "content"
     t.text     "litteratur"
@@ -117,7 +117,6 @@ ActiveRecord::Schema.define(:version => 20120608084734) do
     t.string   "schedule"
     t.integer  "institute_id"
     t.string   "homepage"
-    t.text     "exam_schedule"
     t.string   "exam_duration"
     t.string   "point_block"
     t.string   "qualified_prereq"

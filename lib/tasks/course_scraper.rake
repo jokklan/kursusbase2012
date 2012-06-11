@@ -320,7 +320,6 @@ namespace :scrape do
           course_attributes[language][:evaluation].each do |key, att|
             if att_title == att
               current_course[key] = att_column[1].text.chomp.strip
-							#puts current_course[key] if key == :exam_schedule
             end
           end
         
@@ -418,21 +417,15 @@ namespace :scrape do
                 if !%r(mailto:.*).match(link[:href])
                   t_id = %r(http:\/\/www.dtu.dk\/Service\/Telefonbog\.aspx\?id=(.*)&type=person&lg=showcommon).match(link[:href].chomp.strip)[1]
                   t_name = link.text.chomp.strip
-									ids[t_name] = t_id
-									#puts "#{current_course[:course_number]} - #{t_name}"
-                  #current_course_teachers << { :name => t_name, :dtu_teacher_id => t_id }
+									ids[t_name.strip] = t_id
                 end
               end
-							text = content_rows[row_i + 1].search("td").text
-							regex = text.scan(/([A-Z][^\d@,]+), (([\d|\s|[a-zA-Z]]+, [\d|\s|[a-zA-Z]]+), )?(\(\+\d*\).\d*.\d*)?[, ]?(.*@.*)/)
+							regex = content_rows[row_i + 1].search("td").text.scan(/([A-Z][^\d@,]+), (([\d|\s|[a-zA-Z]]+, [\d|\s|[a-zA-Z]]+), )?(\(\+\d*\).\d*.\d*)?[, ]?(.*@.*)/)
 							teachers = []
 							regex.each do |teacher|	
-								name = teacher[0].strip.gsub("The course is taught by professor ","")
-								#puts "#{name} - #{teacher[2]} - #{teacher[3]} - #{teacher[4]} - #{ids[teacher[0].strip]}"
-								puts "#{name}" if ids[teacher[0].strip].nil?
-								teachers << { :name => name, :location => teacher[2], :phone => teacher[3], :email => teacher[4], :dtu_teacher_id => ids[teacher[0].strip] }
+								name = teacher[0].strip.gsub("The course is taught by professor ","").gsub("Kursusleder ","")
+								teachers << { :name => name, :location => teacher[2], :phone => teacher[3], :email => teacher[4], :dtu_teacher_id => ids[name] }
 							end
-							#pp teachers
             end
           end
         
@@ -544,8 +537,9 @@ namespace :scrape do
 					
 					# Finding or creating teachers
           current_course_teachers.each do |t|
-						
-            teacher = Teacher.find_or_create_by_dtu_teacher_id(t) 
+						teacher = Teacher.find_by_dtu_teacher_id(t)
+						teacher = Teacher.find_by_name(t) if teacher.nil?
+						teacher = Teacher.create(t) if teacher.nil?
             created_course.teachers << teacher unless created_course.teachers.include?(teacher)
           end
 					
