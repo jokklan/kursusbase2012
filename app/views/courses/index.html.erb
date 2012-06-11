@@ -2,6 +2,7 @@
 	<% if @courses.present? %>
 		<% title t('.search_results', :query => params[:search]) %>
 		<h1><%= t('.search_results', :query => params[:search]) %></h1>
+		<%= will_paginate @courses %>
 		<table class="courses">
 			<thead>
 				<tr>
@@ -30,6 +31,7 @@
 	<% if @courses.present? %>
 		<% title t('.course_recommandations') %>
 		<h1><%= t('.course_recommandations') %></h1>
+		<%= will_paginate @courses %>
 		<table class="courses">
 			<thead>
 				<tr>

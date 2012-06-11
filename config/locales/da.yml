@@ -8,6 +8,10 @@ da:
   ok: OK
   cancel: Annuller
   additionally: Desuden
+  will_paginate:
+    next_label: næste →
+    page_gap: ! '&hellip;'
+    previous_label: ← forrige
   internal:
     onheroku: Denne side på Heroku
   menu:

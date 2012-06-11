@@ -8,6 +8,10 @@ en:
   ok: OK
   cancel: Cancel
   additionally: Additionally
+  will_paginate:
+    next_label: previous →
+    page_gap: ! '&hellip;'
+    previous_label: ← next
   internal:
     onheroku: This page on Heroku
   menu:
