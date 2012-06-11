@@ -41,7 +41,7 @@ class StudyplanItemsController < ApplicationController
 			@studyplan_item = params[:studyplan_item]
 		elsif params[:search]
 			@course = Course.search_params(params[:search]).select { |c| not @student.has_planned_or_participated_in(c) }.first
-			@studyplan_item = { :course_id => @course.id, :student_id => @student.id } if not @course.nil?
+			@studyplan_item = { :course_id => @course.id, :student_id => @student.id } if @course.present?
 		end
 		
 		if not @course.nil?
@@ -57,7 +57,7 @@ class StudyplanItemsController < ApplicationController
 				redirect_to redirection, alert: "You have already planned or participated in the given course"
 			end
 		else
-			redirect_to studyplan_item_path, notice: 'No course were found'
+			redirect_to studyplan_items_path, notice: 'No course were found'
 		end
 	end
 	
