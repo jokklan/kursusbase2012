@@ -153,7 +153,7 @@ class Course < ActiveRecord::Base
 	end
 	
 	def has_schedule_on_semester(semester)
-		not self.find_schedules_by_semester(semester).empty?
+		!self.find_schedules_by_semester(semester).empty?
 	end
   
   # Class methods

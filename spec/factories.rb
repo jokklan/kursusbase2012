@@ -5,4 +5,8 @@ FactoryGirl.define do
     title "test"
   end
   
+  factory :schedule do
+    block "F2B"
+  end
+  
 end
