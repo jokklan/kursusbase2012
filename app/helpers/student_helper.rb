@@ -84,10 +84,10 @@ module StudentHelper
 	
 	def get_course_class(course)
 		if not @student.field_of_study.nil?
-			if course.is_basic_course(@student)
-				return ' basic'
-			elsif course.is_main_course(@student)
+			if course.is_main_course(@student)
 				return ' main'
+			elsif course.is_basic_course(@student)
+				return ' basic'
 			elsif course.is_project_course(@student)
 				return ' project'
 			end

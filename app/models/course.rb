@@ -317,6 +317,10 @@ class Course < ActiveRecord::Base
   end
 
 	def prereq_for
+		# Better solution - not tested
+		# rec_courses = self.mandatory_courses.map(&:course)
+		# rec_courses += self.qualification_courses.select {|c| not rec_courses.include? c }.map(&:course)
+		# rec_courses += self.optional_courses.select {|c| not rec_courses.include? c }.map(&:course)
 		rec_courses = []
 		CourseRelation.where(['related_course_id = ? AND related_course_type = ?', self.id, "Mandatory"]).sort.each do |cr|
 			rec_courses << Course.find(cr.course_id)
@@ -335,16 +339,23 @@ class Course < ActiveRecord::Base
 	def similar_courses
 		n_values = 10 # how many results?
 		rec_array = {}
-		CourseStudentData.where('course_id = ?',self.id).each do |data|
-			CourseStudentData.where('student_data_id = ?',data.student_data_id).each do |course_taken|
+		self.course_student_datas.each do |student_data|
+			student_data.course_student_datas.each do |course_taken|
 				c_id = course_taken.course_id
-				if rec_array[c_id].nil?
-					rec_array[c_id] = 1 
-				else
-					rec_array[c_id] = rec_array[c_id] + 1
-				end
+				rec_array[c_id] = 0 if rec_array[c_id].nil?
+				rec_array[c_id] += 1
 			end
 		end
+		# CourseStudentData.where('course_id = ?',self.id).each do |data|
+		# 	CourseStudentData.where('student_data_id = ?',data.student_data_id).each do |course_taken|
+		# 		c_id = course_taken.course_id
+		# 		if rec_array[c_id].nil?
+		# 			rec_array[c_id] = 1 
+		# 		else
+		# 			rec_array[c_id] = rec_array[c_id] + 1
+		# 		end
+		# 	end
+		# end
 		
 		sorted_array = rec_array.sort_by {|k,v| v }.reverse
 		index = 0
