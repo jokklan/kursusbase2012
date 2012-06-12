@@ -304,4 +304,10 @@ module CoursesHelper
 		# Output
 		out.html_safe
 	end
+	
+	def coursebox_size(value, max_rec)
+		classcount = 5
+		ratio      = value.to_f / max_rec.to_f
+		(ratio * classcount).round
+	end
 end

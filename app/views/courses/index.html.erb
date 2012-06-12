@@ -8,6 +8,7 @@
 				<tr>
 					<th scope="col" class="no"><%= t('.nonono') %></th>
 					<th scope="col" class="title"><%= t('.title') %></th>
+					<th scope="col" class="schedule"><%= t('.schedule') %></th>
 					<th scope="col" class="points"><%= t('.points') %></th>
 				</tr>
 			</thead>
@@ -17,6 +18,7 @@
 				<tr class="<%= cycle("odd", "even") %>">
 					<td class="no"><%= course.course_no %></td>
 					<td class="title"><%= link_to course.title, course %></td>
+					<td class="schedule"><%= course.schedule %></td>
 					<td class="points"><%= "%g" % course.ects_points %></td>
 				</tr>
 			<% end %>
@@ -27,30 +29,30 @@
 		<h1><%= t('.no_results', :query => params[:search]) %></h1>
 	<% end %>
 	
-<% else %>
+<% else %><%
+
+	max_rec = 0
+	@courses.each do |course_rec|
+		if course_rec.priority_value > max_rec
+			max_rec = course_rec.priority_value
+		end
+	end
+%>
 	<% if @courses.present? %>
-		<% title t('.course_recommandations') %>
-		<h1><%= t('.course_recommandations') %></h1>
-		<table class="courses">
-			<thead>
-				<tr>
-					<th scope="col" class="no"><%= t('.nonono') %></th>
-					<th scope="col" class="title"><%= t('.title') %></th>
-					<th scope="col" class="points"><%= t('.points') %></th>
-				</tr>
-			</thead>
-			<tbody>
-		
-			<% @courses.each do |course_rec| %>
-				<tr class="<%= cycle("odd", "even") %>">
-					<td class="no"><%= course_rec.course.course_no %></td>
-					<td class="title"><%= link_to course_rec.course.title, course_rec.course %></td>
-					<td class="points"><%= course_rec.priority_value %></td>
-				</tr>
-			<% end %>
+		<% title t('.course_recommendations') %>
+		<h1><%= t('.course_recommendations') %></h1>
+		<% @courses.each do |course_rec|
+			cb_size = coursebox_size(course_rec.priority_value, max_rec)
+%>
+			<div class="coursebox cb-<%= cb_size.to_s + get_course_class(course_rec.course) %> <%= cycle("odd", "even") %>">
+				<h2><span class="no"><%= course_rec.course.course_no %> </span><%= link_to course_rec.course.title, course_rec.course %></h2>
+				<div class="data"><%= "%g" % course_rec.course.ects_points %> <%= t('.points').downcase %>, <%= course_rec.course.schedule %></div>
+			</div>
+		<% end %>
+		<div class="cb"></div>
 	<% else %>
-		<% title t('.no_recommandations') %>
-		<h1><%= t('.no_recommandations') %></h1>
+		<% title t('.no_recommendations') %>
+		<h1><%= t('.no_recommendations') %></h1>
 	<% end %>
 	
 <% end %>

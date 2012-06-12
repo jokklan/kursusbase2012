@@ -56,12 +56,13 @@ en:
   courses:
     index:
       search_results: "Searchresults for “%{query}”"
-      course_recommandations: Course recommandations
+      course_recommendations: Course recommendations
       no_results: "Sorry, there was no results for “%{query}”"
-      no_recommandations: You have no recommended courses
+      no_recommendations: You have no recommended courses
       nonono: No.
       title: Title
       points: Points
+      schedule: Schedule
     show:
       points: points
       ects: ECTS points

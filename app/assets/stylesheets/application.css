@@ -713,6 +713,35 @@ table tr.odd {
 	background-color: #f9f9f9;
 }
 
+#content .coursebox {
+	background-color: #eee;
+	color: #999;
+	float: left;
+	width: 19.5%;
+	height: 150px;
+	padding: 20px;
+	margin: 0 10px 10px 0;
+	overflow: hidden;
+}
+
+#content .coursebox h2 {
+	margin: 0;
+	color: inherit;
+}
+
+#content .coursebox h2 span {
+	font-weight: normal;
+}
+
+#content .coursebox h2 a {
+	color: #333;
+}
+
+#content .coursebox.cb-5 { font-size: 160%; }
+#content .coursebox.cb-4 { font-size: 140%; }
+#content .coursebox.cb-3 { font-size: 120%; }
+#content .coursebox.cb-1 { font-size: 80%; }
+
 #content input, .fakeinput {
 	margin: 0;
 	padding: 3px 6px;
@@ -840,19 +869,34 @@ body.js table.schedule td.course a:hover {
 	text-decoration: none;
 }
 
-
-table.schedule td.basic, .pointsprogress .basic { background-color: #e27474; } /* Red */
-table.schedule td.basic a { color: #a95757; }
-table.schedule td.basic a strong, .pointsprogress .basic { color: #391d1d; }
-body.js table.schedule td.basic:hover { background-color: #eca2a2; }
-table.schedule td.main, .pointsprogress .main { background-color: #a1a6c1; } /* Blue */
-table.schedule td.main a { color: #797c91; }
-table.schedule td.main a strong, .pointsprogress .main { color: #282a30; }
-body.js table.schedule td.main:hover { background-color: #c0c3d5; }
-table.schedule td.project, .pointsprogress .project { background-color: #e6e768; } /* Yellow */
-table.schedule td.project a { color: #acad4e; }
-table.schedule td.project a strong, .pointsprogress .project { color: #3a3a1a; }
-body.js table.schedule td.project:hover { background-color: #eeef9a; }
+/* COLOURS */
+/* Red */
+table.schedule td.basic, .pointsprogress .basic, #content .coursebox.basic
+	{ background-color: #e27474; }
+table.schedule td.basic a, #content .coursebox.basic
+	{ color: #a95757; }
+table.schedule td.basic a strong, .pointsprogress .basic, #content .coursebox.basic strong
+	{ color: #391d1d; }
+body.js table.schedule td.basic:hover
+	{ background-color: #eca2a2; }
+/* Blue */
+table.schedule td.main, .pointsprogress .main, #content .coursebox.main
+	{ background-color: #a1a6c1; }
+table.schedule td.main a, #content .coursebox.main
+	{ color: #797c91; }
+table.schedule td.main a strong, .pointsprogress .main, #content .coursebox.main strong
+	{ color: #282a30; }
+body.js table.schedule td.main:hover
+	{ background-color: #c0c3d5; }
+/* Yellow */
+table.schedule td.project, .pointsprogress .project, #content .coursebox.project
+	{ background-color: #e6e768; }
+table.schedule td.project a, #content .coursebox.project
+	{ color: #acad4e; }
+table.schedule td.project a strong, .pointsprogress .project, #content .coursebox.project strong
+	{ color: #3a3a1a; }
+body.js table.schedule td.project:hover
+	{ background-color: #eeef9a; }
 
 
 #content h1#intro {

@@ -56,12 +56,13 @@ da:
   courses:
     index:
       search_results: "Søgeresultat for “%{query}”"
-      course_recommandations: Kursusanbefalinger
+      course_recommendations: Kursusanbefalinger
       no_results: "Der blev ikke fundet nogen resultater for “%{query}”"
-      no_recommandations: Du har ingen anbefalede kurser
+      no_recommendations: Du har ingen anbefalede kurser
       nonono: Nr.
       title: Titel
       points: Point
+      schedule: Skemaplacering
     show:
       points: point
       ects: ECTS-point

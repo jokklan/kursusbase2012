@@ -11,6 +11,9 @@ class CoursesController < ApplicationController
     if @courses.count == 1
       redirect_to @courses.first
     end
+	if !current_student.nil?
+		@student = current_student
+	end
   end
 
   def show
