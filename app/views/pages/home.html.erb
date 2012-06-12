@@ -1,0 +1,23 @@
+<%
+	logoname  = I18n.locale.to_s == "en" ? "homelogo-en" : "homelogo"
+	logowidth = I18n.locale.to_s == "en" ? 315 : 325
+%>
+<a id="toplogin" href="/login"><%= t('.login') %></a>
+<div id="logo">
+	<!--[if !IE]> --><img src="/assets/<%= logoname %>.svg" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><!-- <![endif]-->
+	<!--[if gte IE 9]><img src="/assets/<%= logoname %>.svg" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
+	<!--[if lt IE 9]><img src="/assets/<%= logoname %>.png" width="<%= logowidth %>" height="70" alt="<%= t('sitename') %>"><![endif]-->
+	<h1><%= t('.search') %></h1>
+</div>
+<%= form_tag courses_path, :method => :get, :id => :searchform do %><div>
+	<%= text_field_tag :search, params[:search], :tabindex => 1 %><script>document.getElementById("search").focus()</script>
+	<p><%= t('.example') %> &#8220;<%= t('.example1') %>&#8221;, &#8220;01227&#8221;, &#8220;<%= t('.example3') %>&#8221;, &#8220;<%= t('.example4') %>&#8221;&#8230;</p>
+</div><% end %>
+
+<div id="login" style="display:none">
+	<%= render "/sessions/login_form" %>
+</div>
+
+<p id="logintro"><a href="/login"><strong><%= t('.login') %></strong> <span><%= t('.toplan') %></span></a></p>
+
+<p id="languages"><a href="/da">Dansk</a> / <a href="/en">English</a></p>

@@ -13,7 +13,9 @@ Kursusbase2012::Application.routes.draw do
 			get 'show', :path => '(/:semester)', :as => 'studyplan', :on => :collection
 		end
 		
-		post "search", to: "courses#index", as: "search"
+		post "/search", to: "courses#index", as: "search"
+		
+		get '/searchtips', to: 'pages#searchtips', as: 'searchtips'
 		
 		root :to => 'students#show'
   end  

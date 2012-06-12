@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
       # @courses = @student.current_courses.map(&:schedules)
     else
 	    @student = Student.new
-	    render "/home/index", layout: "home"
+	    render "/pages/home", layout: "home"
     end
 	end
 	

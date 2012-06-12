@@ -111,8 +111,17 @@ da:
       see: Se
       yourplan: din studieplan
       inorderto: for at se dine tidligere skemaer og planlægge dine fremtidige.
-  home:
-    index:
+  pages:
+    searchtips:
+      search_tips: Søgetips
+      help_text: "Du kan filtrer din søgning med nedenstående filtrer. Du tildeler et filter ved at skrive “filter:text”, f.eks. “kursusnummer:01”. Ord i sætninger forbindes med “-”, f.eks. “institut:byggeri-og-anlæg”"
+      course_number: '<strong>“kursusnummer:#”</strong> Filtrere efter kurser med kursusnummer der begynder med #'
+      ects: '“ects:#” Filtrere efter kurser der giver # ects point. Kan også bruges med “ects_gt:#” (større end), “ects_gte:#” (større end eller lig med), “ects_ls:#” (mindre end), samt “ects_lse:#” (mindre end eller lig med)'
+      institute: '“institut:#” Filtrere kurser efter instiutter der indeholder #'
+      coursetype: '“kursustype:#” Filtrerer kurser kursustype, f.eks. “kursustype:teknologiske-linjefag-softwareteknologi”'
+      language: '“sprog:#” Filtrerer efter undervisningssprog'
+      schedule: '“skema:#” Filtrerer efter skema placering. Formatet “E2B” (her efterår, torsdag morgen) kan bruges. Du kan også filtreres efter “E2”, eller på “efterår”.'
+    home:
       search: Søgning
       login: Log ind
       toplan: for at lægge en studieplan
