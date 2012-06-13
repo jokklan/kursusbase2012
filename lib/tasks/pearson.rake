@@ -74,16 +74,20 @@ namespace :analyse do
 				
 				## Calculating numerator
 				start_time = Time.now # numerator
-				numerator = (1 - mean_u)*(0 - mean_s)*case10 + (0 - mean_u)*(1 - mean_s)*case01 + (1 - mean_u)*(1 - mean_s)*case11 + (0 - mean_u)*(0 - mean_s)*case00
+				# OLD VERSION: numerator = (1 - mean_u)*(0 - mean_s)*case10 + (0 - mean_u)*(1 - mean_s)*case01 + (1 - mean_u)*(1 - mean_s)*case11 + (0 - mean_u)*(0 - mean_s)*case00
+				numerator = mean_u*mean_s*no_of_courses - mean_u*(case11+case01) - mean_s*(case11+case10)+case11
 				#puts numerator
 				performance[:numerator] << (Time.now - start_time)
 				
 				## Calculating denominators
 				start_time = Time.now # denominator
-				denominator_u = (case11 + case10)*(1 - mean_u)**2.0 + (case00 + case01)*(0 - mean_u)**2.0
-				denominator_s = (case11 + case01)*(1 - mean_s)**2.0 + (case00 + case10)*(0 - mean_s)**2.0
-				#puts denominator_u
-				#puts denominator_s
+				denominator_u = case11 + case10 - (mean_u**2.0)*no_of_courses
+				denominator_s = case11 + case01 - (mean_s**2.0)*no_of_courses
+				
+				# OLD VERSIONS
+				#denominator_u2 = (case11 + case10)*(1 - mean_u)**2.0 + (case00 + case01)*(0 - mean_u)**2.0
+				#denominator_s2 = (case11 + case01)*(1 - mean_s)**2.0 + (case00 + case10)*(0 - mean_s)**2.0
+				
 				performance[:denominators] << (Time.now - start_time)
 				
 				# Calculate pearson similarity coefficient
@@ -94,9 +98,17 @@ namespace :analyse do
 					#puts "denominator_s: #{denominator_s}"
 				else
 					start_time = Time.now # sim
-					sim[s] = numerator / (Math.sqrt(denominator_u)*Math.sqrt(denominator_s))
 					performance[:sim_coeff] << (Time.now - start_time)
+					sim[s] = numerator / (Math.sqrt(denominator_u)*Math.sqrt(denominator_s))
+					#puts "Old pearson:"
+					#puts numerator / (Math.sqrt(denominator_u2)*Math.sqrt(denominator_s2))
+					#puts "New pearson:"
+					#puts numerator / (Math.sqrt(denominator_u)*Math.sqrt(denominator_s))
+					
 					# TEST sim coefficient
+					if sim[s] < 0 
+						puts sim[s]
+					end
 					if sim[s] < -1 or sim[s] > 1
 						puts "Sim coefficient not in the interval [-1;1]"
 						throw :error

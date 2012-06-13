@@ -340,7 +340,7 @@ class Course < ActiveRecord::Base
 		n_values = 10 # how many results?
 		rec_array = {}
 		self.course_student_datas.each do |student_data|
-			student_data.course_student_datas.each do |course_taken|
+			student_data.courses.each do |course_taken|
 				c_id = course_taken.course_id
 				rec_array[c_id] = 0 if rec_array[c_id].nil?
 				rec_array[c_id] += 1
