@@ -83,9 +83,9 @@ class Course < ActiveRecord::Base
   has_many :optional_courses, :through => :advisable_qualifications, :source => :related_course
   
   has_many :course_students
-  has_many :students, :through => :course_students
+  has_many :students, :through => :course_students, :uniq => true
 	has_many :course_student_datas
-	has_many :student_datas, :through => :course_student_datas
+	has_many :student_datas, :through => :course_student_datas, :uniq => true
 	has_many :course_specializations
 	has_many :spec_course_types, :through => :course_specializations
 	has_many :field_of_study, :through => :spec_course_types
@@ -98,7 +98,6 @@ class Course < ActiveRecord::Base
   has_many :institute_translations, :class_name => "Institute::Translation", :through => :institute, :source => :translations
 
 	has_and_belongs_to_many :schedules
-	has_and_belongs_to_many :student_datas
 	has_and_belongs_to_many :course_recommendations
   
   # Course attributes

@@ -12,3 +12,17 @@ HINT:  Is another postmaster (PID 68020) running in data directory "/usr/local/v
 LOG:  database system was shut down at 2012-06-11 08:27:32 CEST
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
+LOG:  database system was interrupted; last known up at 2012-06-12 09:41:20 CEST
+LOG:  database system was not properly shut down; automatic recovery in progress
+LOG:  record with zero length at 0/19885DE8
+LOG:  redo is not required
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started
+ERROR:  relation "courses_student_data" does not exist at character 56
+STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
+ERROR:  relation "courses_student_data" does not exist at character 56
+STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
+ERROR:  relation "courses_student_data" does not exist at character 56
+STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
+ERROR:  relation "courses_student_data" does not exist at character 56
+STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
