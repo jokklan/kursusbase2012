@@ -11,6 +11,7 @@ namespace :analyse do
 		return if u.nil?
 		
 		# Get students a
+		total_start_time = Time.now
 		start_time = Time.now
 		procent_ind = 0
 		puts "# Student: #{u.student_number}"
@@ -26,7 +27,10 @@ namespace :analyse do
 			:means => [],
 			:numerator => [],
 			:denominators => [],
-			:sim_coeff => []
+			:sim_coeff => [], 
+			:sim_coeff_sum => [],
+			:recommendations => [],
+			:sort => []
 		}
 		
 		# Calculating similarity coefficients
@@ -137,16 +141,7 @@ namespace :analyse do
 			  print "#{procent_ind}%" if procent_ind % 10 == 0
 			end		
 		end
-		
-		puts "\nSim coefficient calculation done"
-		puts "Analysing sim-coeff calculation..."
-		performance.each do |key, array|
-			average = array.inject{ |sum, el| sum + el }.to_f / array.size
-			"#{key} - average: #{average}"
-		end
-		
-		puts "Analysing done"
-		puts "time spend calculating sim coeff: #{elapsed}"
+	
 		
 		sim_coeff_a = sim.sort {|a,b| b[1]<=>a[1]}
 		# Calcuate reccomendations
@@ -155,22 +150,38 @@ namespace :analyse do
 		i = 0
 		n_values = 300
 		sim_coeff_a.each do |key,val|
+		  start_time = Time.now
 			break if i >= n_values
 			key.courses.each do |course|
 				course_recs[course.id] = 0 if course_recs[course.id].nil?
 				course_recs[course.id] += 1
 			end	
 			i += 1		
+			performance[:sim_coeff_sum] << (Time.now - start_time)
 		end	
 		
+		start_time = Time.now
 		recs = course_recs.sort {|a,b| b[1]<=>a[1]}
+		performance[:sort] << (Time.now - start_time)
 		puts "Recommendations:"
 		recs.each do |course_id, value|
+		  start_time = Time.now
 			course = Course.find(course_id)
-			puts "#{course.course_number} - #{value} recommendations" unless not a.should_be_recommended(course)
 			if u.should_be_recommended(course)
 				u.course_recommendations << CourseRecommendation.new(:course_id => course.id, :priority_value => value)
 			end
+			performance[:recommendations] << (Time.now - start_time)
 		end	
+		
+		puts "\nSim coefficient calculation done"
+		puts "Analysing sim-coeff calculation..."
+		puts "TOTAL #{(Time.now - total_start_time).to_f} - COUNT: #{StudentData.all.count}"
+		performance.each do |key, array|
+			total = array.inject{ |sum, el| sum + el }.to_f 
+			average = total / array.size
+			puts "#{key.upcase}: times: #{array.size} - average: #{average} - total: #{total}"
+		end
+		puts "Analysing done"
+		
 	end
 end
