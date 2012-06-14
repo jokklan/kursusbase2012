@@ -2,14 +2,14 @@
 #
 # Table name: teachers
 #
-#  id             :integer         not null, primary key
+#  id             :integer          not null, primary key
 #  name           :string(255)
 #  location       :string(255)
 #  phone          :string(255)
 #  email          :string(255)
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
 #  dtu_teacher_id :integer
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 
 class Teacher < ActiveRecord::Base

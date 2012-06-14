@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: studyplan_items
+#
+#  id           :integer          not null, primary key
+#  studyplan_id :integer
+#  course_id    :integer
+#  student_id   :integer
+#  semester     :integer
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:

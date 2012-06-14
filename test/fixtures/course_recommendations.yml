@@ -2,12 +2,12 @@
 #
 # Table name: course_recommendations
 #
-#  id             :integer         not null, primary key
+#  id             :integer          not null, primary key
 #  student_id     :integer
 #  course_id      :integer
 #  priority_value :integer
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html

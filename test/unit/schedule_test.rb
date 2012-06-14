@@ -2,10 +2,10 @@
 #
 # Table name: schedules
 #
-#  id         :integer         not null, primary key
+#  id         :integer          not null, primary key
 #  block      :string(255)
-#  created_at :datetime        not null
-#  updated_at :datetime        not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 require 'test_helper'

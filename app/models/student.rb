@@ -2,13 +2,19 @@
 #
 # Table name: students
 #
-#  id             :integer         not null, primary key
-#  student_number :string(255)
-#  direction_id   :integer
-#  start_year     :integer
-#  cn_access_key  :string(255)
-#  created_at     :datetime        not null
-#  updated_at     :datetime        not null
+#  id                :integer          not null, primary key
+#  student_number    :string(255)
+#  direction_id      :integer
+#  start_year        :integer
+#  cn_access_key     :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  firstname         :string(255)
+#  lastname          :string(255)
+#  email             :string(255)
+#  field_of_study_id :integer
+#  image             :string(255)
+#  user_id           :integer
 #
 
 class Student < ActiveRecord::Base

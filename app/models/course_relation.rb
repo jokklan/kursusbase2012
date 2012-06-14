@@ -2,13 +2,13 @@
 #
 # Table name: course_relations
 #
-#  id                  :integer         not null, primary key
+#  id                  :integer          not null, primary key
 #  course_id           :integer
 #  related_course_id   :integer
 #  group_no            :integer
 #  related_course_type :string(255)
-#  created_at          :datetime        not null
-#  updated_at          :datetime        not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 
 class CourseRelation < ActiveRecord::Base
