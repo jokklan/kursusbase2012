@@ -56,11 +56,11 @@ class Student < ActiveRecord::Base
 	
 	def basic_points
 		# skal ikke tælle, hvis kursus også er teknologisk linjefag for den givne studerende
-		sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		self.sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
 	end
 	
 	def basic_points_passed
-		sum_ects_points(self.basic_courses.select {|c| self.passed_courses.include? c })
+		self.sum_ects_points(self.basic_courses.select {|c| self.passed_courses.include? c })
 	end
 	
 	def optional_points

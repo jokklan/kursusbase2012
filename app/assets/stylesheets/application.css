@@ -851,6 +851,16 @@ table.schedule td {
 table.schedule td.course {
 	background-color: #ccc;
 	color: #999;
+	position: relative;
+}
+
+#content a.button.studyplan_item_remove {
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	font-size: 0.6em;
+	padding: 1px 6px 3px 6px;
+	-webkit-border-radius: 50px;
 }
 
 body.js table.schedule td.course:hover {
