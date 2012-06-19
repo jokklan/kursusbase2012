@@ -26,3 +26,10 @@ ERROR:  relation "courses_student_data" does not exist at character 56
 STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
 ERROR:  relation "courses_student_data" does not exist at character 56
 STATEMENT:  SELECT "student_data".* FROM "student_data" INNER JOIN "courses_student_data" ON "student_data"."id" = "courses_student_data"."student_data_id" WHERE "courses_student_data"."course_id" = 62
+LOG:  autovacuum launcher shutting down
+LOG:  received smart shutdown request
+LOG:  shutting down
+LOG:  database system is shut down
+LOG:  database system was shut down at 2012-06-18 20:59:29 CEST
+LOG:  database system is ready to accept connections
+LOG:  autovacuum launcher started

@@ -28,9 +28,8 @@ namespace :analyse do
 			:numerator => [],
 			:denominators => [],
 			:sim_coeff => [], 
-			:sim_coeff_sum => [],
 			:recommendations => [],
-			:sort => []
+			:recommendation_sort => []
 		}
 		
 		# Calculating similarity coefficients
@@ -142,7 +141,7 @@ namespace :analyse do
 			end		
 		end
 	
-		
+		start_time = Time.now
 		sim_coeff_a = sim.sort {|a,b| b[1]<=>a[1]}
 		# Calcuate reccomendations
 		
@@ -150,28 +149,29 @@ namespace :analyse do
 		i = 0
 		n_values = 300
 		sim_coeff_a.each do |key,val|
-		  start_time = Time.now
 			break if i >= n_values
-			key.courses.each do |course|
-				course_recs[course.id] = 0 if course_recs[course.id].nil?
-				course_recs[course.id] += 1
-			end	
+			if val == 1
+				key.courses.each do |course|
+					course_recs[course.id] = 0 if course_recs[course.id].nil?
+					course_recs[course.id] += 1
+				end	
+			else
+				n_values += 1 # taking one more in concideration
+			end
 			i += 1		
-			performance[:sim_coeff_sum] << (Time.now - start_time)
-		end	
+		end
+		performance[:recommendations] << (Time.now - start_time)	
 		
 		start_time = Time.now
 		recs = course_recs.sort {|a,b| b[1]<=>a[1]}
-		performance[:sort] << (Time.now - start_time)
 		puts "Recommendations:"
 		recs.each do |course_id, value|
-		  start_time = Time.now
 			course = Course.find(course_id)
-			if u.should_be_recommended(course)
+			if u.should_be_recommended(course) and course.active?
 				u.course_recommendations << CourseRecommendation.new(:course_id => course.id, :priority_value => value)
 			end
-			performance[:recommendations] << (Time.now - start_time)
 		end	
+		performance[:recommendation_sort] << (Time.now - start_time)
 		
 		puts "\nSim coefficient calculation done"
 		puts "Analysing sim-coeff calculation..."

@@ -38,8 +38,31 @@ class Student < ActiveRecord::Base
 
 	TOTAL_ECTS_GOAL = 180	
 	
+	def points(type = 'total')
+		points = 0
+		case type
+			when 'main'
+				points += self.sum_ects_points(self.main_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+			when 'project'
+				points += self.sum_ects_points(self.project_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+			when 'basic'
+				points += self.sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+			when 'optional'
+				points += self.courses.sum("ects_points") + self.sum_ects_points(self.studyplan_courses) - basic_points - project_points - main_points
+				points += self.excessed_points
+			when 'total'
+				self.total_points
+		end 
+		if points > 45
+			45
+		else
+			points
+		end
+	end
+	
 	def main_points
 		sum_ects_points(self.main_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		self.points('main')
 	end
 	
 	def main_points_passed
@@ -47,7 +70,8 @@ class Student < ActiveRecord::Base
 	end
 	
 	def project_points
-		self.sum_ects_points(self.project_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		# self.sum_ects_points(self.project_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		self.points('project')
 	end
 	
 	def project_points_passed
@@ -56,7 +80,8 @@ class Student < ActiveRecord::Base
 	
 	def basic_points
 		# skal ikke tælle, hvis kursus også er teknologisk linjefag for den givne studerende
-		sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		# sum_ects_points(self.basic_courses.select {|c| self.courses.include? c or self.studyplan_courses.include? c })
+		self.points('basic')
 	end
 	
 	def basic_points_passed
@@ -65,11 +90,20 @@ class Student < ActiveRecord::Base
 	
 	def optional_points
 		# skal også tælde, hvis der overskrides point i de andre farver
-		self.courses.sum("ects_points") + self.sum_ects_points(self.studyplan_courses) - basic_points - project_points - main_points
+		# self.courses.sum("ects_points") + self.sum_ects_points(self.studyplan_courses) - basic_points - project_points - main_points
+		self.points('optional')
 	end
 	
 	def optional_points_passed
 		self.passed_courses.sum("ects_points") - basic_points_passed - project_points_passed - main_points_passed
+	end
+	
+	def excessed_points
+		points = 0.0
+		points += basic_points - 45.0 	if basic_points > 45
+		points += project_points - 45.0 if project_points > 45
+		points += main_points - 45.0 		if main_points > 45
+		points 
 	end
 	
 	def total_points
