@@ -3,7 +3,12 @@ module StudyplanItemsHelper
 		points / (Student::TOTAL_ECTS_GOAL/4)
 	end
 	def ects_points_block_percentage(points)
-		(self.ects_points_block_progress(points) * 100).round(2)
+		percentage = (self.ects_points_block_progress(points) * 100).round(2)
+		if percentage > 100
+			100
+		else
+			percentage
+		end
 	end
 	
 	def semester_select_options

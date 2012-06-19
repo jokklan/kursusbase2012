@@ -6,7 +6,7 @@ class StudyplanItemsController < ApplicationController
     	@course_basket = @student.studyplan_items.where(:semester => nil)
     	@semester = params[:semester].to_i
 
-    	@max_semester = @student.current_semester + ((Student::TOTAL_ECTS_GOAL - @student.total_points) / (Student::TOTAL_ECTS_GOAL / 6)).ceil 
+    	@max_semester = @student.current_semester + ((Student::TOTAL_ECTS_GOAL - @student.total_points_passed - 30) / (Student::TOTAL_ECTS_GOAL / 6)).ceil 
       params[:semester] = nil if (params[:semester] and (@semester < 0 or @semester > @max_semester))
 			
 			@studyplans = []
