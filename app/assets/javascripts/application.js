@@ -70,6 +70,16 @@ d.ready(function(){
 		}
 	}
 	
+	// Studyplan - coursebox hover
+	$("td.course").each(function() {
+		$(this).find("a.studyplan_item_remove").hide()
+	})
+	$("td.course").hover(function() {
+		$(this).find("a.studyplan_item_remove").show()
+	},function() {
+		$(this).find("a.studyplan_item_remove").hide()
+	})
+	
 	// Semester dropdown
 	$("select#semester").change(function() {
 		var semester 		= $(this).val().substring(0,1)
