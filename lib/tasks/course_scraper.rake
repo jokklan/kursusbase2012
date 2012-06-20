@@ -780,7 +780,9 @@ namespace :scrape do
 		# Setting semester span (if the semester lasts more than one semester)
 		courses_with_span = { 1005 => 2, 10020 => 2, 10022 => 2 }
 		courses_with_span.each do |c, span|
-			Course.find_by_course_number(c).semester_span = span
+			c = Course.find_by_course_number(c)
+			c.semester_span = span
+			c.save
 		end
   end
   

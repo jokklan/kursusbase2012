@@ -237,8 +237,8 @@ class Student < ActiveRecord::Base
 	end
 	
 	def find_course_students_by_semester(semester)
-		course_students = self.course_students.where('semester = ?', semester.to_s)
-		course_students += self.course_students.where('semester = ?', (semester.to_i + 1).to_s).select { |cs| cs.course.semester_span.to_i > 1 }
+		course_students = self.course_students.where('semester = ?', semester)
+		course_students += self.course_students.where('semester = ?', semester + 1).select { |cs| cs.course.semester_span.to_i > 1 }
 		course_students
 	end
   

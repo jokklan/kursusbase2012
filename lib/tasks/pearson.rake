@@ -171,6 +171,7 @@ namespace :analyse do
 				u.course_recommendations << CourseRecommendation.new(:course_id => course.id, :priority_value => value)
 			end
 		end	
+		u.save
 		performance[:recommendation_sort] << (Time.now - start_time)
 		
 		puts "\nSim coefficient calculation done"

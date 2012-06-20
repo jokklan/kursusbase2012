@@ -74,6 +74,7 @@ d.ready(function(){
 	$("td.course").each(function() {
 		$(this).find("a.studyplan_item_remove").hide()
 	})
+	
 	$("td.course").hover(function() {
 		$(this).find("a.studyplan_item_remove").show()
 	},function() {
