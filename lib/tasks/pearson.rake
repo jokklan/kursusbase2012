@@ -84,8 +84,8 @@ namespace :analyse do
 				
 				## Calculating denominators
 				start_time = Time.now # denominator
-				denominator_u = case11 + case10 - (mean_u**2.0)*no_of_courses
-				denominator_s = case11 + case01 - (mean_s**2.0)*no_of_courses
+				denominator_u = (case11 + case10)*(1 - mean_u) - (mean_u**2.0)*no_of_courses
+				denominator_s = (case11 + case01)*(1 - mean_s) - (mean_s**2.0)*no_of_courses
 				
 				# OLD VERSIONS
 				#denominator_u2 = (case11 + case10)*(1 - mean_u)**2.0 + (case00 + case01)*(0 - mean_u)**2.0
@@ -113,22 +113,28 @@ namespace :analyse do
 						puts sim[s]
 					end
 					if sim[s] < -1 or sim[s] > 1
-						puts "Sim coefficient not in the interval [-1;1]"
-						throw :error
+						puts "Sim coefficient (#{sim[s]}) not in the interval [-1;1]"
+						debug = true
+					end
+					if sim[s] == 0.2361851446777493
+						debug = true
 					end
 					
+					if debug
+					sqrt_u = Math.sqrt(denominator_u)
+					sqrt_s = Math.sqrt(denominator_s)
+					puts "mean_u: #{mean_u}"
+					puts "mean_u^2: #{mean_u**2.0}"
+					puts "### denominators > 0 ###"
+					puts "numerator: #{numerator}"
+					puts "denominator_u: #{denominator_u}"
+					puts "sqrt(d_u): #{sqrt_u}"
+					puts "denominator_s: #{denominator_s}"
+					puts "sqrt(d_s): #{sqrt_s}"
+					puts "course_amount_s: #{course_amount_s}"
+					end
+					debug = false
 					
-					#sqrt_u = Math.sqrt(denominator_u)
-					#sqrt_s = Math.sqrt(denominator_s)
-					#puts "mean_u: #{mean_u}"
-					#puts "mean_s: #{mean_u}"
-					#puts "### denominators > 0 ###"
-					#puts "numerator: #{numerator}"
-					#puts "denominator_u: #{denominator_u}"
-					#puts "sqrt(d_u): #{sqrt_u}"
-					#puts "denominator_s: #{denominator_s}"
-					#puts "sqrt(d_s): #{sqrt_s}"
-					#puts "course_amount_s: #{course_amount_s}"
 					
 					#puts sim[s]
 				end
