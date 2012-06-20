@@ -109,29 +109,23 @@ namespace :analyse do
 					#puts numerator / (Math.sqrt(denominator_u)*Math.sqrt(denominator_s))
 					
 					# TEST sim coefficient
-					if sim[s] < 0 
-						puts sim[s]
-					end
 					if sim[s] < -1 or sim[s] > 1
 						puts "Sim coefficient (#{sim[s]}) not in the interval [-1;1]"
 						debug = true
 					end
-					if sim[s] == 0.2361851446777493
-						debug = true
-					end
 					
 					if debug
-					sqrt_u = Math.sqrt(denominator_u)
-					sqrt_s = Math.sqrt(denominator_s)
-					puts "mean_u: #{mean_u}"
-					puts "mean_u^2: #{mean_u**2.0}"
-					puts "### denominators > 0 ###"
-					puts "numerator: #{numerator}"
-					puts "denominator_u: #{denominator_u}"
-					puts "sqrt(d_u): #{sqrt_u}"
-					puts "denominator_s: #{denominator_s}"
-					puts "sqrt(d_s): #{sqrt_s}"
-					puts "course_amount_s: #{course_amount_s}"
+						sqrt_u = Math.sqrt(denominator_u)
+						sqrt_s = Math.sqrt(denominator_s)
+						puts "mean_u: #{mean_u}"
+						puts "mean_u^2: #{mean_u**2.0}"
+						puts "### denominators > 0 ###"
+						puts "numerator: #{numerator}"
+						puts "denominator_u: #{denominator_u}"
+						puts "sqrt(d_u): #{sqrt_u}"
+						puts "denominator_s: #{denominator_s}"
+						puts "sqrt(d_s): #{sqrt_s}"
+						puts "course_amount_s: #{course_amount_s}"
 					end
 					debug = false
 					
