@@ -265,7 +265,7 @@ class Student < ActiveRecord::Base
   end
 
 	def should_be_recommended(course)
-		not self.courses.include?(course) or self.blocked_courses.include?(course)
+		not self.courses.include?(course) and not self.blocked_courses.include?(course)
 	end
 	
 	def blocked_courses

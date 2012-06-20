@@ -338,9 +338,10 @@ class Course < ActiveRecord::Base
 	def similar_courses(student = nil)
 		n_values = 10 # how many results?
 		rec_array = {}
+		puts student
 		self.course_student_datas.each do |csd|
 			csd.student_data.courses.each do |course_taken|
-				if not student.nil? and student.should_be_recommended(self)
+				if student.nil? or (not student.nil? and student.should_be_recommended(course_taken))
 					c_id = course_taken.id
 					rec_array[c_id] = 0 if rec_array[c_id].nil?
 					rec_array[c_id] += 1

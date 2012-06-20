@@ -219,7 +219,7 @@
 	<% if not @course.similar_courses.empty? %>
 	<h3><%= t('.rechead') %></h3>
 	<ul>
-	<% @course.similar_courses.each do |key, sim_course| %>
+	<% @course.similar_courses(current_student).each do |key, sim_course| %>
 		<!-- <% if not current_student or current_student.should_be_recommended sim_course %>
 			<li>
 				<% if sim_course.active %><%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><% else %><%= sim_course.course_no %><% end %>
@@ -238,7 +238,6 @@
 	<h3><%= t('.prereqhead') %></h3>
 	<ul>
 	<% @course.prereq_for.each do |rec_course| %>
-		<% if not current_student %>
 			<li>
 			<% if rec_course.active %>
 				<%= link_to "#{rec_course.course_no} #{rec_course.title}", rec_course %>
@@ -246,8 +245,6 @@
 				<%= rec_course.course_no %>
 			<% end %>
 			</li>
-			<% end %>
-		<% end %>
 	</ul>
 	<% end %>	
 </div>

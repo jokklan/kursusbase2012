@@ -42,12 +42,14 @@
 		<% title t('.course_recommendations') %>
 		<h1><%= t('.course_recommendations') %></h1>
 		<% @courses.each do |course_rec|
+			if current_student.should_be_recommended(course_rec.course)
 			cb_size = coursebox_size(course_rec.priority_value, max_rec)
 %>
 			<div class="coursebox cb-<%= cb_size.to_s + get_course_class(course_rec.course) %> <%= cycle("odd", "even") %>">
 				<h2><span class="no"><%= course_rec.course.course_no %> </span><%= link_to course_rec.course.title, course_rec.course %></h2>
 				<div class="data"><%= "%g" % course_rec.course.ects_points %> <%= t('.points').downcase %>, <%= course_rec.course.schedule %></div>
 			</div>
+			<% end %>
 		<% end %>
 		<div class="cb"></div>
 	<% else %>

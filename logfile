@@ -33,3 +33,5 @@ LOG:  database system is shut down
 LOG:  database system was shut down at 2012-06-18 20:59:29 CEST
 LOG:  database system is ready to accept connections
 LOG:  autovacuum launcher started
+LOG:  unexpected EOF on client connection
+LOG:  unexpected EOF on client connection

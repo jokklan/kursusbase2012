@@ -150,7 +150,7 @@ namespace :analyse do
 		n_values = 300
 		sim_coeff_a.each do |key,val|
 			break if i >= n_values
-			if val == 1
+			if val != 1
 				key.courses.each do |course|
 					course_recs[course.id] = 0 if course_recs[course.id].nil?
 					course_recs[course.id] += 1
