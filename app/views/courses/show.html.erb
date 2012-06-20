@@ -220,12 +220,6 @@
 	<h3><%= t('.rechead') %></h3>
 	<ul>
 	<% @course.similar_courses(current_student).each do |key, sim_course| %>
-		<!-- <% if not current_student or current_student.should_be_recommended sim_course %>
-			<li>
-				<% if sim_course.active %><%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><% else %><%= sim_course.course_no %><% end %>
-				<br><%= key %> <%= t('.havealsotaken') %>
-			</li>
-		<% end %> -->
 		<li>
 			<% if sim_course.active %><%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><% else %><%= sim_course.course_no %><% end %>
 			<br><%= key %> <%= t('.havealsotaken') %>
@@ -245,6 +239,7 @@
 				<%= rec_course.course_no %>
 			<% end %>
 			</li>
+	<% end %>
 	</ul>
 	<% end %>	
 </div>
