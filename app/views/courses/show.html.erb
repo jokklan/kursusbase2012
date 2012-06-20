@@ -222,7 +222,6 @@
 	<% @course.similar_courses(current_student).each do |key, sim_course| %>
 		<li>
 			<% if sim_course.active %><%= link_to "#{sim_course.course_no} #{sim_course.title}", sim_course %><% else %><%= sim_course.course_no %><% end %>
-			<br><%= key %> <%= t('.havealsotaken') %>
 		</li>
 	<% end %>
 	</ul>
